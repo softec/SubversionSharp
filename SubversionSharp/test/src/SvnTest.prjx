@@ -4,7 +4,6 @@
     <File name="./AssemblyInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
-    <Reference type="Project" refto="Softec" localcopy="True" />
     <Reference type="Project" refto="AprSharp" localcopy="True" />
     <Reference type="Project" refto="SubversionSharp" localcopy="True" />
   </References>

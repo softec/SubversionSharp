@@ -11,12 +11,11 @@
 
 using System;
 using System.Runtime.Serialization;
-using Softec;
 
 namespace Softec.SubversionSharp
 {
     [Serializable]
-    public class SvnException : SoftecException
+    public class SvnException : Exception
     {
         const int Result = unchecked ((int)0xA0520000);
         

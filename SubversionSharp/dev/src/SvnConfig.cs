@@ -73,6 +73,7 @@ namespace Softec.SubversionSharp
 
         public static void Ensure(AprPool pool)
         {
+            Debug.WriteLine(String.Format("svn_config_ensure({0},{1})",IntPtr.Zero,pool));
             SvnError err = Svn.svn_config_ensure(IntPtr.Zero, pool);
             if(!err.IsNoError())
                 throw new SvnException(err);
@@ -80,9 +81,48 @@ namespace Softec.SubversionSharp
 
         public static void Ensure(string configDir, AprPool pool)
         {
+            Debug.WriteLine(String.Format("svn_config_ensure({0},{1})",configDir,pool));
             SvnError err = Svn.svn_config_ensure(configDir, pool);
             if(!err.IsNoError())
                 throw new SvnException(err);
+        }
+
+        public static void Ensure(AprString configDir, AprPool pool)
+        {
+            Debug.WriteLine(String.Format("svn_config_ensure({0},{1})",configDir,pool));
+            SvnError err = Svn.svn_config_ensure(configDir, pool);
+            if(!err.IsNoError())
+                throw new SvnException(err);
+        }
+
+        public static AprHash GetConfig(AprPool pool)
+        {
+        	IntPtr h;
+            Debug.WriteLine(String.Format("svn_config_get_config({0},{1})",IntPtr.Zero,pool));
+            SvnError err = Svn.svn_config_get_config(out h, IntPtr.Zero, pool);
+            if(!err.IsNoError())
+                throw new SvnException(err);
+            return h;
+        }
+
+        public static AprHash GetConfig(string configDir, AprPool pool)
+        {
+        	IntPtr h;
+            Debug.WriteLine(String.Format("svn_config_get_config({0},{1})",configDir,pool));
+            SvnError err = Svn.svn_config_get_config(out h, configDir, pool);
+            if(!err.IsNoError())
+                throw new SvnException(err);
+            return h;
+        }
+
+        public static AprHash GetConfig(AprString configDir, AprPool pool)
+        {
+        	IntPtr h;
+            Debug.WriteLine(String.Format("svn_config_get_config({0},{1})",configDir,pool));
+            SvnError err = Svn.svn_config_get_config(out h, configDir, pool);
+            if(!err.IsNoError())
+                throw new SvnException(err);
+            return h;
         }
         #endregion
     }

@@ -56,14 +56,22 @@ namespace Softec.SubversionSharp
             return(AprPool.Create(pool, allocator));
         }
         #endregion
+
+        #region ClientContext
+	    [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_client_create_context(out IntPtr ctx, IntPtr pool);
+        #endregion
                 
         #region Config
 	    [DllImport("svn_client-1")] static extern
         internal IntPtr svn_config_ensure(IntPtr config_dir, IntPtr pool);
-	    [DllImport("svn_client-1")] static extern
+	    [DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
         internal IntPtr svn_config_ensure(string config_dir, IntPtr pool);
         
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr	svn_config_get_config(out IntPtr cfg_hash, IntPtr config_dir, IntPtr pool);
+        [DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+        internal IntPtr	svn_config_get_config(out IntPtr cfg_hash, string config_dir, IntPtr pool);
         #endregion
-
     }
 }   

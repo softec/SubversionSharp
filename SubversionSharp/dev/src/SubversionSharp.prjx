@@ -6,9 +6,9 @@
     <File name="./SvnException.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnNullReferenceException.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnConfig.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnClientContext.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
-    <Reference type="Project" refto="Softec" localcopy="True" />
     <Reference type="Project" refto="AprSharp" localcopy="True" />
   </References>
   <DeploymentInformation target="" script="" strategy="File" />
