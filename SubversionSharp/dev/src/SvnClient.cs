@@ -80,7 +80,7 @@ namespace Softec.SubversionSharp
 		public static SvnClientCommitInfo Mkdir(AprArray paths,  
 							   					SvnClientContext ctx, AprPool pool)
 		{
-			SvnClientCommitInfo commitInfo;
+			IntPtr commitInfo;
 			Debug.Write(String.Format("svn_client_mkdir({0},{1},{2})...",paths,ctx,pool));
 			SvnError err = Svn.svn_client_mkdir(out commitInfo, paths, ctx, pool);
 			if( !err.IsNoError )
@@ -92,7 +92,7 @@ namespace Softec.SubversionSharp
 		public static SvnClientCommitInfo Delete(AprArray paths, bool force,
 							   					 SvnClientContext ctx, AprPool pool)
 		{
-			SvnClientCommitInfo commitInfo;
+			IntPtr commitInfo;
 			Debug.Write(String.Format("svn_client_delete({0},{1},{2},{3})...",paths,force,ctx,pool));
 			SvnError err = Svn.svn_client_delete(out commitInfo, paths, (force) ? 1 : 0, ctx, pool);
 			if( !err.IsNoError )
@@ -104,7 +104,7 @@ namespace Softec.SubversionSharp
 		public static SvnClientCommitInfo Import(string path, string url, bool nonrecursive,  
 							   					 SvnClientContext ctx, AprPool pool)
 		{
-			SvnClientCommitInfo commitInfo;
+			IntPtr commitInfo;
 			Debug.Write(String.Format("svn_client_import({0},{1},{2},{3},{4})...",path,url,nonrecursive,ctx,pool));
 			SvnError err = Svn.svn_client_import(out commitInfo, path, url, (nonrecursive) ? 1 : 0, 
 												 ctx, pool);
@@ -117,7 +117,7 @@ namespace Softec.SubversionSharp
 		public static SvnClientCommitInfo Commit(AprArray targets, bool nonrecursive,
 							   					 SvnClientContext ctx, AprPool pool)
 		{
-			SvnClientCommitInfo commitInfo;
+			IntPtr commitInfo;
 			Debug.Write(String.Format("svn_client_commit({0},{1},{2},{3})...",targets,nonrecursive,ctx,pool));
 			SvnError err = Svn.svn_client_commit(out commitInfo, targets, (nonrecursive) ? 1 : 0,
 												 ctx, pool);
