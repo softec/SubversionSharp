@@ -90,7 +90,7 @@ namespace Softec.AprSharp
         #region Methods wrappers
         public static AprTimeExp Alloc(AprPool pool)
         {
-            return(new AprTimeExp((apr_time_exp_t *)pool.Alloc(sizeof(apr_time_exp_t))));
+            return(new AprTimeExp((apr_time_exp_t *)pool.CAlloc(sizeof(apr_time_exp_t))));
         }
 
         public static AprTimeExp Alloc(out GCHandle handle)
