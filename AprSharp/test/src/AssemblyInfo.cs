@@ -1,5 +1,5 @@
 //  AprSharpTest, NUnit tests for AprSharp
-//  Copyright (C) 2004 SOFTEC sa.
+#region Copyright (C) 2004 SOFTEC sa.
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -15,7 +15,7 @@
 //  License along with this library; if not, write to the Free Software
 //  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 //
-//  Sources, support options and lastest version of these NUnit tests
+//  Sources, support options and lastest version of the complete library
 //  is available from:
 //		http://www.softec.st/AprSharp
 //		Support@softec.st
@@ -23,6 +23,7 @@
 //  Initial authors : 
 //		Denis Gervalle
 //		Olivier Desaive
+#endregion
 //
 using System;
 using System.Reflection;
