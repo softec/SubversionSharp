@@ -19,7 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\subversion\include;..\..\..\subversion\apr\include;&quot;..\..\..\subversion\apr-util\include&quot;;&quot;..\..\..\subversion\apr-iconv\include&quot;"
+				AdditionalIncludeDirectories="..\..\..\subversion\include;..\..\..\subversion\apr\include;&quot;..\..\..\subversion\include\apr-util&quot;;&quot;..\..\..\subversion\include\apr-iconv&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;SVNCLIENT_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -32,11 +32,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libapr.lib libaprutil.lib libapriconv.lib xml.lib libsvn_client-1.lib libsvn_delta-1.lib libsvn_diff-1.lib libsvn_ra-1.lib libsvn_ra_dav-1.lib libsvn_ra_local-1.lib libsvn_ra_svn-1.lib libsvn_fs-1.lib libsvn_repos-1.lib libsvn_subr-1.lib libsvn_wc-1.lib libdb40d.lib libneon.lib zlibstat.lib ws2_32.lib"
+				AdditionalDependencies="libapr.lib libaprutil.lib xml.lib libapriconv.lib libsvn_client-1.lib libsvn_delta-1.lib libsvn_diff-1.lib libsvn_ra-1.lib libsvn_ra_dav-1.lib libsvn_ra_local-1.lib libsvn_ra_svn-1.lib libsvn_fs-1.lib libsvn_repos-1.lib libsvn_subr-1.lib libsvn_wc-1.lib libneon.lib libdb42.lib ws2_32.lib"
 				OutputFile="$(OutDir)/svn_client-1.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\..\subversion\lib;..\..\..\subversion\apr\Debug;&quot;..\..\..\subversion\apr-util\Debug&quot;;&quot;..\..\..\subversion\apr-iconv\Debug&quot;;..\..\..\subversion\lib\db;&quot;..\..\..\subversion\apr-util\xml\expat\lib\LibD&quot;;..\..\..\subversion\lib\neon"
-				IgnoreDefaultLibraryNames="LIBCMTD;LIBCMT;MSVCRTD"
+				AdditionalLibraryDirectories="..\..\..\subversion\lib;..\..\..\subversion\lib\apr;&quot;..\..\..\subversion\lib\apr-util&quot;;&quot;..\..\..\subversion\lib\apr-iconv&quot;;..\..\..\subversion\lib\neon;&quot;..\..\..\subversion\db4-win32\lib&quot;"
+				IgnoreDefaultLibraryNames="LIBC;LIBCMTD;LIBCMT;MSVCRTD"
 				ModuleDefinitionFile="svnclient.def"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/svnclient.pdb"
