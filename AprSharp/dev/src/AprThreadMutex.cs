@@ -146,7 +146,7 @@ namespace Softec.AprSharp
                 }
                 throw new AprException(res);
             }
-            Debug.WriteLine("Done");
+            Debug.WriteLine(String.Format("Done({0})",res));
             return(true);
         }
         
