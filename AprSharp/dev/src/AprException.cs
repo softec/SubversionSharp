@@ -11,12 +11,11 @@
 
 using System;
 using System.Runtime.Serialization;
-using Softec;
 
 namespace Softec.AprSharp
 {
     [Serializable]
-    public class AprException : SoftecException
+    public class AprException : Exception
     {
         const int Result = unchecked ((int)0xA0400000);
         
