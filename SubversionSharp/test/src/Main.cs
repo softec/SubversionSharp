@@ -11,50 +11,36 @@ class MainClass
 	public static void Main(string[] args)
 	{
 	    Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
-        SvnConfig.Ensure();
         
-        AprPool pool =  Svn.PoolCreate();
-        SvnClientContext ctx = SvnClientContext.Create(pool);
-        ctx.Config = SvnConfig.GetConfig(pool);
+        SvnClient client = new SvnClient();
         
-        ArrayList authObjs = new ArrayList();
-        authObjs.Add(SvnAuthProviderObject.GetSimpleProvider(pool));
-        authObjs.Add(SvnAuthProviderObject.GetUsernameProvider(pool));
-        authObjs.Add(SvnAuthProviderObject.GetSslServerTrustFileProvider(pool));
-        authObjs.Add(SvnAuthProviderObject.GetSslClientCertFileProvider(pool));
-        authObjs.Add(SvnAuthProviderObject.GetSslClientCertPwFileProvider(pool));
-        authObjs.Add(SvnAuthProviderObject.GetPromptProvider(
+        client.AddSimpleProvider();
+        client.AddUsernameProvider();
+        client.AddSslServerTrustFileProvider();
+        client.AddSslClientCertFileProvider();
+        client.AddSslClientCertPwFileProvider();
+        client.AddPromptProvider(
         				new SvnAuthProviderObject.SimplePrompt(SimpleAuth),
-        				IntPtr.Zero, 2, pool));
-        authObjs.Add(SvnAuthProviderObject.GetPromptProvider(
+        				IntPtr.Zero, 2);
+        client.AddPromptProvider(
         				new SvnAuthProviderObject.UsernamePrompt(UsernameAuth),
-        				IntPtr.Zero, 2, pool));
-        authObjs.Add(SvnAuthProviderObject.GetPromptProvider(
+        				IntPtr.Zero, 2);
+        client.AddPromptProvider(
         				new SvnAuthProviderObject.SslServerTrustPrompt(SslServerTrustAuth),
-        				IntPtr.Zero, pool));
-        ctx.AuthBaton = SvnAuthBaton.Open(authObjs,pool);
-        ctx.NotifyFunc = new SvnDelegate(new SvnWcNotify.Func(NotifyCallback));
-        ctx.LogMsgFunc = new SvnDelegate(new SvnClient.GetCommitLog(GetCommitLogCallback));
-        ctx.CancelFunc = new SvnDelegate(new Svn.CancelFunc(CancelCallback));
+        				IntPtr.Zero);
+        client.OpenAuth();
         
-        GCHandle h;
-        SvnOptRevision revision = SvnOptRevision.Alloc(out h);
-        try
-        {
-	        revision.Number = 100;
-			SvnClient.SvnClientCheckout("https://www.softec.st/svn/test", 
-										"/home/denisg/dev/lib/SubversionSharp/test/bin/Debug/test",
-										revision, true,	ctx, pool);
-										
-	        revision.Kind = SvnOptRevision.RevisionKind.Head;
-			SvnClient.SvnClientUpdate("/home/denisg/dev/lib/SubversionSharp/test/bin/Debug/test",
-									  revision, true,	ctx, pool);
-		}
-		finally
-		{
-			h.Free();
-		}        
-        pool.Destroy();
+        client.Context.NotifyFunc = new SvnDelegate(new SvnWcNotify.Func(NotifyCallback));
+        client.Context.LogMsgFunc = new SvnDelegate(new SvnClient.GetCommitLog(GetCommitLogCallback));
+        client.Context.CancelFunc = new SvnDelegate(new Svn.CancelFunc(CancelCallback));
+        
+		client.Checkout("https://www.softec.st/svn/test", 
+						"/home/denisg/dev/lib/SubversionSharp/test/bin/Debug/test",
+						100, true);
+		client.Update("/home/denisg/dev/lib/SubversionSharp/test/bin/Debug/test",
+					  SvnOptRevision.RevisionKind.Head, true);
+
+		client.Pool.Destroy();        
 	}
 	
 	public static void NotifyCallback(IntPtr baton, AprString Path,  
@@ -82,7 +68,7 @@ class MainClass
 		}
 		
 		Console.Write("Enter log message: ");
-		logMessage = new AprString(pool, Console.ReadLine());
+		logMessage = new AprString(Console.ReadLine(), pool);
 		tmpFile = new AprString();
 		
 		return(SvnError.NoError);
@@ -127,9 +113,9 @@ class MainClass
 		}
 		
 		cred = SvnAuthCredSimple.Alloc(pool);
-		cred.Username = new AprString(pool, line);
+		cred.Username = new AprString(line, pool);
 		Console.Write("Enter Password: ");
-		cred.Password = new AprString(pool, Console.ReadLine());
+		cred.Password = new AprString(Console.ReadLine(), pool);
 		cred.MaySave = maySave;
 		return(SvnError.NoError);
 	}
@@ -158,7 +144,7 @@ class MainClass
 		}
 		
 		cred = SvnAuthCredUsername.Alloc(pool);
-		cred.Username = new AprString(pool, line);
+		cred.Username = new AprString(line, pool);
 		cred.MaySave = maySave;
 		return(SvnError.NoError);
 	}

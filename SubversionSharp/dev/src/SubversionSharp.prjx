@@ -13,7 +13,6 @@
     <File name="./SvnAuthBaton.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnWcNotify.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnDelegate.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
-    <File name="./SvnClient.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnOptRevision.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnClientCommitInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnClientCommitItem.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
@@ -24,6 +23,8 @@
     <File name="./SvnDirEnt.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnStringBuf.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnClientPropListItem.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnClientBase.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnClient.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="AprSharp" localcopy="True" />
