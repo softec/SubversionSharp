@@ -59,6 +59,15 @@ namespace Softec.AprSharp.Test
 		{
 			Assert.AreEqual("Fri, 18 Jun 2004 23:15:08 GMT",AprTime.Rfc822Date(1087600508667156),"#C01");
 		}
+
+		[Test]
+		public void AprTimeToDateTime()
+		{
+			long at = 1087600508667000;
+			DateTime dt = new DateTime(2004,6,18,23,15,08,667);
+			Assert.AreEqual(at,AprTime.FromDateTime(dt),"#C01");
+			Assert.AreEqual(dt,AprTime.ToDateTime(at),"#C02");
+		}
 		
 		[Test]
 		public void TimeExpPoolAlloc()

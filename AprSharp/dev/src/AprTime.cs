@@ -62,5 +62,17 @@ namespace Softec.AprSharp
                 throw new AprException(res);
             return(buf.ToString());
         }
+        
+        public static long FromDateTime(DateTime dt)
+        {
+        	if(dt.Ticks < 621355968000000000)
+        		throw new AprException("A DateTime prior to 1/1/1970 is not convertible to AprTime");
+        	return( (dt.Ticks / 10) - 62135596800000000 );
+        }
+
+        public static DateTime ToDateTime(long at)
+        {
+        	return new DateTime((at + 62135596800000000) * 10);
+        }
     }
 }
