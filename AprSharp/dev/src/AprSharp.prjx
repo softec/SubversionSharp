@@ -21,6 +21,7 @@
     <File name="./AprArray.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./AprInvalidOperationException.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./AprFile.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./IAprUnmanaged.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References />
   <DeploymentInformation target="" script="" strategy="File" />

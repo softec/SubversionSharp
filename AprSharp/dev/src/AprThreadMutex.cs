@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace Softec.AprSharp
 {
-    public struct AprThreadMutex
+    public struct AprThreadMutex : IAprUnmanaged
     {
         IntPtr mThreadMutex;
         
@@ -48,6 +48,11 @@ namespace Softec.AprSharp
         public void ClearPtr()
         {
             mThreadMutex = IntPtr.Zero;
+        }
+
+        public IntPtr ToIntPtr()
+        {
+            return mThreadMutex;
         }
 
         public static implicit operator IntPtr(AprThreadMutex threadMutex)

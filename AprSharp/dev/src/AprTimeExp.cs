@@ -15,7 +15,7 @@ using System.Diagnostics;
 
 namespace Softec.AprSharp
 {
-    public unsafe struct AprTimeExp
+    public unsafe struct AprTimeExp : IAprUnmanaged
     {
         private apr_time_exp_t *mTimeExp;
 
@@ -69,6 +69,11 @@ namespace Softec.AprSharp
         public void ClearPtr()
         {
             mTimeExp = null;
+        }
+
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mTimeExp);
         }
 
         public static implicit operator IntPtr(AprTimeExp timeExp)

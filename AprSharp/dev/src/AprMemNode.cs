@@ -59,6 +59,11 @@ namespace Softec.AprSharp
             mMemNode = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mMemNode);
+        }
+
         public static implicit operator IntPtr(AprMemNode memNode)
         {
             return new IntPtr(memNode.mMemNode);

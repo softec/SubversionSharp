@@ -15,7 +15,7 @@ using System.Collections;
 
 namespace Softec.AprSharp
 {
-    public struct AprHash : IEnumerable, ICollection
+    public struct AprHash : IEnumerable, ICollection, IAprUnmanaged
     {
         IntPtr mHash;
 
@@ -42,6 +42,11 @@ namespace Softec.AprSharp
         public void ClearPtr()
         {
             mHash = IntPtr.Zero;
+        }
+
+        public IntPtr ToIntPtr()
+        {
+            return mHash;
         }
 
         public static implicit operator IntPtr(AprHash hashIndex)

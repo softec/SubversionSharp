@@ -244,7 +244,7 @@ namespace Softec.AprSharp.Test
         }
         
         [Test]
-		public void CopyTo()
+		public void ArrayOfAprString()
 		{
 			AprPool p = AprPool.Create();
         	Assert.IsFalse(p.IsNull,"#F01");
@@ -273,8 +273,16 @@ namespace Softec.AprSharp.Test
         	Assert.AreEqual("4",arr[3].ToString(),"#F11");
         	Assert.AreEqual("5",arr[4].ToString(),"#F12");
         	
+        	a = AprArray.Make(p,arr);
+
+        	Assert.AreEqual("5",a.PopObject().ToString(),"#F13");
+        	Assert.AreEqual("4",a.PopObject().ToString(),"#F14");
+        	Assert.AreEqual("3",a.PopObject().ToString(),"#F15");
+        	Assert.AreEqual("2",a.PopObject().ToString(),"#F16");
+        	Assert.AreEqual("1",a.PopObject().ToString(),"#F17");
+        	        	
            	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#F13");
+        	Assert.IsTrue(p.IsNull,"#F18");
 		}
 		
         [Test]
@@ -307,8 +315,16 @@ namespace Softec.AprSharp.Test
         	Assert.AreEqual((IntPtr)1000000, arr[3],"#I11");
         	Assert.AreEqual((IntPtr)2147483647, arr[4],"#I12");
 
+        	a = AprArray.Make(p,arr);
+
+        	Assert.AreEqual((IntPtr)2147483647, a.PopObject(),"#G13");
+        	Assert.AreEqual((IntPtr)1000000, a.PopObject(),"#G14");
+        	Assert.AreEqual((IntPtr)1000, a.PopObject(),"#G15");
+        	Assert.AreEqual((IntPtr)1, a.PopObject(),"#G16");
+        	Assert.AreEqual((IntPtr)0, a.PopObject(),"#G17");
+        	
            	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#I13");
+        	Assert.IsTrue(p.IsNull,"#I18");
         }
         
         [Test]
@@ -341,8 +357,16 @@ namespace Softec.AprSharp.Test
         	Assert.IsFalse(arr[3],"#G11");
         	Assert.IsTrue(arr[4],"#G12");
 
+        	a = AprArray.Make(p,arr);
+        	
+        	Assert.IsTrue((bool)a.PopObject(),"#G13");
+        	Assert.IsFalse((bool)a.PopObject(),"#G14");
+        	Assert.IsTrue((bool)a.PopObject(),"#G15");
+        	Assert.IsFalse((bool)a.PopObject(),"#G16");
+        	Assert.IsTrue((bool)a.PopObject(),"#G17");
+        	
            	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#G13");
+        	Assert.IsTrue(p.IsNull,"#G18");
         }
 
         [Test]
@@ -375,8 +399,16 @@ namespace Softec.AprSharp.Test
         	Assert.AreEqual((byte)100, arr[3],"#I11");
         	Assert.AreEqual((byte)255, arr[4],"#I12");
 
+        	a = AprArray.Make(p,arr);
+        	
+        	Assert.AreEqual((byte)255, a.PopObject(),"#I13");
+        	Assert.AreEqual((byte)100, a.PopObject(),"#I14");
+        	Assert.AreEqual((byte)10, a.PopObject(),"#I15");
+        	Assert.AreEqual((byte)1, a.PopObject(),"#I16");
+        	Assert.AreEqual((byte)0, a.PopObject(),"#I17");
+        	
            	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#I13");
+        	Assert.IsTrue(p.IsNull,"#I18");
         }
     
         [Test]
@@ -409,8 +441,16 @@ namespace Softec.AprSharp.Test
         	Assert.AreEqual((sbyte)-100, arr[3],"#J11");
         	Assert.AreEqual((sbyte)127, arr[4],"#J12");
 
+        	a = AprArray.Make(p,arr);
+        	
+        	Assert.AreEqual((sbyte)127, a.PopObject(),"#J13");
+        	Assert.AreEqual((sbyte)-100, a.PopObject(),"#J14");
+        	Assert.AreEqual((sbyte)10, a.PopObject(),"#J15");
+        	Assert.AreEqual((sbyte)-1, a.PopObject(),"#J16");
+        	Assert.AreEqual((sbyte)0, a.PopObject(),"#J17");
+        	
            	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#J13");
+        	Assert.IsTrue(p.IsNull,"#J18");
         }
 
 
@@ -444,8 +484,16 @@ namespace Softec.AprSharp.Test
         	Assert.AreEqual((short)-1000, arr[3],"#K11");
         	Assert.AreEqual((short)32767, arr[4],"#K12");
 
+        	a = AprArray.Make(p,arr);
+        	
+        	Assert.AreEqual((short)32767, a.PopObject(),"#K13");
+        	Assert.AreEqual((short)-1000, a.PopObject(),"#K14");
+        	Assert.AreEqual((short)100, a.PopObject(),"#K15");
+        	Assert.AreEqual((short)-1, a.PopObject(),"#K16");
+        	Assert.AreEqual((short)0, a.PopObject(),"#K17");
+        	
            	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#K13");
+        	Assert.IsTrue(p.IsNull,"#K18");
         }
     
         [Test]
@@ -478,8 +526,16 @@ namespace Softec.AprSharp.Test
         	Assert.AreEqual((ushort)1000, arr[3],"#L11");
         	Assert.AreEqual((ushort)65535, arr[4],"#L12");
 
+        	a = AprArray.Make(p,arr);
+
+        	Assert.AreEqual((ushort)65535, a.PopObject(),"#L13");
+        	Assert.AreEqual((ushort)1000, a.PopObject(),"#L14");
+        	Assert.AreEqual((ushort)100, a.PopObject(),"#L15");
+        	Assert.AreEqual((ushort)1, a.PopObject(),"#L16");
+        	Assert.AreEqual((ushort)0, a.PopObject(),"#L17");
+        	
            	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#L13");
+        	Assert.IsTrue(p.IsNull,"#L18");
         }
 
         [Test]
@@ -512,8 +568,16 @@ namespace Softec.AprSharp.Test
         	Assert.AreEqual((int)-1000000, arr[3],"#M11");
         	Assert.AreEqual((int)2147483647, arr[4],"#M12");
 
+        	a = AprArray.Make(p,arr);
+
+        	Assert.AreEqual((int)2147483647, a.PopObject(),"#M13");
+        	Assert.AreEqual((int)-1000000, a.PopObject(),"#M14");
+        	Assert.AreEqual((int)10000, a.PopObject(),"#M15");
+        	Assert.AreEqual((int)-1, a.PopObject(),"#M16");
+        	Assert.AreEqual((int)0, a.PopObject(),"#M17");
+        	
            	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#M13");
+        	Assert.IsTrue(p.IsNull,"#M18");
         }
     
         [Test]
@@ -546,8 +610,16 @@ namespace Softec.AprSharp.Test
         	Assert.AreEqual((uint)1000000, arr[3],"#N11");
         	Assert.AreEqual((uint)4294967295, arr[4],"#N12");
 
+        	a = AprArray.Make(p,arr);
+
+        	Assert.AreEqual((uint)4294967295, a.PopObject(),"#N13");
+        	Assert.AreEqual((uint)1000000, a.PopObject(),"#N14");
+        	Assert.AreEqual((uint)10000, a.PopObject(),"#N15");
+        	Assert.AreEqual((uint)1, a.PopObject(),"#N16");
+        	Assert.AreEqual((uint)0, a.PopObject(),"#N17");
+        	
            	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#N13");
+        	Assert.IsTrue(p.IsNull,"#N18");
         }
         
         [Test]
@@ -580,8 +652,16 @@ namespace Softec.AprSharp.Test
         	Assert.AreEqual((long)-1000000000, arr[3],"#O11");
         	Assert.AreEqual((long)9223372036854775807, arr[4],"#O12");
 
+        	a = AprArray.Make(p,arr);
+        	
+        	Assert.AreEqual((long)9223372036854775807, a.PopObject(),"#O13");
+        	Assert.AreEqual((long)-1000000000, a.PopObject(),"#O14");
+        	Assert.AreEqual((long)100000, a.PopObject(),"#O15");
+        	Assert.AreEqual((long)-1, a.PopObject(),"#O16");
+        	Assert.AreEqual((long)0, a.PopObject(),"#O17");
+        	
            	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#O13");
+        	Assert.IsTrue(p.IsNull,"#O18");
         }
     
         [Test]
@@ -614,9 +694,18 @@ namespace Softec.AprSharp.Test
         	Assert.AreEqual((ulong)1000000000, arr[3],"#P11");
         	Assert.AreEqual((ulong)18446744073709551615, arr[4],"#P12");
 
+        	a = AprArray.Make(p,arr);
+        	
+        	Assert.AreEqual((ulong)18446744073709551615, a.PopObject(),"#P13");
+        	Assert.AreEqual((ulong)1000000000, a.PopObject(),"#P14");
+        	Assert.AreEqual((ulong)100000, a.PopObject(),"#P15");
+        	Assert.AreEqual((ulong)1, a.PopObject(),"#P16");
+        	Assert.AreEqual((ulong)0, a.PopObject(),"#P17");
+        	
            	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#P13");
+        	Assert.IsTrue(p.IsNull,"#P18");
         }
         
+
     }
 }

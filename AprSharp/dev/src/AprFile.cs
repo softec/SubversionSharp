@@ -13,7 +13,7 @@ using System.Diagnostics;
 
 namespace Softec.AprSharp
 {
-    public struct AprFile
+    public struct AprFile : IAprUnmanaged
     {
     	[Flags]
     	public enum Flags
@@ -84,6 +84,11 @@ namespace Softec.AprSharp
         public void ClearPtr()
         {
             mFile = IntPtr.Zero;
+        }
+
+        public IntPtr ToIntPtr()
+        {
+            return mFile;
         }
 
         public static implicit operator IntPtr(AprFile file)

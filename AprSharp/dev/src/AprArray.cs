@@ -16,7 +16,7 @@ using System.Collections;
 
 namespace Softec.AprSharp
 {
-    public unsafe struct AprArray : IEnumerable
+    public unsafe struct AprArray : IEnumerable, ICollection, IAprUnmanaged
     {
         private apr_array_header_t *mArray;
         private Type mEltsType;
@@ -80,6 +80,11 @@ namespace Softec.AprSharp
             mEltsType = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mArray);
+        }
+
         public static implicit operator IntPtr(AprArray array)
         {
             return new IntPtr(array.mArray);
@@ -140,6 +145,26 @@ namespace Softec.AprSharp
             return(ptr);
         }
 
+        public static AprArray Make(AprPool pool, ICollection list )
+        {
+        	if(list is AprArray)
+        		//return(((AprArray)list).Copy(pool));
+        		return (AprArray)list;
+        	else
+        	{
+	            IEnumerator it = list.GetEnumerator();
+	            it.MoveNext();
+	            
+	            AprArray a = Make(pool, list.Count, it.Current.GetType());
+	            it.Reset();
+	            
+	            while(it.MoveNext()) {
+	                a.Push(it.Current);
+	            }
+	            return(a);
+			}
+		}
+		
         public AprArray Copy(AprPool pool)
         {
     	    IntPtr ptr;
@@ -287,6 +312,45 @@ namespace Softec.AprSharp
 		{
             CheckPtr();
 		    Marshal.WriteIntPtr(Push(),ptr);
+        }
+        
+        public void Push(object o)
+        {
+        	if(mEltsType.IsPrimitive)
+        	{
+	        	if(mEltsType == typeof(bool))
+	        		Push((bool)o);
+	        	else if(mEltsType == typeof(byte))
+	        		Push((byte)o);
+	        	else if(mEltsType == typeof(sbyte))
+	        		Push((sbyte)o);
+	        	else if(mEltsType == typeof(short))
+	        		Push((short)o);
+	        	else if(mEltsType == typeof(ushort))
+	        		Push((ushort)o);
+	        	else if(mEltsType == typeof(int))
+	        		Push((int)o);
+	        	else if(mEltsType == typeof(uint))
+	        		Push((uint)o);
+	        	else if(mEltsType == typeof(long))
+	        		Push((long)o);
+	        	else if(mEltsType == typeof(ulong))
+	        		Push((ulong)o);
+	        	else
+	            	throw new AprInvalidOperationException("Array type not supported.");
+	    	}
+	    	else
+	    	{
+	        	if(mEltsType == typeof(IntPtr))
+	        		Push((IntPtr)o);
+	        	else
+	        	{
+	    			IAprUnmanaged obj = o as IAprUnmanaged;
+	    			if( o == null )
+	            		throw new AprInvalidOperationException("Array type should implement IAprUnmanaged.");
+	            	Push(obj.ToIntPtr());
+	            }
+	        }
         }
         
         public IntPtr Push()

@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 
 namespace Softec.AprSharp
 {
-    public struct AprString
+    public struct AprString : IAprUnmanaged
     {
         IntPtr mString;
 
@@ -73,6 +73,11 @@ namespace Softec.AprSharp
         public void ClearPtr()
         {
             mString = IntPtr.Zero;
+        }
+
+        public IntPtr ToIntPtr()
+        {
+            return mString;
         }
 
         public static implicit operator IntPtr(AprString str)

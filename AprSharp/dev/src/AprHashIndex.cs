@@ -15,7 +15,7 @@ using System.Collections;
 
 namespace Softec.AprSharp
 {
-    public struct AprHashIndex
+    public struct AprHashIndex : IAprUnmanaged
     {
         IntPtr mHashIndex;
 
@@ -42,6 +42,11 @@ namespace Softec.AprSharp
         public void ClearPtr()
         {
             mHashIndex = IntPtr.Zero;
+        }
+
+        public IntPtr ToIntPtr()
+        {
+            return mHashIndex;
         }
 
         public static implicit operator IntPtr(AprHashIndex hashIndex)

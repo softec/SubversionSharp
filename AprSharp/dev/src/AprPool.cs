@@ -14,7 +14,7 @@ using System.Diagnostics;
 namespace Softec.AprSharp
 {
 
-    public struct AprPool
+    public struct AprPool : IAprUnmanaged
     {
         IntPtr mPool;
 
@@ -41,6 +41,11 @@ namespace Softec.AprSharp
         public void ClearPtr()
         {
             mPool = IntPtr.Zero;
+        }
+
+        public IntPtr ToIntPtr()
+        {
+            return mPool;
         }
 
         public static implicit operator IntPtr(AprPool pool)

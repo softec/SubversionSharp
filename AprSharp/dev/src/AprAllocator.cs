@@ -15,7 +15,7 @@ namespace Softec.AprSharp
 {
 
 	///<summary>Embeds an opaque apr_allocator</summary>
-    public struct AprAllocator
+    public struct AprAllocator : IAprUnmanaged
     {
         private IntPtr mAllocator;
 
@@ -42,6 +42,11 @@ namespace Softec.AprSharp
         public void ClearPtr()
         {
             mAllocator = IntPtr.Zero;
+        }
+
+        public IntPtr ToIntPtr()
+        {
+            return mAllocator;
         }
 
         public static implicit operator IntPtr(AprAllocator allocator)
