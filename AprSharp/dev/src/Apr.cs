@@ -18,7 +18,7 @@ namespace Softec.AprSharp
 
 	///<summary>Embeds all APR external calls</summary>
 	///<remark>Take care to call apr_initialize</remark>
-    public class Apr
+    public sealed class Apr
     {
         // no instance constructor !
         private Apr() { }
