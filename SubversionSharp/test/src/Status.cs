@@ -159,10 +159,6 @@ namespace Softec.SubversionSharp.Test {
       			|| ((status.TextStatus == SvnWcStatus.Kind.None)
           		    && (status.ReposTextStatus == SvnWcStatus.Kind.None)))
           	{
-          		Console.WriteLine("{0} {1} {2} {3}",status.IsNull 
-				, (oQuiet && status.Entry.IsNull)
-      			, (status.TextStatus == SvnWcStatus.Kind.None)
-          		, (status.ReposTextStatus == SvnWcStatus.Kind.None));	
 				return;
 			}
 				

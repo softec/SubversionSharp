@@ -6,6 +6,7 @@
     <File name="./CmdBase.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./Add.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./Status.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./Update.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="AprSharp" localcopy="True" />

@@ -285,9 +285,9 @@ namespace Softec.SubversionSharp.Test {
 													(mInExternal) ? "external at " : "",
 													revNum);
 							else
-                      			Console.Write("{0}t revision {1}.",
-												(mInExternal) ? "External a" : "A",
-												revNum);
+                      			Console.WriteLine("{0}t revision {1}.",
+													(mInExternal) ? "External a" : "A",
+													revNum);
 						}
 					}
 					else  /* no revision */
