@@ -38,20 +38,30 @@ namespace Softec.SubversionSharp
         }
 
         public SvnException(SvnError error) 
-               : base ( error.Message )
+               : base ( error.Message.ToString() )
         {
             HResult = unchecked (Result + error.AprErr);
+            error.Clear();
         }
         
         public SvnException(SvnError error, Exception innerException) 
-               : base ( error.Message, innerException )
+               : base ( error.Message.ToString(), innerException )
         {
             HResult = unchecked (Result + error.AprErr);
+            error.Clear();
         }
 
         public SvnException(SerializationInfo info, StreamingContext context)
                : base (info, context)
         {
+        }
+        
+        public virtual int AprErr
+        {
+        	get
+        	{
+        		return( unchecked(HResult - Result) );
+        	}
         }
     }
 }

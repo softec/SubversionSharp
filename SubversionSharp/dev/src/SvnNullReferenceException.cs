@@ -52,5 +52,13 @@ namespace Softec.SubversionSharp
                : base (info, context)
         {
         }
+
+        public override int AprErr
+        {
+        	get
+        	{
+        		return( unchecked(HResult - Result) );
+        	}
+        }
     }
 }

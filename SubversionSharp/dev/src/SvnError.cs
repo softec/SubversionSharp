@@ -23,10 +23,10 @@ namespace Softec.SubversionSharp
         private struct svn_error_t
         {
             public int apr_err;
-            public SByte *message;
+            public IntPtr message;
             public svn_error_t *child;
             public IntPtr pool;
-            public SByte *file;
+            public IntPtr file;
             public int line;
         }
 
@@ -40,6 +40,8 @@ namespace Softec.SubversionSharp
         {
             mError = ptr.ToPointer();
         }
+        
+        public static SvnError NoError;
         
         public bool IsNoError
         {
@@ -76,6 +78,19 @@ namespace Softec.SubversionSharp
         }
         #endregion
         
+        #region Wrapper methods
+        public static SvnError Create(int aprErr, SvnError err, string str)
+        {
+            return(new SvnError(Svn.svn_error_create(aprErr, new IntPtr(err.mError), str)));
+        }
+
+        public void Clear()
+        {
+        	CheckPtr();
+            Svn.svn_error_clear(new IntPtr(mError));
+        }
+        #endregion
+
         #region Wrapper properties
         public int AprErr
         {
@@ -86,13 +101,13 @@ namespace Softec.SubversionSharp
             }            
         }        
 
-        public string Message
+        public AprString Message
         {
             get
             {
                 CheckPtr();
-                return(new String(mError->message));
-            }            
+                return(mError->message);
+            }
         }        
 
         public SvnError Child
@@ -113,12 +128,12 @@ namespace Softec.SubversionSharp
             }            
         }        
 
-        public string File
+        public AprString File
         {
             get
             {
                 CheckPtr();
-                return(new String(mError->file));
+                return(mError->file);
             }            
         }        
 
