@@ -1,12 +1,28 @@
+//  SubversionSharp, a wrapper library around the Subversion client API
+//  Copyright (C) 2004 SOFTEC sa.
 //
-// Softec
+//  This library is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU Lesser General Public
+//  License as published by the Free Software Foundation; either
+//  version 2.1 of the License, or (at your option) any later version.
 //
-// Contact: Support@softec.st
+//  This library is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+//  Lesser General Public License for more details.
 //
-// Designed by Denis Gervalle and Olivier Desaive
-// Written by Denis Gervalle
+//  You should have received a copy of the GNU Lesser General Public
+//  License along with this library; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 //
-// Copyright 2004 by SOFTEC. All rights reserved.
+//  Sources, support options and lastest version of the complete library
+//  is available from:
+//		http://www.softec.st/SubversionSharp
+//		Support@softec.st
+//
+//  Initial authors : 
+//		Denis Gervalle
+//		Olivier Desaive
 //
 using System;
 using System.Diagnostics;
