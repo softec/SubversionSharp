@@ -133,7 +133,7 @@ namespace Softec.AprSharp
         {
             CheckPtr();
             Debug.WriteLine(String.Format("apr_pool_is_ancestor({0:X},{1:X})",this,pool));
-            return((Apr.apr_pool_is_ancestor(mPool,pool) == 0) ? false : true);
+            return(!(Apr.apr_pool_is_ancestor(mPool,pool) == 0));
         }
         #endregion
 

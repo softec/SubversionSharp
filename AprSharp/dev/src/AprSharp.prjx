@@ -16,10 +16,11 @@
     <File name="./AprTime.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./AprTimeExp.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./AprString.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./AprHash.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./AprHashIndex.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./AprArray.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
-  <References>
-    <Reference type="Project" refto="Softec" localcopy="True" />
-  </References>
+  <References />
   <DeploymentInformation target="" script="" strategy="File" />
   <Configuration runwithwarnings="False" name="Debug">
     <CodeGeneration runtime="MsNet" compiler="Csc" warninglevel="4" nowarn="" includedebuginformation="True" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
@@ -33,7 +34,7 @@
       <Output directory="../bin/Debug" assembly="AprSharp" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
     </Configuration>
     <Configuration runwithwarnings="False" name="Release">
-      <CodeGeneration runtime="MsNet" compiler="Csc" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
+      <CodeGeneration runtime="MsNet" compiler="Csc" warninglevel="4" nowarn="" includedebuginformation="False" optimize="True" unsafecodeallowed="True" generateoverflowchecks="True" mainclass="" target="Library" definesymbols="" generatexmldocumentation="False" win32Icon="" />
       <Execution commandlineparameters="" consolepause="False" />
       <Output directory="../bin/Release" assembly="AprSharp" executeScript="" executeBeforeBuild="" executeAfterBuild="" />
     </Configuration>

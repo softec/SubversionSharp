@@ -35,7 +35,14 @@ namespace Softec.AprSharp
             //FIXME: Shoud shedule a call to apr_terminate 
             //       at process exit        
         }
-                
+        
+        public static void Terminate()
+        {
+            Debug.Write("apr_terminate...");
+        	apr_terminate();
+            Debug.WriteLine("Done");
+        }
+         
         #region Initialize / Terminate
 	    [DllImport("apr-0")]
         private static extern int apr_initialize( );
@@ -65,7 +72,7 @@ namespace Softec.AprSharp
 	    [DllImport("apr-0")] static extern
         internal void apr_allocator_destroy(IntPtr allocator);
         
-        [DllImport("apr-0")] static extern
+        [DllImport("apr-0"), CLSCompliant(false)] static extern
         internal IntPtr apr_allocator_alloc(IntPtr allocator, 
                                             uint size);
         
@@ -93,7 +100,7 @@ namespace Softec.AprSharp
         #endregion
 
         #region ThreadMutex
-	    [DllImport("apr-0")] static extern
+	    [DllImport("apr-0"), CLSCompliant(false)] static extern
         internal int apr_thread_mutex_create(out IntPtr mutext,
                                              uint flags,
                                              IntPtr pool);
@@ -128,10 +135,10 @@ namespace Softec.AprSharp
 	    [DllImport("apr-0")] static extern
         internal void apr_pool_clear(IntPtr pool);
         
-	    [DllImport("apr-0")] static extern
+	    [DllImport("apr-0"), CLSCompliant(false)] static extern
         internal IntPtr apr_palloc(IntPtr pool, uint size);
         
-	    [DllImport("apr-0")] static extern
+	    [DllImport("apr-0"), CLSCompliant(false)] static extern
         internal IntPtr apr_pcalloc(IntPtr pool, uint size);
         
 	    [DllImport("apr-0")] static extern
@@ -219,7 +226,7 @@ namespace Softec.AprSharp
         [DllImport("apr-0")] static extern
         internal int apr_time_exp_tz(IntPtr result, long input, int offset);
         
-        [DllImport("apr-0")] static extern
+        [DllImport("apr-0"), CLSCompliant(false)] static extern
         internal int apr_strftime(StringBuilder s, out uint retsize,
                                   uint maxsize, string Format, IntPtr input);
         #endregion
@@ -230,9 +237,9 @@ namespace Softec.AprSharp
         [DllImport("apr-0", CharSet=CharSet.Ansi)] static extern
         internal IntPtr apr_pstrdup(IntPtr pool, string str);
                 
-        [DllImport("apr-0")] static extern
+        [DllImport("apr-0"), CLSCompliant(false)] static extern
         internal IntPtr apr_pstrndup(IntPtr pool, IntPtr str, uint size);
-        [DllImport("apr-0", CharSet=CharSet.Ansi)] static extern
+        [DllImport("apr-0", CharSet=CharSet.Ansi), CLSCompliant(false)] static extern
         internal IntPtr apr_pstrndup(IntPtr pool, string str, uint size);
 /*              
         [DllImport("apr-0")] static extern
@@ -296,6 +303,72 @@ namespace Softec.AprSharp
         [DllImport("apr-0")] static extern
         internal char * 	apr_strfsize (apr_off_t size, char *buf)
 */
+        #endregion
+
+        #region AprHash
+        [DllImport("apr-0")] static extern
+        internal IntPtr apr_hash_make(IntPtr pool);
+
+		[DllImport("apr-0")] static extern
+        internal IntPtr apr_hash_copy (IntPtr pool, IntPtr h);
+
+		[DllImport("apr-0")] static extern
+        internal void apr_hash_set (IntPtr ht, IntPtr key, int klen, IntPtr val);
+
+		[DllImport("apr-0")] static extern
+        internal IntPtr apr_hash_get (IntPtr ht, IntPtr key, int klen);
+
+		[DllImport("apr-0"), CLSCompliant(false)] static extern
+        internal uint apr_hash_count(IntPtr ht);
+
+		[DllImport("apr-0")] static extern
+        internal IntPtr apr_hash_overlay (IntPtr p, IntPtr overlayh, IntPtr baseh);
+
+		[DllImport("apr-0")] static extern
+        internal IntPtr apr_hash_pool_get(IntPtr thehash);
+
+		[DllImport("apr-0")] static extern
+        internal IntPtr apr_hash_first (IntPtr p, IntPtr ht);
+
+		[DllImport("apr-0")] static extern
+        internal IntPtr apr_hash_next(IntPtr hi);
+
+		[DllImport("apr-0")] static extern
+        internal void apr_hash_this(IntPtr hi, out IntPtr key, out int klen, out IntPtr val);
+/*
+		[DllImport("apr-0")] static extern
+        internal IntPtr apr_hash_merge (IntPtr p, IntPtr h1, IntPtr h2, void *(*merger)(apr_pool_t *p, const void *key, apr_ssize_t klen, const void *h1_val, const void *h2_val, const void *data), IntPtr data);
+
+*/
+        #endregion
+        
+        #region AprHash
+        [DllImport("apr-0")] static extern
+        internal IntPtr apr_array_make(IntPtr pool, int elts, int elt_size);
+
+        [DllImport("apr-0")] static extern
+        internal IntPtr apr_array_copy(IntPtr pool, IntPtr arr);
+        
+        [DllImport("apr-0")] static extern
+        internal IntPtr apr_array_copy_hdr(IntPtr pool, IntPtr arr);
+
+		[DllImport("apr-0")] static extern
+        internal IntPtr apr_array_append (IntPtr pool, IntPtr first, IntPtr second);
+
+		[DllImport("apr-0")] static extern
+        internal void apr_array_cat (IntPtr dst, IntPtr src);
+
+		[DllImport("apr-0", CharSet=CharSet.Ansi)] static extern
+        internal IntPtr apr_array_pstrcat (IntPtr pool, IntPtr arr, char sep);
+
+        [DllImport("apr-0")] static extern
+        internal IntPtr apr_array_push(IntPtr arr);
+
+        [DllImport("apr-0")] static extern
+        internal IntPtr apr_array_pop(IntPtr arr);
+
+        [DllImport("apr-0")] static extern
+        internal bool apr_is_empty_array(IntPtr arr);
         #endregion
     }
 }   

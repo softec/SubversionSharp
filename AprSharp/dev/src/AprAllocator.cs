@@ -83,7 +83,7 @@ namespace Softec.AprSharp
         
         public AprMemNode Alloc(int size)
         {
-            return(Alloc((uint)size));
+            return(Alloc(unchecked((uint)size)));
         }
 
         [CLSCompliant(false)]
