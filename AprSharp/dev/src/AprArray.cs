@@ -66,6 +66,14 @@ namespace Softec.AprSharp
                 throw new AprNullReferenceException(); 
         }
 
+        private void CheckPtr(Type type)
+        {
+            if( mArray == null )
+                throw new AprNullReferenceException();
+            if( mEltsType != null && mEltsType != type )
+            	throw new AprInvalidOperationException(String.Format("Types mismatch between array ({0}) and value {1}.",mEltsType.Name,type.Name));
+        }
+        
         public void ClearPtr()
         {
             mArray = null;
@@ -102,7 +110,7 @@ namespace Softec.AprSharp
 	            if( value.IsPrimitive )
 	            	mEltsType = value;
 	            else {
-	            	if( value.GetConstructor(new Type[] {typeof(IntPtr)}) == null )
+	            	if( value != typeof(IntPtr) && value.GetConstructor(new Type[] {typeof(IntPtr)}) == null )
 	            		throw new AprInvalidOperationException("Type is not primitive and cannot be constructed from an IntPtr.");
 	            	mEltsType = value;
 	            }
@@ -188,7 +196,7 @@ namespace Softec.AprSharp
             
             CheckPtr();
             if (mEltsType != null && array.mEltsType != null && mEltsType != array.mEltsType)
-            	throw new AprInvalidOperationException("Array type mismatch.");
+            	throw new AprInvalidOperationException("Array types mismatch.");
             
             if(mEltsType == null && array.mEltsType != null)
             	mEltsType = array.mEltsType;
@@ -219,28 +227,62 @@ namespace Softec.AprSharp
             return(ptr);
         }        
 
+        public void Push(bool o)
+        {
+            CheckPtr(typeof(bool));
+        	Marshal.WriteByte(Push(),(byte)((o) ? 1 : 0));
+        }
+
         public void Push(byte o)
         {
-            CheckPtr();
+            CheckPtr(typeof(byte));
         	Marshal.WriteByte(Push(),o);
         }
 
+		[CLSCompliant(false)]
+        public void Push(sbyte o)
+        {
+            CheckPtr(typeof(sbyte));
+        	Marshal.WriteByte(Push(),unchecked((byte)o));
+        }
+        
         public void Push(short o)
         {
-            CheckPtr();
-	        Marshal.WriteInt16(Push(),o);
+            CheckPtr(typeof(short));
+        	Marshal.WriteInt16(Push(),o);
+        }
+
+		[CLSCompliant(false)]
+        public void Push(ushort o)
+        {
+            CheckPtr(typeof(ushort));
+	        Marshal.WriteInt16(Push(),unchecked((short)o));
 	    }
 	    
         public void Push(int o)
         {
-            CheckPtr();
+            CheckPtr(typeof(int));
 	        Marshal.WriteInt32(Push(),o);
+	    }
+
+		[CLSCompliant(false)]
+        public void Push(uint o)
+        {
+            CheckPtr(typeof(uint));
+	        Marshal.WriteInt32(Push(),unchecked((int)o));
 	    }
 
         public void Push(long o)
         {
-            CheckPtr();
+            CheckPtr(typeof(long));
 	    	Marshal.WriteInt64(Push(),o);
+		}
+		
+		[CLSCompliant(false)]
+        public void Push(ulong o)
+        {
+            CheckPtr(typeof(ulong));
+	    	Marshal.WriteInt64(Push(),unchecked((long)o));
 		}
 		
 		public void Push(IntPtr ptr)
@@ -288,7 +330,23 @@ namespace Softec.AprSharp
 	           		default:
             			throw new AprInvalidOperationException("Invalid element size.");
 		        }
-		        return(Convert.ChangeType(val,mEltsType));
+		        if(mEltsType == val.GetType())
+		        	return(val);
+		        else if (mEltsType == typeof(bool))
+		        	return(Convert.ChangeType(val,typeof(bool)));
+		        else if (mEltsType == typeof(sbyte))
+		        	return(unchecked((sbyte)((byte)val)));
+		        else if (mEltsType == typeof(ushort))
+		        	return(unchecked((ushort)((short)val)));
+		        else if (mEltsType == typeof(uint))
+		        	return(unchecked((uint)((int)val)));
+		        else if (mEltsType == typeof(ulong))
+		        	return(unchecked((ulong)((long)val)));
+		        return(val);
+			}
+			if(mEltsType == typeof(IntPtr))
+			{
+	            return(Marshal.ReadIntPtr(Pop()));
 			}
 			
         	ConstructorInfo ctor = mEltsType.GetConstructor(new Type[] {typeof(IntPtr)});
@@ -460,7 +518,24 @@ namespace Softec.AprSharp
 		           		default:
 	            			throw new AprInvalidOperationException("Invalid element size.");
 			        }
-			        return(Convert.ChangeType(val,mArray.ElementType));
+			        
+			        if(mArray.ElementType == val.GetType())
+			        	return(val);
+			        else if (mArray.ElementType == typeof(bool))
+			        	return(unchecked(Convert.ChangeType(val,typeof(bool))));
+			        else if (mArray.ElementType == typeof(sbyte))
+			        	return(unchecked((sbyte)((byte)val)));
+			        else if (mArray.ElementType == typeof(ushort))
+			        	return(unchecked((ushort)((short)val)));
+			        else if (mArray.ElementType == typeof(uint))
+			        	return(unchecked((uint)((int)val)));
+			        else if (mArray.ElementType == typeof(ulong))
+			        	return(unchecked((ulong)((long)val)));
+			        return(val);
+				}
+				if(mArray.ElementType == typeof(IntPtr))
+				{
+		            return(Marshal.ReadIntPtr(mArray.Data,mIndex*mArray.ElementSize));
 				}
 				
 	        	ConstructorInfo ctor = mArray.ElementType.GetConstructor(new Type[] {typeof(IntPtr)});
