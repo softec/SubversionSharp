@@ -241,68 +241,6 @@ namespace Softec.AprSharp
         internal IntPtr apr_pstrndup(IntPtr pool, IntPtr str, uint size);
         [DllImport("apr-0", CharSet=CharSet.Ansi)] /* CLSCompliant(false) */ static extern
         internal IntPtr apr_pstrndup(IntPtr pool, string str, uint size);
-/*              
-        [DllImport("apr-0")] static extern
-        internal IntPtr apr_pmemdup(IntPtr pool, IntPtr mem, uint size);
-
-        [DllImport("apr-0")] static extern
-        internal IntPtr apr_pstrmemdup(IntPtr pool, IntPtr str, uint size);
-        [DllImport("apr-0", CharSet=CharSet.Ansi)] static extern
-        internal IntPtr apr_pstrmemdup(IntPtr pool, string str, uint size);
-
-        [DllImport("apr-0")] static extern
-        internal int apr_strnatcmp(IntPtr stra, IntPtr strb);
-        [DllImport("apr-0")] static extern
-        internal int apr_strnatcmp(IntPtr stra, string strb);
-        
-        [DllImport("apr-0")] static extern
-        internal int apr_strnatcasecmp(IntPtr stra, IntPtr strb);
-        [DllImport("apr-0")] static extern
-        internal int apr_strnatcasecmp(IntPtr stra, string strb);
-                
-
-        [DllImport("apr-0")] static extern
-        internal char * 	apr_pstrcat (apr_pool_t *p,...)
-                
-        [DllImport("apr-0")] static extern
-        internal char * 	apr_pstrcatv (apr_pool_t *p, const struct iovec *vec, apr_size_t nvec, apr_size_t *nbytes)
-                
-        [DllImport("apr-0")] static extern
-        internal char * 	apr_pvsprintf (apr_pool_t *p, const char *fmt, va_list ap)
-                
-        [DllImport("apr-0")] static extern
-        internal char * 	apr_psprintf (apr_pool_t *p, const char *fmt,...)
-                
-        [DllImport("apr-0")] static extern
-        internal char * 	apr_cpystrn (char *dst, const char *src, apr_size_t dst_size)
-                
-        [DllImport("apr-0")] static extern
-        internal char * 	apr_collapse_spaces (char *dest, const char *src)
-                
-        [DllImport("apr-0")] static extern
-        internal apr_status_t 	apr_tokenize_to_argv (const char *arg_str, char ***argv_out, apr_pool_t *token_context)
-                
-        [DllImport("apr-0")] static extern
-        internal char * 	apr_strtok (char *str, const char *sep, char **last)
-                
-        [DllImport("apr-0")] static extern
-        internal char * 	apr_itoa (apr_pool_t *p, int n)
-                
-        [DllImport("apr-0")] static extern
-        internal char * 	apr_ltoa (apr_pool_t *p, long n)
-                
-        [DllImport("apr-0")] static extern
-        internal char * 	apr_off_t_toa (apr_pool_t *p, apr_off_t n)
-                
-        [DllImport("apr-0")] static extern
-        internal apr_int64_t 	apr_strtoi64 (const char *buf, char **end, int base)
-                
-        [DllImport("apr-0")] static extern
-        internal apr_int64_t 	apr_atoi64 (const char *buf)
-                
-        [DllImport("apr-0")] static extern
-        internal char * 	apr_strfsize (apr_off_t size, char *buf)
-*/
         #endregion
 
         #region AprHash
@@ -335,11 +273,6 @@ namespace Softec.AprSharp
 
 		[DllImport("apr-0")] static extern
         internal void apr_hash_this(IntPtr hi, out IntPtr key, out int klen, out IntPtr val);
-/*
-		[DllImport("apr-0")] static extern
-        internal IntPtr apr_hash_merge (IntPtr p, IntPtr h1, IntPtr h2, void *(*merger)(apr_pool_t *p, const void *key, apr_ssize_t klen, const void *h1_val, const void *h2_val, const void *data), IntPtr data);
-
-*/
         #endregion
         
         #region AprHash
