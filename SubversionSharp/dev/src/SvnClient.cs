@@ -89,7 +89,7 @@ namespace Softec.SubversionSharp
     		try {
     			return(new SvnUrl(str, mPool));
     		}
-    		catch (SvnException e) {}
+    		catch (SvnException) {}
     		return(new SvnPath(str, mPool));
     	}
     	
@@ -109,7 +109,7 @@ namespace Softec.SubversionSharp
     			new Uri(it.Current.ToString());
     			return(typeof(SvnUrl));
     		}
-    		catch (SvnException e) {}
+    		catch (SvnException) {}
     		
     		return typeof(SvnPath);
     	}
