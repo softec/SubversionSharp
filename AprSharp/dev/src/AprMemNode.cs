@@ -37,7 +37,7 @@ namespace Softec.AprSharp
 
         public AprMemNode(IntPtr ptr)
         {
-            mMemNode = ptr.ToPointer();
+            mMemNode = (apr_memnode_t *)ptr.ToPointer();
         }
         
         public bool IsNull
@@ -112,7 +112,7 @@ namespace Softec.AprSharp
             set
             {
                 CheckPtr();
-                mMemNode->selfref=value.ToPointer(); 
+                mMemNode->selfref=(apr_memnode_t **)value.ToPointer(); 
             }
         }
 
@@ -164,7 +164,7 @@ namespace Softec.AprSharp
             set
             {
                 CheckPtr();
-                mMemNode->first_avail=value.ToPointer();
+                mMemNode->first_avail=(byte *)value.ToPointer();
             }
         }
 

@@ -37,7 +37,7 @@ namespace Softec.AprSharp
 
         public AprArray(IntPtr ptr)
         {
-            mArray = ptr.ToPointer();
+            mArray = (apr_array_header_t *)ptr.ToPointer();
         }
         
         public bool IsNull

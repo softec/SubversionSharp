@@ -44,12 +44,12 @@ namespace Softec.AprSharp
         public AprTimeExp(out GCHandle handle)
         {
             handle = GCHandle.Alloc(new apr_time_exp_t(),GCHandleType.Pinned);
-            mTimeExp = handle.AddrOfPinnedObject().ToPointer();
+            mTimeExp = (apr_time_exp_t *)handle.AddrOfPinnedObject().ToPointer();
         }
 
         public AprTimeExp(IntPtr ptr)
         {
-            mTimeExp = ptr.ToPointer();
+            mTimeExp = (apr_time_exp_t *)ptr.ToPointer();
         }
         
         public bool IsNull
