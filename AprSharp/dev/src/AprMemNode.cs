@@ -35,7 +35,7 @@ namespace Softec.AprSharp
     {
         private apr_memnode_t *mMemNode;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct apr_memnode_t
         {
             public apr_memnode_t *next;

@@ -36,7 +36,7 @@ namespace Softec.AprSharp
     {
         private apr_time_exp_t *mTimeExp;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct apr_time_exp_t
         {
             public int tm_usec;

@@ -38,7 +38,7 @@ namespace Softec.AprSharp
         private apr_array_header_t *mArray;
         private Type mEltsType;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct apr_array_header_t
         {
     		public IntPtr pool;
