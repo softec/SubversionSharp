@@ -136,6 +136,14 @@ namespace Softec.AprSharp
         {
             return(new AprString(str, size, pool));
         }
+        
+        public unsafe int Length {
+        	get {
+        		byte *p = mString.ToPointer();
+        		while(*p++ != 0);
+        		return(unchecked((int)((uint)p-(uint)mString.ToPointer()-1)));
+			}
+        } 
         #endregion
     }
 }

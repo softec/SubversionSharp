@@ -53,5 +53,17 @@ namespace Softec.AprSharp.Test
            	p.Destroy();
         	Assert.IsTrue(p.IsNull,"#A11");
 		}
+
+		[Test]
+		public void Length()
+		{
+			AprPool p = AprPool.Create();
+        	Assert.IsFalse(p.IsNull,"#A01");
+		
+        	Assert.AreEqual("".Length,new AprString("",p).Length,"#A02");
+        	Assert.AreEqual("A".Length,new AprString("A",p).Length,"#A03");
+        	Assert.AreEqual("AB".Length,new AprString("AB",p).Length,"#A04");
+        	Assert.AreEqual("ABC".Length,new AprString("ABC",p).Length,"#A05");
+		}	
 	}
 }
