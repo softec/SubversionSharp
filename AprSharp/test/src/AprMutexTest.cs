@@ -62,7 +62,7 @@ namespace Softec.AprSharp.Test
 		}
 
 		[Test]
- 		public void LockTryLockUnlock()
+ 		public void TryLockUnlock()
 		{
 			AprPool p = AprPool.Create();
         	Assert.IsFalse(p.IsNull,"#B01");
@@ -76,16 +76,31 @@ namespace Softec.AprSharp.Test
         	m.Unlock();
         	Assert.IsTrue(m.TryLock(),"#B06");
         	m.Unlock();
+        
+        	p.Destroy();
+        	Assert.IsTrue(p.IsNull,"#B07");
+		}        	
+        	
+		[Test]
+ 		public void LockUnlock()
+		{
+			AprPool p = AprPool.Create();
+        	Assert.IsFalse(p.IsNull,"#B01");
+		
+        	AprThreadMutex m = AprThreadMutex.Create(p);
+        	Assert.IsFalse(m.IsNull,"#B02");
+        	Assert.AreEqual(((IntPtr)p).ToInt32(),((IntPtr)(m.Pool)).ToInt32(),"#B03");
+
         	m.Lock();
-        	Assert.IsFalse(m.TryLock(),"#B07");
+        	Assert.IsFalse(m.TryLock(),"#B04");
         	m.Unlock();
-        	Assert.IsTrue(m.TryLock(),"#B08");
+        	Assert.IsTrue(m.TryLock(),"#B05");
         	m.Unlock();
         
         	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#A06");
-		}        	
-        	
+        	Assert.IsTrue(p.IsNull,"#B06");
+		}        	        	
+
 		[Test]
  		public void AllocatorMutex()
 		{
