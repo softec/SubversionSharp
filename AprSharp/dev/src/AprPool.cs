@@ -48,6 +48,11 @@ namespace Softec.AprSharp
             return mPool;
         }
 
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(AprPool pool)
         {
             return pool.mPool;

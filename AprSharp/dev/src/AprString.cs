@@ -80,6 +80,11 @@ namespace Softec.AprSharp
             return mString;
         }
 
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(AprString str)
         {
             return str.mString;

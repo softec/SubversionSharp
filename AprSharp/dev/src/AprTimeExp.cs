@@ -76,6 +76,11 @@ namespace Softec.AprSharp
             return new IntPtr(mTimeExp);
         }
 
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(AprTimeExp timeExp)
         {
             return new IntPtr(timeExp.mTimeExp);

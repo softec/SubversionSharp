@@ -64,6 +64,11 @@ namespace Softec.AprSharp
             return new IntPtr(mMemNode);
         }
 
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(AprMemNode memNode)
         {
             return new IntPtr(memNode.mMemNode);

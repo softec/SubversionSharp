@@ -23,5 +23,7 @@ namespace Softec.AprSharp
         }
 
         void ClearPtr();
+        
+		bool ReferenceEquals(IAprUnmanaged obj);		
 	} 
 }

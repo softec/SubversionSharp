@@ -55,6 +55,11 @@ namespace Softec.AprSharp
             return mThreadMutex;
         }
 
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(AprThreadMutex threadMutex)
         {
             return threadMutex.mThreadMutex;

@@ -91,6 +91,11 @@ namespace Softec.AprSharp
             return mFile;
         }
 
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(AprFile file)
         {
             return file.mFile;

@@ -261,11 +261,25 @@ namespace Softec.AprSharp.Test
         	AprString[] arr = new AprString[5]; 
         	a.CopyTo(arr,0);
         	
+        	AprArray b = AprArray.CastMake(p,a);
+        	Assert.AreEqual(a.ToIntPtr(),b.ToIntPtr(),"#F19");
+        	
+			AprPool sp = AprPool.Create(p);
+        	Assert.IsFalse(sp.IsNull,"#F01");
+        	b = AprArray.CastMake(sp,a);
+        	Assert.IsFalse(a.ToIntPtr() == b.ToIntPtr(),"#F20");
+
         	Assert.AreEqual("5",a.PopObject().ToString(),"#F03");
         	Assert.AreEqual("4",a.PopObject().ToString(),"#F04");
         	Assert.AreEqual("3",a.PopObject().ToString(),"#F05");
         	Assert.AreEqual("2",a.PopObject().ToString(),"#F06");
         	Assert.AreEqual("1",a.PopObject().ToString(),"#F07");
+        	
+        	Assert.AreEqual("5",b.PopObject().ToString(),"#F21");
+        	Assert.AreEqual("4",b.PopObject().ToString(),"#F22");
+        	Assert.AreEqual("3",b.PopObject().ToString(),"#F23");
+        	Assert.AreEqual("2",b.PopObject().ToString(),"#F24");
+        	Assert.AreEqual("1",b.PopObject().ToString(),"#F25");
         	
         	Assert.AreEqual("1",arr[0].ToString(),"#F08");
         	Assert.AreEqual("2",arr[1].ToString(),"#F09");

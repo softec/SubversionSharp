@@ -85,6 +85,11 @@ namespace Softec.AprSharp
             return new IntPtr(mArray);
         }
 
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(AprArray array)
         {
             return new IntPtr(array.mArray);
@@ -148,8 +153,7 @@ namespace Softec.AprSharp
         public static AprArray Make(AprPool pool, ICollection list )
         {
         	if(list is AprArray)
-        		//return(((AprArray)list).Copy(pool));
-        		return (AprArray)list;
+        		return(((AprArray)list).Copy(pool));
         	else
         	{
 	            IEnumerator it = list.GetEnumerator();
@@ -164,7 +168,17 @@ namespace Softec.AprSharp
 	            return(a);
 			}
 		}
-		
+
+        public static AprArray CastMake(AprPool pool, ICollection list )
+        {
+        	if(list is AprArray)
+        	{
+        		if( ((AprArray)list).Pool.ReferenceEquals(pool) )
+  					return ((AprArray)list);	
+        	}
+       		return( Make(pool, list) );
+		}
+						
         public AprArray Copy(AprPool pool)
         {
     	    IntPtr ptr;

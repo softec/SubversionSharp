@@ -49,6 +49,11 @@ namespace Softec.AprSharp
             return mAllocator;
         }
 
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(AprAllocator allocator)
         {
             return allocator.mAllocator;

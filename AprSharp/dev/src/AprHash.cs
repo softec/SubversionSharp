@@ -49,6 +49,11 @@ namespace Softec.AprSharp
             return mHash;
         }
 
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(AprHash hashIndex)
         {
             return hashIndex.mHash;
