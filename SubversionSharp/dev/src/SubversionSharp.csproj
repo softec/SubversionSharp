@@ -9,7 +9,7 @@
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "SubversionSharp"
+                AssemblyName = "SubversionSharp_stdcall"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -17,9 +17,9 @@
                 DelaySign = "false"
                 OutputType = "Library"
                 PreBuildEvent = ""
-                PostBuildEvent = '"C:\Program Files\Microsoft Visual Studio .NET 2003\SDK\v1.1\Bin\ildasm.exe" /TEXT "$(TargetPath)" | "..\..\..\..\CallConvHack\hack\bin\Release\CallConvHack.exe" > "$(TargetDir)$(ProjectName).il" && "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\ilasm.exe" /DLL /QUIET /OUT:"$(TargetPath)" "$(TargetDir)$(TargetName).il"'
+                PostBuildEvent = '"C:\Program Files\Microsoft Visual Studio .NET 2003\SDK\v1.1\Bin\ildasm.exe" /TEXT "$(TargetPath)" | "..\..\..\..\CallConvHack\hack\bin\Release\CallConvHack.exe" /TEXT /UTF8 "$(TargetDir)$(ProjectName).il"&#xd;&#xa;"C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\ilasm.exe" /DLL /QUIET /OUT:"$(TargetDir)$(ProjectName)$(TargetExt)" "$(TargetDir)$(ProjectName).il"'
                 RootNamespace = "SubversionSharp"
-                RunPostBuildEvent = "OnOutputUpdated"
+                RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
                 <Config

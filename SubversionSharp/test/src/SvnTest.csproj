@@ -17,9 +17,9 @@
                 DelaySign = "false"
                 OutputType = "Exe"
                 PreBuildEvent = ""
-                PostBuildEvent = ""
+                PostBuildEvent = 'copy "$(SolutionDir)\windll\bin\$(ConfigurationName)\svn_client-1.dll" "$(TargetDir)"'
                 RootNamespace = "SvnTest"
-                RunPostBuildEvent = "OnBuildSuccess"
+                RunPostBuildEvent = "OnOutputUpdated"
                 StartupObject = ""
             >
                 <Config
@@ -75,14 +75,14 @@
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "SubversionSharp"
-                    Project = "{9B253210-2436-4575-8C57-7565C027D54D}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
                     Name = "Mono.GetOptions"
                     Project = "{8D3008AB-7C0F-4DBE-A305-752926C366A7}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "SubversionSharp"
+                    AssemblyName = "SubversionSharp"
+                    HintPath = "..\..\dev\bin\Release\SubversionSharp.dll"
                 />
             </References>
         </Build>
