@@ -30,7 +30,7 @@ namespace Softec.SubversionSharp
 			ConfigDir
 		};
 
-		private const string[] ParamName = new string[] { 
+		private static string[] ParamName = new string[] { 
 			"svn:auth:username",
 			"svn:auth:password",
 			"svn:auth:non-interactive",
@@ -53,7 +53,7 @@ namespace Softec.SubversionSharp
             mAuthBaton = ptr;
             mAuthProviders = null;
             mParamName = null;
-            mPool = null;
+            mPool = IntPtr.Zero;
         }
         
         public AprPool Pool
@@ -135,7 +135,7 @@ namespace Softec.SubversionSharp
 	   		if( mParamName[(int)param] == IntPtr.Zero )
 	   			mParamName[(int)param] = new AprString(mPool, ParamName[(int)param]);
         			
-        	svn_auth_set_parameter(mAuthBaton, mParamName[(int)param], value);
+        	Svn.svn_auth_set_parameter(mAuthBaton, mParamName[(int)param], value);
         }
 
         public IntPtr GetParameter(Param param)
@@ -151,7 +151,7 @@ namespace Softec.SubversionSharp
 	   		if( mParamName[(int)param] == IntPtr.Zero )
 	   			mParamName[(int)param] = new AprString(mPool, ParamName[(int)param]);
         			
-        	return(svn_auth_get_parameter(mAuthBaton, mParamName[(int)param]));
+        	return(Svn.svn_auth_get_parameter(mAuthBaton, mParamName[(int)param]));
         }
         #endregion
 	}
