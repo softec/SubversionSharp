@@ -375,35 +375,35 @@ namespace Softec.AprSharp
         
         public void Push(object o)
         {
-        	if(mEltsType.IsPrimitive)
-        	{
-	        	if(mEltsType == typeof(bool))
-	        		Push((bool)o);
-	        	else if(mEltsType == typeof(byte))
-	        		Push((byte)o);
-	        	else if(mEltsType == typeof(sbyte))
-	        		Push((sbyte)o);
-	        	else if(mEltsType == typeof(short))
-	        		Push((short)o);
-	        	else if(mEltsType == typeof(ushort))
-	        		Push((ushort)o);
-	        	else if(mEltsType == typeof(int))
-	        		Push((int)o);
-	        	else if(mEltsType == typeof(uint))
-	        		Push((uint)o);
-	        	else if(mEltsType == typeof(long))
-	        		Push((long)o);
-	        	else if(mEltsType == typeof(ulong))
-	        		Push((ulong)o);
-	        	else
-	            	throw new AprInvalidOperationException("Array type not supported.");
-	    	}
-	    	else
-	    	{
-	        	if(mEltsType == typeof(IntPtr))
-	        		Push((IntPtr)o);
-	        	else
-	        	{ 
+			if(mEltsType == typeof(IntPtr))
+				Push((IntPtr)o);
+			else
+            {
+				if(mEltsType.IsPrimitive)
+        		{
+	        		if(mEltsType == typeof(bool))
+	        			Push((bool)o);
+	        		else if(mEltsType == typeof(byte))
+	        			Push((byte)o);
+	        		else if(mEltsType == typeof(sbyte))
+	        			Push((sbyte)o);
+	        		else if(mEltsType == typeof(short))
+	        			Push((short)o);
+	        		else if(mEltsType == typeof(ushort))
+	        			Push((ushort)o);
+	        		else if(mEltsType == typeof(int))
+	        			Push((int)o);
+	        		else if(mEltsType == typeof(uint))
+	        			Push((uint)o);
+	        		else if(mEltsType == typeof(long))
+	        			Push((long)o);
+	        		else if(mEltsType == typeof(ulong))
+	        			Push((ulong)o);
+	        		else
+	            		throw new AprInvalidOperationException("Array type not supported.");
+	    		}
+	    		else
+	    		{
 	        		object co;
 	        		
 	        		if(mEltsType != o.GetType())
@@ -445,6 +445,10 @@ namespace Softec.AprSharp
 			if(mEltsType == null)        
             	throw new AprInvalidOperationException("Array not typed.");
             	
+			if(mEltsType == typeof(IntPtr))
+			{
+				return(Marshal.ReadIntPtr(Pop()));
+			}
 			if(mEltsType.IsPrimitive)
 			{
 				object val;
@@ -478,10 +482,6 @@ namespace Softec.AprSharp
 		        else if (mEltsType == typeof(ulong))
 		        	return(unchecked((ulong)((long)val)));
 		        return(val);
-			}
-			if(mEltsType == typeof(IntPtr))
-			{
-	            return(Marshal.ReadIntPtr(Pop()));
 			}
 			
         	ConstructorInfo ctor = mEltsType.GetConstructor(new Type[] {typeof(IntPtr)});
@@ -633,6 +633,10 @@ namespace Softec.AprSharp
 	   			if(mArray.ElementType == null)
 	            	throw new AprInvalidOperationException("Array not typed.");
 	            	            
+				if(mArray.ElementType == typeof(IntPtr))
+				{
+					return(Marshal.ReadIntPtr(mArray.Data,mIndex*mArray.ElementSize));
+				}
 				if(mArray.ElementType.IsPrimitive)
 				{
 					object val;
@@ -667,10 +671,6 @@ namespace Softec.AprSharp
 			        else if (mArray.ElementType == typeof(ulong))
 			        	return(unchecked((ulong)((long)val)));
 			        return(val);
-				}
-				if(mArray.ElementType == typeof(IntPtr))
-				{
-		            return(Marshal.ReadIntPtr(mArray.Data,mIndex*mArray.ElementSize));
 				}
 				
 	        	ConstructorInfo ctor = mArray.ElementType.GetConstructor(new Type[] {typeof(IntPtr)});
