@@ -141,7 +141,7 @@ namespace Softec.AprSharp
             int res = Apr.apr_thread_mutex_trylock(mThreadMutex);
             if(res != 0 ) {
                 if(res == 70025 ) {
-                    Debug.WriteLine("Fail");
+		            Debug.WriteLine(String.Format("Fail({0})",res));
                     return(false);
                 }
                 throw new AprException(res);
