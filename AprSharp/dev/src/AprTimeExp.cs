@@ -326,7 +326,11 @@ namespace Softec.AprSharp
             get
             {
                 CheckPtr();
-                return(mTimeExp->tm_yday);
+                int m = Month;
+                int y = Year; 
+                y = (y%4 == 0 && (y%100 != 0 || y%400 == 0)) ? 1 : 0;
+                return(Day + ((979 * (m-12*((m-14)/12)) - 2918) >> 5) + y - 307 + (365 *((m+9)/12)));
+                //return(mTimeExp->tm_yday);
             }
         }
 
