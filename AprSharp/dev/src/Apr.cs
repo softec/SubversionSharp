@@ -57,6 +57,13 @@ namespace Softec.AprSharp
                 
             //FIXME: Shoud shedule a call to apr_terminate 
             //       at process exit        
+
+			GCHandle mt;
+			AprTimeExp t = AprTimeExp.Alloc(out mt);
+			t.Time = 0;
+			if( t.YearDay == 0 )
+				AprTimeExp.FixDayOfYear = 1;
+			mt.Free();
         }
         
         public static void Terminate()

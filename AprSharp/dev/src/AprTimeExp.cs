@@ -35,6 +35,7 @@ namespace Softec.AprSharp
     public unsafe struct AprTimeExp : IAprUnmanaged
     {
         private apr_time_exp_t *mTimeExp;
+		internal static int FixDayOfYear = 0;
 
         [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct apr_time_exp_t
@@ -326,7 +327,7 @@ namespace Softec.AprSharp
             get
             {
                 CheckPtr();
-                return(mTimeExp->tm_yday);
+                return(mTimeExp->tm_yday + FixDayOfYear);
             }
         }
 

@@ -28,6 +28,7 @@
 using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading;
 using NUnit.Framework;
 using Softec.AprSharp;
 
@@ -46,6 +47,7 @@ namespace Softec.AprSharp.Test
 		public void Now()
 		{
 			long now = AprTime.Now();
+			Thread.Sleep(1);
 			Assert.IsTrue(now != AprTime.Now(),"#A01");
 		}
 
