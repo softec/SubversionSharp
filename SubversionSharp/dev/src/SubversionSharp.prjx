@@ -10,6 +10,7 @@
     <File name="./SvnAuthProvider.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnAuthCred.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnAuthSslServerCertInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnAuthBaton.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="AprSharp" localcopy="True" />

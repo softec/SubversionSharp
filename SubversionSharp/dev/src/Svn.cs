@@ -141,6 +141,17 @@ namespace Softec.SubversionSharp
         internal void svn_client_get_ssl_client_cert_pw_prompt_provider(out IntPtr provider,
         										svn_auth_ssl_client_cert_pw_prompt_func_t prompt_func,
         										IntPtr prompt_baton, int retry_limit, IntPtr pool);
+        #endregion
+        
+        #region AuthBaton
+        [DllImport("svn_client-1")] static extern
+        internal void svn_auth_open(out IntPtr auth_baton, IntPtr providers, IntPtr pool);
+        
+        [DllImport("svn_client-1")] static extern
+        internal void svn_auth_set_parameter(IntPtr auth_baton, IntPtr name, IntPtr value);
+        
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_auth_get_parameter(IntPtr auth_baton, IntPtr name);
 		#endregion
     }
 }   

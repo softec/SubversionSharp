@@ -16,12 +16,20 @@ namespace Softec.SubversionSharp
 {
     public struct SvnAuthProviderObject
     {
-        IntPtr mAuthProviderObject;
+        private IntPtr mAuthProviderObject;
+        internal SvnAuthProvider mAuthProvider;
 
         #region Generic embedding functions of an IntPtr
         private SvnAuthProviderObject(IntPtr ptr)
         {
             mAuthProviderObject = ptr;
+            mAuthProvider = null;
+        }
+
+        private SvnAuthProviderObject(IntPtr ptr, SvnAuthProvider authProvider)
+        {
+            mAuthProviderObject = ptr;
+            mAuthProvider = authProvider;
         }
         
         public bool IsNull
@@ -84,22 +92,28 @@ namespace Softec.SubversionSharp
         #endregion
 
 		#region Wrapper client method
-        public static SvnAuthProviderObject GetSimplePromptProvider( 
+        public static SvnAuthProviderObject GetPromptProvider( 
         											SimplePrompt promptFunc, 
         											IntPtr promptBaton, int retryLimit, AprPool pool)
        	{
        		IntPtr authObj;
-       		throw new NotImplementedException(); 
-       		//return(new SvnAuthProviderObject());
+       		SvnAuthProvider auth = new SvnAuthProvider(promptFunc);
+       		Svn.svn_client_get_simple_prompt_provider(out authObj, 
+        									(Svn.svn_auth_simple_prompt_func_t) auth.Wrapper, 
+        									promptBaton, retryLimit, pool);
+       		return(new SvnAuthProviderObject(authObj,auth));
        	}
         											
-		public static SvnAuthProviderObject GetUsernamePromptProvider(
+		public static SvnAuthProviderObject GetPromptProvider(
         										UsernamePrompt promptFunc,
         										IntPtr promptBaton, int retryLimit, AprPool pool)
         {
        		IntPtr authObj; 
-       		throw new NotImplementedException(); 
-       		//return(new SvnAuthProviderObject());
+       		SvnAuthProvider auth = new SvnAuthProvider(promptFunc);
+       		Svn.svn_client_get_username_prompt_provider(out authObj, 
+        									(Svn.svn_auth_username_prompt_func_t) auth.Wrapper, 
+        									promptBaton, retryLimit, pool);
+       		return(new SvnAuthProviderObject(authObj,auth));
         }
         										
 		public static SvnAuthProviderObject GetSimpleProvider(AprPool pool)
@@ -137,38 +151,86 @@ namespace Softec.SubversionSharp
        		return(new SvnAuthProviderObject(authObj));
         }
         
-		public static SvnAuthProviderObject GetSslServerTrustPromptProvider(
+		public static SvnAuthProviderObject GetPromptProvider(
 												SslServerTrustPrompt promptFunc,
         										IntPtr promptBaton, AprPool pool)
         {
        		IntPtr authObj; 
-       		throw new NotImplementedException(); 
-       		//return(new SvnAuthProviderObject());
+       		SvnAuthProvider auth = new SvnAuthProvider(promptFunc);
+       		Svn.svn_client_get_ssl_server_trust_prompt_provider(out authObj, 
+        								(Svn.svn_auth_ssl_server_trust_prompt_func_t) auth.Wrapper, 
+        								promptBaton, pool);
+       		return(new SvnAuthProviderObject(authObj,auth));
         }
         
-		public static SvnAuthProviderObject GetSslClientCertPromptProvider(
+		public static SvnAuthProviderObject GetPromptProvider(
         										SslClientCertPrompt promptFunc,
         										IntPtr promptBaton, int retryLimit, AprPool pool)
         {
        		IntPtr authObj; 
-       		throw new NotImplementedException(); 
-       		//return(new SvnAuthProviderObject());
+       		SvnAuthProvider auth = new SvnAuthProvider(promptFunc);
+       		Svn.svn_client_get_ssl_client_cert_prompt_provider(out authObj, 
+        								(Svn.svn_auth_ssl_client_cert_prompt_func_t) auth.Wrapper, 
+        								promptBaton, retryLimit, pool);
+       		return(new SvnAuthProviderObject(authObj,auth));
         }
         
-		public static SvnAuthProviderObject GetSslClientCertPwPromptProvider(
+		public static SvnAuthProviderObject GetPromptProvider(
         										SslClientCertPwPrompt promptFunc,
         										IntPtr promptBaton, int retryLimit, AprPool pool)
         {
        		IntPtr authObj; 
-       		throw new NotImplementedException(); 
-       		//return(new SvnAuthProviderObject());
+       		SvnAuthProvider auth = new SvnAuthProvider(promptFunc);
+       		Svn.svn_client_get_ssl_client_cert_pw_prompt_provider(out authObj, 
+        								(Svn.svn_auth_ssl_client_cert_pw_prompt_func_t) auth.Wrapper, 
+        								promptBaton, retryLimit, pool);
+       		return(new SvnAuthProviderObject(authObj,auth));
         }
 		#endregion
 	}
 	
-    public class SvnAuthProvider
+    internal class SvnAuthProvider
     {
     	object mFunc;
+    	object mWrapperFunc;
+    	
+    	public SvnAuthProvider(SvnAuthProviderObject.SimplePrompt func)
+    	{
+    		mFunc = func;
+    		mWrapperFunc = new Svn.svn_auth_simple_prompt_func_t(SvnAuthSimplePrompt);
+    	}
+    	
+    	public SvnAuthProvider(SvnAuthProviderObject.UsernamePrompt func)
+    	{
+    		mFunc = func;
+    		mWrapperFunc = new Svn.svn_auth_username_prompt_func_t(SvnAuthUsernamePrompt);
+    	}
+
+    	public SvnAuthProvider(SvnAuthProviderObject.SslServerTrustPrompt func)
+    	{
+    		mFunc = func;
+    		mWrapperFunc = new Svn.svn_auth_ssl_server_trust_prompt_func_t(SvnAuthSslServerTrustPrompt);
+    	}
+
+    	public SvnAuthProvider(SvnAuthProviderObject.SslClientCertPrompt func)
+    	{
+    		mFunc = func;
+    		mWrapperFunc = new Svn.svn_auth_ssl_client_cert_prompt_func_t(SvnAuthSslClientCertPrompt);
+    	}
+
+    	public SvnAuthProvider(SvnAuthProviderObject.SslClientCertPwPrompt func)
+    	{
+    		mFunc = func;
+    		mWrapperFunc = new Svn.svn_auth_ssl_client_cert_pw_prompt_func_t(SvnAuthSslClientCertPwPrompt);
+    	}
+    	
+       	public object Wrapper
+    	{
+    		get
+    		{
+    			return(mWrapperFunc);
+    		}
+    	}
     	
         private IntPtr SvnAuthSimplePrompt(out IntPtr cred, IntPtr baton, 
         								   IntPtr realm, IntPtr username, 
@@ -226,7 +288,7 @@ namespace Softec.SubversionSharp
         	return(err);
         }
 															   
-		[CLSCompliant(false)]
+		//[CLSCompliant(false)]
 		private  IntPtr SvnAuthSslServerTrustPrompt(out IntPtr cred, IntPtr baton, 
 													IntPtr realm, uint failures, 
 													IntPtr cert_info, 
