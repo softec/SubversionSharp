@@ -48,12 +48,24 @@ namespace Softec.SubversionSharp
         internal ArrayList mAuthProviders;
 
         #region Generic embedding functions of an IntPtr
-        private SvnAuthBaton(IntPtr ptr, AprPool pool)
+        private SvnAuthBaton(IntPtr ptr)
         {
             mAuthBaton = ptr;
             mAuthProviders = null;
             mParamName = null;
-            mPool = pool;
+            mPool = null;
+        }
+        
+        public AprPool Pool
+        {
+        	get
+        	{
+        		return(mPool);
+        	}
+        	set
+        	{
+        		mPool = value;
+        	}
         }
 
         private SvnAuthBaton(ArrayList authProviders, AprPool pool)
@@ -120,10 +132,10 @@ namespace Softec.SubversionSharp
         			mParamName[i] = IntPtr.Zero;
         	}
         	
-	   		if( mParamName[param] == IntPtr.Zero )
-	   			mParamName[param] = new AprString(pool, ParamName[param]);
+	   		if( mParamName[(int)param] == IntPtr.Zero )
+	   			mParamName[(int)param] = new AprString(mPool, ParamName[(int)param]);
         			
-        	svn_auth_set_parameter(mAuthBaton, mParamName[param], value);
+        	svn_auth_set_parameter(mAuthBaton, mParamName[(int)param], value);
         }
 
         public IntPtr GetParameter(Param param)
@@ -136,10 +148,10 @@ namespace Softec.SubversionSharp
         			mParamName[i] = IntPtr.Zero;
         	}
         	
-	   		if( mParamName[param] == IntPtr.Zero )
-	   			mParamName[param] = new AprString(pool, ParamName[param]);
+	   		if( mParamName[(int)param] == IntPtr.Zero )
+	   			mParamName[(int)param] = new AprString(mPool, ParamName[(int)param]);
         			
-        	return(svn_auth_get_parameter(mAuthBaton, mParamName[param]));
+        	return(svn_auth_get_parameter(mAuthBaton, mParamName[(int)param]));
         }
         #endregion
 	}
