@@ -12,14 +12,14 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
-			IntermediateDirectory="Debug"
+			OutputDirectory="..\bin\Debug"
+			IntermediateDirectory="obj\Debug"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Downloads\svn-win32-1.1.1\include&quot;;&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Devel\subversion-1.1.1\apr\include&quot;;&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Devel\subversion-1.1.1\apr-util\include&quot;;&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Devel\subversion-1.1.1\apr-iconv\include&quot;"
+				AdditionalIncludeDirectories="..\..\..\subversion\include;..\..\..\subversion\apr\include;&quot;..\..\..\subversion\apr-util\include&quot;;&quot;..\..\..\subversion\apr-iconv\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;SVNCLIENT_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -32,11 +32,11 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="libsvn_client-1.lib libsvn_delta-1.lib libsvn_diff-1.lib libsvn_fs-1.lib libsvn_fs_base-1.lib libsvn_fs_fs-1.lib libsvn_ra-1.lib libsvn_ra_dav-1.lib libsvn_ra_local-1.lib libsvn_ra_svn-1.lib libdb40s.lib libsvn_repos-1.lib libsvn_subr-1.lib libsvn_wc-1.lib libapr.lib libaprutil.lib libapriconv.lib xml.lib asprintf.lib intl.lib libneon.lib zlibstat.lib ws2_32.lib"
-				OutputFile="$(OutDir)/svnclient.dll"
+				AdditionalDependencies="libapr.lib libaprutil.lib libapriconv.lib xml.lib libsvn_client-1.lib libsvn_delta-1.lib libsvn_diff-1.lib libsvn_ra-1.lib libsvn_ra_dav-1.lib libsvn_ra_local-1.lib libsvn_ra_svn-1.lib libsvn_fs-1.lib libsvn_repos-1.lib libsvn_subr-1.lib libsvn_wc-1.lib libdb40d.lib libneon.lib zlibstat.lib ws2_32.lib"
+				OutputFile="$(OutDir)/svn_client-1.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Downloads\svn-win32-1.1.1\lib&quot;;&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Devel\subversion-1.1.1\apr\Release&quot;;&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Devel\subversion-1.1.1\apr-util\Release&quot;;&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Devel\subversion-1.1.1\apr-iconv\Release&quot;;&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Devel\subversion-1.1.1\apr-util\xml\expat\lib\LibR&quot;;&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Downloads\svn-win32-1.1.1\lib\neon&quot;;&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Devel\gettext\lib&quot;;&quot;C:\Documents and Settings\OlivierD\Mes documents\backup\Devel\db\lib&quot;"
-				IgnoreDefaultLibraryNames="LIBCMTD;LIBCMT"
+				AdditionalLibraryDirectories="..\..\..\subversion\lib;..\..\..\subversion\apr\Debug;&quot;..\..\..\subversion\apr-util\Debug&quot;;&quot;..\..\..\subversion\apr-iconv\Debug&quot;;..\..\..\subversion\lib\db;&quot;..\..\..\subversion\apr-util\xml\expat\lib\LibD&quot;;..\..\..\subversion\lib\neon"
+				IgnoreDefaultLibraryNames="LIBCMTD;LIBCMT;MSVCRTD"
 				ModuleDefinitionFile="svnclient.def"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(OutDir)/svnclient.pdb"
@@ -66,12 +66,13 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
-			IntermediateDirectory="Release"
+			OutputDirectory="..\bin\Release"
+			IntermediateDirectory="obj\Release"
 			ConfigurationType="2"
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\..\subversion\include;..\..\..\subversion\apr\include;&quot;..\..\..\subversion\apr-util\include&quot;;&quot;..\..\..\subversion\apr-iconv\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;SVNCLIENT_EXPORTS"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
@@ -82,7 +83,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="$(OutDir)/svnclient.dll"
+				OutputFile="$(OutDir)/svn_client-1.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile="svnclient.def"
 				GenerateDebugInformation="TRUE"

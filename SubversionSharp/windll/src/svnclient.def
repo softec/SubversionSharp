@@ -1,4 +1,4 @@
-LIBRARY	svnclient
+LIBRARY	svn_client-1
 EXPORTS
 	svn_error_create
 	svn_error_clear
@@ -38,7 +38,7 @@ EXPORTS
 	svn_client_checkout
 	svn_client_update
 	svn_client_switch
-	svn_client_add2
+;	svn_client_add2
 	svn_client_add
 	svn_client_mkdir
 	svn_client_delete
@@ -48,9 +48,9 @@ EXPORTS
 	svn_client_log
 	svn_client_blame
 	svn_client_diff
-	svn_client_diff_peg
+;	svn_client_diff_peg
 	svn_client_merge
-	svn_client_merge_peg
+;	svn_client_merge_peg
 	svn_client_cleanup
 	svn_client_relocate
 	svn_client_revert
@@ -64,6 +64,7 @@ EXPORTS
 	svn_client_proplist
 	svn_client_revprop_list
 	svn_client_export
+;	svn_client_export2
 	svn_client_ls
 	svn_client_cat
 	svn_client_url_from_path
