@@ -16,7 +16,7 @@ namespace Softec.AprSharp
 {
     public struct AprString : IAprUnmanaged
     {
-        IntPtr mString;
+        private IntPtr mString;
 
         #region Generic embedding functions of an IntPtr
         public AprString(IntPtr ptr)
