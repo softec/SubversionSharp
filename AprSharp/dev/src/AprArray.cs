@@ -169,7 +169,24 @@ namespace Softec.AprSharp
 			}
 		}
 
-        public static AprArray CastMake(AprPool pool, ICollection list )
+        public static AprArray Make(AprPool pool, ICollection list, Type type )
+        {
+        	if(list is AprArray
+        	   && ((AprArray)list).ElementType == type )
+        		return(((AprArray)list).Copy(pool));
+        	else
+        	{
+	            AprArray a = Make(pool, list.Count, type);
+	            
+	            IEnumerator it = list.GetEnumerator();
+	            while(it.MoveNext()) {
+	                a.Push(it.Current);
+	            }
+	            return(a);
+			}
+		}
+
+        public static AprArray LazyMake(AprPool pool, ICollection list )
         {
         	if(list is AprArray)
         	{
@@ -177,6 +194,17 @@ namespace Softec.AprSharp
   					return ((AprArray)list);	
         	}
        		return( Make(pool, list) );
+		}
+
+        public static AprArray LazyMake(AprPool pool, ICollection list, Type type)
+        {
+        	if(list is AprArray)
+        	{
+        		if( ((AprArray)list).Pool.ReferenceEquals(pool)
+        			&& ((AprArray)list).ElementType == type )
+  					return ((AprArray)list);	
+        	}
+       		return( Make(pool, list, type) );
 		}
 						
         public AprArray Copy(AprPool pool)
@@ -358,11 +386,25 @@ namespace Softec.AprSharp
 	        	if(mEltsType == typeof(IntPtr))
 	        		Push((IntPtr)o);
 	        	else
-	        	{
-	    			IAprUnmanaged obj = o as IAprUnmanaged;
-	    			if( o == null )
-	            		throw new AprInvalidOperationException("Array type should implement IAprUnmanaged.");
-	            	Push(obj.ToIntPtr());
+	        	{ 
+	        		object co;
+	        		
+	        		if(mEltsType != o.GetType())
+	        		{
+			        	ConstructorInfo ctor = mEltsType.GetConstructor(new Type[] {o.GetType(),
+			        																typeof(AprPool)});
+			        	if( ctor == null )
+			            	throw new AprInvalidOperationException("Type is not primitive and cannot be constructed from pushed object.");
+			            
+						co = ctor.Invoke(new Object[] { o, Pool });
+	        		}
+	        		else
+	        			co = o;
+	        			
+    				IAprUnmanaged obj = co as IAprUnmanaged;
+    				if( o == null )
+            			throw new AprInvalidOperationException("Array type should implement IAprUnmanaged.");
+            		Push(obj.ToIntPtr());
 	            }
 	        }
         }

@@ -261,12 +261,12 @@ namespace Softec.AprSharp.Test
         	AprString[] arr = new AprString[5]; 
         	a.CopyTo(arr,0);
         	
-        	AprArray b = AprArray.CastMake(p,a);
+        	AprArray b = AprArray.LazyMake(p,a);
         	Assert.AreEqual(a.ToIntPtr(),b.ToIntPtr(),"#F19");
         	
 			AprPool sp = AprPool.Create(p);
         	Assert.IsFalse(sp.IsNull,"#F01");
-        	b = AprArray.CastMake(sp,a);
+        	b = AprArray.LazyMake(sp,a);
         	Assert.IsFalse(a.ToIntPtr() == b.ToIntPtr(),"#F20");
 
         	Assert.AreEqual("5",a.PopObject().ToString(),"#F03");
@@ -294,7 +294,14 @@ namespace Softec.AprSharp.Test
         	Assert.AreEqual("3",a.PopObject().ToString(),"#F15");
         	Assert.AreEqual("2",a.PopObject().ToString(),"#F16");
         	Assert.AreEqual("1",a.PopObject().ToString(),"#F17");
-        	        	
+        	
+        	a = AprArray.LazyMake(p,new string[] {"1","2","3","4","5"},typeof(AprString));
+        	Assert.AreEqual("5",a.PopObject().ToString(),"#F26");
+        	Assert.AreEqual("4",a.PopObject().ToString(),"#F27");
+        	Assert.AreEqual("3",a.PopObject().ToString(),"#F28");
+        	Assert.AreEqual("2",a.PopObject().ToString(),"#F29");
+        	Assert.AreEqual("1",a.PopObject().ToString(),"#F30");
+        	
            	p.Destroy();
         	Assert.IsTrue(p.IsNull,"#F18");
 		}
