@@ -82,6 +82,7 @@ namespace Softec.SubversionSharp
         {
 			get
 			{
+				CheckPtr();
 				return(mSslServerCertInfo->hostname);
 			}
 		}
@@ -89,6 +90,7 @@ namespace Softec.SubversionSharp
         {
 			get
 			{
+				CheckPtr();
 				return(mSslServerCertInfo->fingerprint);
 			}
 		}
@@ -96,6 +98,7 @@ namespace Softec.SubversionSharp
         {
 			get
 			{
+				CheckPtr();
 				return(mSslServerCertInfo->valid_from);
 			}
 		}
@@ -103,6 +106,7 @@ namespace Softec.SubversionSharp
         {
 			get
 			{
+				CheckPtr();
 				return(mSslServerCertInfo->valid_until);
 			}
 		}
@@ -110,6 +114,7 @@ namespace Softec.SubversionSharp
         {
 			get
 			{
+				CheckPtr();
 				return(mSslServerCertInfo->issuer_dname);
 			}
 		}
@@ -117,6 +122,7 @@ namespace Softec.SubversionSharp
         {
 			get
 			{
+				CheckPtr();
 				return(mSslServerCertInfo->ascii_cert);
 			}
 		}

@@ -41,7 +41,7 @@ namespace Softec.SubversionSharp
             mError = (svn_error_t *) ptr.ToPointer();
         }
         
-        public static SvnError NoError;
+        public static SvnError NoError = new SvnError(IntPtr.Zero);
         
         public bool IsNoError
         {
@@ -64,7 +64,10 @@ namespace Softec.SubversionSharp
 
         public static implicit operator IntPtr(SvnError error)
         {
-            return new IntPtr(error.mError);
+        	if( error.IsNoError )
+        		return IntPtr.Zero;
+        	else
+            	return new IntPtr(error.mError);
         }
         
         public static implicit operator SvnError(IntPtr ptr)

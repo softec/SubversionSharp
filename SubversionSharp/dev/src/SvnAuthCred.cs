@@ -86,10 +86,12 @@ namespace Softec.SubversionSharp
 		{
 			get
 			{
+				CheckPtr();
 				return(new AprString(mCred->username));
 			}
 			set
 			{
+				CheckPtr();
 				mCred->username = value;
 			}
 		}
@@ -98,10 +100,12 @@ namespace Softec.SubversionSharp
 		{
 			get
 			{
+				CheckPtr();
 				return(mCred->password);
 			}
 			set
 			{
+				CheckPtr();
 				mCred->password = value;
 			}
 		}
@@ -110,10 +114,12 @@ namespace Softec.SubversionSharp
 		{
 			get
 			{
+				CheckPtr();
 				return(mCred->may_save != 0);
 			}
 			set
 			{
+				CheckPtr();
 				mCred->may_save = (value) ? 1 : 0;
 			}
 		}
@@ -215,6 +221,16 @@ namespace Softec.SubversionSharp
 
     public unsafe struct SvnAuthCredSslServerTrust
     {
+    	[Flags]
+    	public enum CertFailures
+    	{
+			NotYetValid	= 0x00000001,
+			Expired		= 0x00000002,
+			CNMismatch	= 0x00000004,
+			UnknownCA	= 0x00000008,
+			Other		= 0x40000000
+ 		}
+ 		
         private svn_auth_cred_ssl_server_trust_t *mCred;
 
         [StructLayout( LayoutKind.Sequential )]
@@ -291,28 +307,15 @@ namespace Softec.SubversionSharp
 			}
 		}
 		
-        public int AcceptedFailure
+        public CertFailures AcceptedFailures
 		{
 			get
 			{
-				return(unchecked((int)mCred->accepted_failures));
+				return((CertFailures)mCred->accepted_failures);
 			}
 			set
 			{
-				mCred->accepted_failures = unchecked((uint)value);
-			}
-		}
-		
-		[CLSCompliant(false)]
-        public uint NativeAcceptedFailure
-		{
-			get
-			{
-				return(mCred->accepted_failures);
-			}
-			set
-			{
-				mCred->accepted_failures = value;
+				mCred->accepted_failures = (uint)value;
 			}
 		}
         #endregion

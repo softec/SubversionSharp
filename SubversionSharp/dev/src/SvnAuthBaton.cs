@@ -76,7 +76,9 @@ namespace Softec.SubversionSharp
             	Marshal.WriteIntPtr(authArray.Push(),authObj);
             	mAuthProviders.Add(authObj.mAuthProvider);
             }
+            Debug.Write(String.Format("svn_auth_open({0},{1})...",authArray,pool));
             Svn.svn_auth_open(out mAuthBaton, authArray, pool);
+            Debug.WriteLine(String.Format("Done({0:X})",mAuthBaton.ToInt32()));
             mParamName = null;
             mPool = pool;
         }
@@ -117,7 +119,7 @@ namespace Softec.SubversionSharp
         #endregion
 
         #region Wrapper methods
-        public SvnAuthBaton Open(ArrayList authProviders, AprPool pool)
+        public static SvnAuthBaton Open(ArrayList authProviders, AprPool pool)
         {
         	return(new SvnAuthBaton(authProviders,pool));
         }
@@ -135,6 +137,7 @@ namespace Softec.SubversionSharp
 	   		if( mParamName[(int)param] == IntPtr.Zero )
 	   			mParamName[(int)param] = new AprString(mPool, ParamName[(int)param]);
         			
+            Debug.WriteLine(String.Format("svn_auth_set_parameter({0},{1:X},{2:X})",this,mParamName[(int)param].ToInt32(),value.ToInt32()));
         	Svn.svn_auth_set_parameter(mAuthBaton, mParamName[(int)param], value);
         }
 
@@ -150,8 +153,12 @@ namespace Softec.SubversionSharp
         	
 	   		if( mParamName[(int)param] == IntPtr.Zero )
 	   			mParamName[(int)param] = new AprString(mPool, ParamName[(int)param]);
-        			
-        	return(Svn.svn_auth_get_parameter(mAuthBaton, mParamName[(int)param]));
+
+        	IntPtr ptr;        			
+            Debug.Write(String.Format("svn_auth_get_parameter({0},{1:X})...",this,mParamName[(int)param].ToInt32()));
+        	ptr = Svn.svn_auth_get_parameter(mAuthBaton, mParamName[(int)param]);
+            Debug.WriteLine(String.Format("Done({0:X})",ptr.ToInt32()));
+        	return(ptr);
         }
         #endregion
 	}

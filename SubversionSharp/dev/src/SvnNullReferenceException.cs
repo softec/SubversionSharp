@@ -41,11 +41,13 @@ namespace Softec.SubversionSharp
         public SvnNullReferenceException(SvnError error) 
                : base ( error )
         {
+       		error.Clear();
         }
         
         public SvnNullReferenceException(SvnError error, Exception innerException) 
                : base ( error, innerException )
         {
+        	error.Clear();
         }
 
         public SvnNullReferenceException(SerializationInfo info, StreamingContext context)

@@ -16,32 +16,47 @@ using System.Runtime.InteropServices;
 namespace Softec.SubversionSharp
 {
 
-    public unsafe struct SvnClientContext
+    public unsafe class SvnClientContext
     {
         private svn_client_ctx_t *mClientContext;
+        private SvnAuthBaton mAuthBaton;
+        private SvnDelegate mNotifyFunc;
+        private SvnDelegate mLogMsgFunc;
+        private SvnDelegate mCancelFunc;
+        private GCHandle mHandle;
 
         [StructLayout( LayoutKind.Sequential )]
         private struct svn_client_ctx_t
         {  
 			public IntPtr auth_baton;
 			public IntPtr notify_func;
-			public void *notify_baton;
+			public IntPtr notify_baton;
 			public IntPtr log_msg_func;
-			public void *log_msg_baton;
+			public IntPtr log_msg_baton;
 			public IntPtr config;
 			public IntPtr cancel_func;
-			public void *cancel_baton;
+			public IntPtr cancel_baton;
         }
 
         #region Generic embedding functions of an IntPtr
         private SvnClientContext(svn_client_ctx_t *ptr)
         {
             mClientContext = ptr;
+            mAuthBaton = new SvnAuthBaton();
+        	mNotifyFunc = SvnDelegate.NullFunc;
+        	mLogMsgFunc = SvnDelegate.NullFunc;
+       		mCancelFunc = SvnDelegate.NullFunc;
+        	mHandle = new GCHandle();
         }
         
         public SvnClientContext(IntPtr ptr)
         {
             mClientContext = (svn_client_ctx_t *) ptr.ToPointer();
+            mAuthBaton = new SvnAuthBaton();
+        	mNotifyFunc = SvnDelegate.NullFunc;
+        	mLogMsgFunc = SvnDelegate.NullFunc;
+       		mCancelFunc = SvnDelegate.NullFunc;
+        	mHandle = new GCHandle();
         }
         
         public bool IsNull
@@ -95,17 +110,130 @@ namespace Softec.SubversionSharp
         #endregion
 
         #region Wrapper Properties
+        public SvnAuthBaton AuthBaton
+		{
+			get
+			{
+				CheckPtr();
+				return(mAuthBaton);
+			}
+			set
+			{
+				CheckPtr();
+				mAuthBaton = value;
+				mClientContext->auth_baton = mAuthBaton;
+			}
+		}
+		
+		public SvnDelegate NotifyFunc
+		{
+			get
+			{
+				CheckPtr();
+				return(mNotifyFunc);
+			}
+			set
+			{
+				CheckPtr();
+				mNotifyFunc = value;
+				mClientContext->notify_func = mNotifyFunc.WrapperPtr;
+				//fixed(IntPtr *ptr = &(mClientContext->notify_func))
+				//	mNotifyFunc.MarshalWrapperToPtr(new IntPtr(ptr));
+			}
+		}
+
+		public IntPtr NotifyBaton
+		{
+			get
+			{
+				CheckPtr();
+				return(mClientContext->notify_baton);
+
+			}
+			set
+			{
+				CheckPtr();
+				mClientContext->notify_baton = value;
+			}
+		}
+
+		public SvnDelegate LogMsgFunc
+		{
+			get
+			{
+				CheckPtr();
+				return(mLogMsgFunc);
+			}
+			set
+			{
+				CheckPtr();
+				mLogMsgFunc = value;
+				mClientContext->log_msg_func = mLogMsgFunc.WrapperPtr;
+				//fixed(IntPtr *ptr = &(mClientContext->log_msg_func))
+				//	mLogMsgFunc.MarshalWrapperToPtr(new IntPtr(ptr));
+			}
+		}
+
+		public IntPtr LogMsgBaton
+		{
+			get
+			{
+				CheckPtr();
+				return(mClientContext->log_msg_baton);
+
+			}
+			set
+			{
+				CheckPtr();
+				mClientContext->log_msg_baton = value;
+			}
+		}
+		
         public AprHash Config
 		{
 			get
 			{
+				CheckPtr();
 				return(mClientContext->config);
 			}
 			set
 			{
+				CheckPtr();
 				mClientContext->config = value;
 			}
 		}
-        #endregion
+        
+        public SvnDelegate CancelFunc
+		{
+			get
+			{
+				CheckPtr();
+				return(mCancelFunc);
+			}
+			set
+			{
+				CheckPtr();
+				mCancelFunc = value;
+				mClientContext->cancel_func = mCancelFunc.WrapperPtr;
+				//fixed(IntPtr *ptr = &(mClientContext->cancel_func))
+				//	mCancelFunc.MarshalWrapperToPtr(new IntPtr(ptr));
+			}
+		}
+
+		public IntPtr CancelBaton
+		{
+			get
+			{
+				CheckPtr();
+				return(mClientContext->cancel_baton);
+
+			}
+			set
+			{
+				CheckPtr();
+				mClientContext->cancel_baton = value;
+			}
+		}
+		#endregion
     }
 }

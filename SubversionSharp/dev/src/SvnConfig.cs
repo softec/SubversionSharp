@@ -76,7 +76,7 @@ namespace Softec.SubversionSharp
 
         public static void Ensure(AprPool pool)
         {
-            Debug.WriteLine(String.Format("svn_config_ensure({0},{1})",IntPtr.Zero,pool));
+            Debug.WriteLine(String.Format("svn_config_ensure(NULL,{0})",pool));
             SvnError err = Svn.svn_config_ensure(IntPtr.Zero, pool);
             if(!err.IsNoError)
                 throw new SvnException(err);
@@ -101,7 +101,7 @@ namespace Softec.SubversionSharp
         public static AprHash GetConfig(AprPool pool)
         {
         	IntPtr h;
-            Debug.WriteLine(String.Format("svn_config_get_config({0},{1})",IntPtr.Zero,pool));
+            Debug.WriteLine(String.Format("svn_config_get_config(NULL,{0})",pool));
             SvnError err = Svn.svn_config_get_config(out h, IntPtr.Zero, pool);
             if(!err.IsNoError)
                 throw new SvnException(err);
