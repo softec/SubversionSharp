@@ -88,12 +88,12 @@ namespace Softec.AprSharp
         #endregion
         
         #region Methods wrappers
-        public static AprTimeExp PoolAlloc(AprPool pool)
+        public static AprTimeExp Alloc(AprPool pool)
         {
             return(new AprTimeExp((apr_time_exp_t *)pool.Alloc(sizeof(apr_time_exp_t))));
         }
 
-        public static AprTimeExp ManagedAlloc(out GCHandle handle)
+        public static AprTimeExp Alloc(out GCHandle handle)
         {
             return(new AprTimeExp(out handle));
         }

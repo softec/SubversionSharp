@@ -53,7 +53,7 @@ namespace Softec.AprSharp.Test
         	AprTimeExp t = new AprTimeExp();
         	Assert.IsTrue(t.IsNull,"#D02");
         	
-        	t = AprTimeExp.PoolAlloc(p);
+        	t = AprTimeExp.Alloc(p);
         	Assert.IsFalse(t.IsNull,"#D03");
         	
         	p.Destroy();
@@ -67,7 +67,7 @@ namespace Softec.AprSharp.Test
         	Assert.IsTrue(t.IsNull,"#E01");
         	
         	GCHandle mt;
-        	t = AprTimeExp.ManagedAlloc(out mt);
+        	t = AprTimeExp.Alloc(out mt);
         	Assert.IsFalse(t.IsNull,"#E02");
         	Assert.IsTrue(mt.IsAllocated,"#E03");
         	
@@ -80,25 +80,25 @@ namespace Softec.AprSharp.Test
 			AprPool p = AprPool.Create();
         	Assert.IsFalse(p.IsNull,"#F01");
 		
-        	AprTimeExp t = AprTimeExp.PoolAlloc(p);
+        	AprTimeExp t = AprTimeExp.Alloc(p);
         	Assert.IsFalse(t.IsNull,"#F02");
 
 			TimeExpTest1(t, "#F");
 
  			t.ClearPtr();
-        	t = AprTimeExp.PoolAlloc(p);
+        	t = AprTimeExp.Alloc(p);
         	Assert.IsFalse(t.IsNull,"#F03");
 
 			TimeExpTest2(t, "#F");
 
   			t.ClearPtr();
-        	t = AprTimeExp.PoolAlloc(p);
+        	t = AprTimeExp.Alloc(p);
         	Assert.IsFalse(t.IsNull,"#F04");
 
 			TimeExpTest3(t, "#F");
 
   			t.ClearPtr();
-        	t = AprTimeExp.PoolAlloc(p);
+        	t = AprTimeExp.Alloc(p);
         	Assert.IsFalse(t.IsNull,"#F04");
 
 			TimeExpTest4(t, "#F");
@@ -111,7 +111,7 @@ namespace Softec.AprSharp.Test
 		public void TimeExpManagedTest()
 		{
         	GCHandle mt;
-        	AprTimeExp t = AprTimeExp.ManagedAlloc(out mt);
+        	AprTimeExp t = AprTimeExp.Alloc(out mt);
         	Assert.IsFalse(t.IsNull,"#G01");
         	Assert.IsTrue(mt.IsAllocated,"#G02");
 
@@ -119,21 +119,21 @@ namespace Softec.AprSharp.Test
 
  			t.ClearPtr();
  			mt.Free();
-        	t = AprTimeExp.ManagedAlloc(out mt);
+        	t = AprTimeExp.Alloc(out mt);
         	Assert.IsFalse(t.IsNull,"#G03");
 
 			TimeExpTest2(t, "#G");
 
  			t.ClearPtr();
  			mt.Free();
-        	t = AprTimeExp.ManagedAlloc(out mt);
+        	t = AprTimeExp.Alloc(out mt);
         	Assert.IsFalse(t.IsNull,"#G04");
 
 			TimeExpTest3(t, "#G");
 
  			t.ClearPtr();
  			mt.Free();
-        	t = AprTimeExp.ManagedAlloc(out mt);
+        	t = AprTimeExp.Alloc(out mt);
         	Assert.IsFalse(t.IsNull,"#G04");
 
 			TimeExpTest4(t, "#G");
