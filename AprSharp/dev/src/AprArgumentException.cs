@@ -1,4 +1,4 @@
-//  AprSharp, a wrapper library around the Apache Runtime Library
+//  AprSharp, a wrapper library around the Apache Portable Runtime Library
 //  Copyright (C) 2004 SOFTEC sa.
 //
 //  This library is free software; you can redistribute it and/or

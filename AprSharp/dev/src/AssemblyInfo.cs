@@ -1,4 +1,4 @@
-//  AprSharp, a C# wrapper library around the Apache Runtime Library
+//  AprSharp, a wrapper library around the Apache Portable Runtime Library
 //  Copyright (C) 2004 SOFTEC sa.
 //
 //  This library is free software; you can redistribute it and/or
@@ -35,7 +35,7 @@ using System.Runtime.CompilerServices;
 // you compile.
 
 [assembly: AssemblyTitle("AprSharp, an APR wrapper")]
-[assembly: AssemblyDescription("A C# wrapper library around the Apache Runtime Library")]
+[assembly: AssemblyDescription("A C# wrapper library around the Apache Portable Runtime Library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SOFTEC sa")]
 [assembly: AssemblyProduct("AprSharp")]
