@@ -192,8 +192,6 @@ namespace Softec.AprSharp
 
         public void Cat(AprArray array)
         {
-    	    Type arrType;
-            
             CheckPtr();
             if (mEltsType != null && array.mEltsType != null && mEltsType != array.mEltsType)
             	throw new AprInvalidOperationException("Array types mismatch.");
