@@ -370,5 +370,23 @@ namespace Softec.AprSharp
         [DllImport("apr-0")] static extern
         internal bool apr_is_empty_array(IntPtr arr);
         #endregion
+        
+        #region AprFile
+        [DllImport("apr-0", CharSet=CharSet.Ansi)] static extern
+        internal int apr_file_open(out IntPtr new_file, string fname,
+								   int flag, int perm, IntPtr pool);
+
+		[DllImport("apr-0")] static extern
+        internal int apr_file_close(IntPtr file);
+        
+        [DllImport("apr-0")] static extern
+        internal int apr_file_open_stdin(out IntPtr thefile, IntPtr pool);
+        
+        [DllImport("apr-0")] static extern
+        internal int apr_file_open_stdout(out IntPtr thefile, IntPtr pool);
+        
+        [DllImport("apr-0")] static extern
+        internal int apr_file_open_stderr(out IntPtr thefile, IntPtr pool);
+        #endregion
     }
 }   
