@@ -2,10 +2,13 @@
   <Contents>
     <File name="./Main.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./AssemblyInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./Checkout.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./CmdBase.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="AprSharp" localcopy="True" />
     <Reference type="Project" refto="SubversionSharp" localcopy="True" />
+    <Reference type="Gac" refto="Mono.GetOptions, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756" localcopy="True" />
   </References>
   <DeploymentInformation target="" script="" strategy="File" />
   <Configuration runwithwarnings="False" name="Debug">

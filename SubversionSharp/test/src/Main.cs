@@ -1,216 +1,172 @@
-// project created on 5/13/2004 at 10:00 PM
+//  SvnTest, a client program used to test SubversionSharp library
+//  Copyright 2004 by SOFTEC sa
+//
+//  This program is free software; you can redistribute it and/or
+//  modify it under the terms of the GNU General Public License as
+//  published by the Free Software Foundation; either version 2 of
+// the License, or (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of 
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+//  See the GNU General Public License for more details.
+//
+//  You should have received a copy of the GNU General Public
+//  License along with this program; if not, write to the Free Software
+//  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+//
+//  Sources, support options and lastest version of the complete library
+//  is available from:
+//		http://www.softec.st/SubversionSharp
+//		Support@softec.st
+//
+//  Initial authors : 
+//		Denis Gervalle
+//		Olivier Desaive
+//
 using System;
-using System.Diagnostics;
 using System.Collections;
-using System.Runtime.InteropServices;
-using Softec.AprSharp;
-using Softec.SubversionSharp;
+using System.Reflection;
+using Mono.GetOptions;
 
-class MainClass
-{
-	public static void Main(string[] args)
-	{
-	    Debug.Listeners.Add(new TextWriterTraceListener(Console.Out));
-        
-        SvnClient client = new SvnClient();
-        
-        client.AddSimpleProvider();
-        client.AddUsernameProvider();
-        client.AddSslServerTrustFileProvider();
-        client.AddSslClientCertFileProvider();
-        client.AddSslClientCertPwFileProvider();
-        client.AddPromptProvider(
-        				new SvnAuthProviderObject.SimplePrompt(SimpleAuth),
-        				IntPtr.Zero, 2);
-        client.AddPromptProvider(
-        				new SvnAuthProviderObject.UsernamePrompt(UsernameAuth),
-        				IntPtr.Zero, 2);
-        client.AddPromptProvider(
-        				new SvnAuthProviderObject.SslServerTrustPrompt(SslServerTrustAuth),
-        				IntPtr.Zero);
-        client.OpenAuth();
-        
-        client.Context.NotifyFunc = new SvnDelegate(new SvnWcNotify.Func(NotifyCallback));
-        client.Context.LogMsgFunc = new SvnDelegate(new SvnClient.GetCommitLog(GetCommitLogCallback));
-        client.Context.CancelFunc = new SvnDelegate(new Svn.CancelFunc(CancelCallback));
-        
-		client.Checkout("https://www.softec.st/svn/test", 
-						"test",
-						100, true);
-		client.Update("test",
-					  Svn.Revision.Head, true);
+namespace Softec.SubversionSharp.Test {
 
-		client.Pool.Destroy();        
-	}
-	
-	public static void NotifyCallback(IntPtr baton, SvnPath Path,  
-        			 	 	          SvnWcNotify.Action action, Svn.NodeKind kind,
-        			 		          AprString mimeType, SvnWcNotify.State contentState,
-        			 		          SvnWcNotify.State propState, int revNum)
-    {
-    }
-	
-	public static SvnError GetCommitLogCallback(out AprString logMessage, out SvnPath tmpFile,
-						 		   	  	        AprArray commitItems, IntPtr baton,
-								      	        AprPool pool)
+	class Application : Options
 	{
-		if (!commitItems.IsNull)
-		{
-			foreach (SvnClientCommitItem item in commitItems)
+		public class SubCommand {
+			public string LongName;
+			public string ShortName;
+			public string Description;
+			public Type Impl;
+			public SubCommand(string longName, string shortName, string desc, Type impl)
 			{
-				Console.WriteLine("C1: {1} ({2}) r{3}",
-					item.Path, item.Kind, item.Revision);
-				Console.WriteLine("C2: {1} -> {2}",
-					item.Url,
-					item.CopyFromUrl);
-			}
-			Console.WriteLine();
+				LongName = longName;
+				ShortName = shortName;
+				Description = desc;
+				Impl = impl;
+			} 
 		}
 		
-		Console.Write("Enter log message: ");
-		logMessage = new AprString(Console.ReadLine(), pool);
-		tmpFile = new AprString();
-		
-		return(SvnError.NoError);
-	}
-
+		private SortedList SubCommands = new SortedList();
+		private SortedList ShortCommands = new SortedList();
+		private bool mPendingHelp = false;
 	
-	public static SvnError CancelCallback(IntPtr baton)
-	{
-		return(SvnError.NoError);		
-	}
-	
-	public static SvnError SimpleAuth(out SvnAuthCredSimple cred, IntPtr baton, 
-        				   AprString realm, AprString username, 
-        				   bool maySave, AprPool pool)
-	{
-		Console.WriteLine("Simple Authentication");
-		Console.WriteLine("---------------------");
-		Console.WriteLine("Realm: {0}", realm);
-		Console.WriteLine("");
-		
-		bool valid = false;
-		string line = "";
-		
-		while(!valid)
+		public Application()
 		{
-			if (!username.IsNull)
-				Console.Write("Enter Username ({0}): ", username);
-			else
-				Console.Write("Enter Username: ");
-
-			line = Console.ReadLine();
-
-			if (line.Trim().Length == 0 && !username.IsNull)
+			Assembly a = Assembly.GetCallingAssembly();
+			foreach(Type t in a.GetTypes())
 			{
-				line = username.ToString();
-				valid = true;
-			}
-			else if (line.Trim().Length > 0)
-			{
-				valid = true;
-			}
-		}
-		
-		cred = SvnAuthCredSimple.Alloc(pool);
-		cred.Username = new AprString(line, pool);
-		Console.Write("Enter Password: ");
-		cred.Password = new AprString(Console.ReadLine(), pool);
-		cred.MaySave = maySave;
-		return(SvnError.NoError);
-	}
-	
-	public static SvnError UsernameAuth(out SvnAuthCredUsername cred, IntPtr baton, 
-										AprString realm, bool maySave, AprPool pool)
-	{
-		Console.WriteLine("Username Authentication:");
-		Console.WriteLine("------------------------");
-		Console.WriteLine("Realm: {0}", realm);
-		Console.WriteLine("");
-
-		bool valid = false;
-		string line = "";
-		
-		while(!valid)
-		{
-			Console.Write("Enter Username: ");
-
-			line = Console.ReadLine();
-
-			if (line.Trim().Length > 0)
-			{
-				valid = true;
-			}
-		}
-		
-		cred = SvnAuthCredUsername.Alloc(pool);
-		cred.Username = new AprString(line, pool);
-		cred.MaySave = maySave;
-		return(SvnError.NoError);
-	}
-	
-    public static SvnError SslServerTrustAuth(out SvnAuthCredSslServerTrust cred, 
-					       				      IntPtr baton, AprString realm, 
-									   		  SvnAuthCredSslServerTrust.CertFailures failures, 
-									   		  SvnAuthSslServerCertInfo certInfo, 
-									   		  bool maySave, IntPtr pool)
-	{
-		Console.WriteLine("Ssl Server Trust Prompt:");
-		Console.WriteLine("------------------------");
-		Console.WriteLine("");
-		
-		Console.WriteLine("Error validating server certificate for '{0}':", realm);
-		if ((failures & SvnAuthCredSslServerTrust.CertFailures.UnknownCA) > 0)
-			Console.WriteLine(" - The certificate is not issued by a trusted authority");
-		if ((failures & SvnAuthCredSslServerTrust.CertFailures.CNMismatch) > 0)
-			Console.WriteLine(" - The certificate hostname does not match");
-		if ((failures & SvnAuthCredSslServerTrust.CertFailures.NotYetValid) > 0)
-			Console.WriteLine(" - The certificate is not yet valid");
-		if ((failures & SvnAuthCredSslServerTrust.CertFailures.Expired) > 0)
-			Console.WriteLine(" - The certificate has expired");
-		if ((failures & SvnAuthCredSslServerTrust.CertFailures.Other) > 0)
-			Console.WriteLine(" - The certificate has an unknown error");
-	
-		Console.WriteLine("Certificate informations:");
-		Console.WriteLine("\tHostName:    " + certInfo.Hostname);
-		Console.WriteLine("\tIssuer:      " + certInfo.IssuerDName);
-		Console.WriteLine("\tValid From:  " + certInfo.ValidFrom);
-		Console.WriteLine("\tValid Until: " + certInfo.ValidUntil);
-		Console.WriteLine("\tFingerprint: " + certInfo.Fingerprint);
-	
-		cred = SvnAuthCredSslServerTrust.Alloc(pool);
-		bool valid = false;
-		while (!valid)
-		{
-			if (maySave)
-				Console.WriteLine("(R)eject, accept (t)emporarily or accept (p)ermanently? ");
-			else
-				Console.WriteLine("(R)eject or accept (t)emporarily? ");
-				
-			string line = Console.ReadLine();
-			if (line.Length > 0)
-			{
-				char choice = line.ToLower()[0];
-				if (choice == 'r')
+				object[] o;
+				if((o = t.GetCustomAttributes(typeof(SubCommandAttribute),true)) != null
+				   && o.Length != 0)
 				{
-					cred.AcceptedFailures = 0;
-					cred.MaySave=false;
-					valid = true;
-				}
-				else if (choice == 't')
-				{
-					cred.AcceptedFailures = failures;
-					cred.MaySave=false;
-					valid = true;
-				}
-				else if (choice == 'p')
-				{
-					cred.AcceptedFailures = failures;
-					cred.MaySave=true;
-					valid = true;
+					SubCommandAttribute sc = (SubCommandAttribute)o[0];
+					SubCommands.Add(sc.LongName,new SubCommand(sc.LongName,sc.ShortName,sc.Description,t));
+					if (sc.ShortName != string.Empty)
+						ShortCommands.Add(sc.ShortName,sc.LongName);
 				}
 			}
 		}
-		return(SvnError.NoError);
+	
+		private WhatToDoNext UsageAppend(WhatToDoNext ret)
+		{
+			Console.Write("Subcommands: ");
+			bool addSep = false;
+			foreach(SubCommand sc in SubCommands.Values)
+			{
+				if( addSep )
+					Console.Write(", ");
+				else
+					addSep = true;
+				Console.Write(sc.LongName);
+				if( sc.ShortName != string.Empty )
+					Console.Write("[{0}]",sc.ShortName);
+			}
+			Console.WriteLine("\nFor help on subcommands, use the -?/--help subcommand option.");
+			return(ret);
+		}
+			
+		public override WhatToDoNext DoUsage()
+		{
+			return WhatToDoNext.GoAhead;
+		}
+
+		public override WhatToDoNext DoHelp()
+		{
+			mPendingHelp = true;
+			return WhatToDoNext.GoAhead;
+		}
+
+		public int Run(string[] args)
+		{
+			ProcessArgs(args);
+
+			if( RemainingArguments.Length == 0 )
+			{
+				if( mPendingHelp )
+					UsageAppend(base.DoHelp());
+				else
+					UsageAppend(base.DoUsage());
+				return(0);
+			}
+
+			SubCommand sc;
+			if ((sc = (SubCommand) SubCommands[RemainingArguments[0].ToLower()]) == null)
+			{
+				string shortCmd = (string) ShortCommands[RemainingArguments[0].ToLower()];
+				if( shortCmd == null
+					|| (sc = (SubCommand) SubCommands[shortCmd]) == null ) 
+				{
+					if( mPendingHelp )
+						UsageAppend(base.DoHelp());
+					else
+						UsageAppend(base.DoUsage());
+					return(1);
+				}
+			}
+
+			ConstructorInfo ctor = sc.Impl.GetConstructor(new Type[0]);
+			MethodInfo run = sc.Impl.GetMethod("Run",new Type[] { typeof(SubCommand), typeof(string[]) });
+	
+			if(ctor == null || run == null || run.ReturnType != typeof(int))
+				throw new InvalidOperationException("Invalid subcommand class");		
+							
+			return((int)run.Invoke(ctor.Invoke(new object[0]),new object[] { sc, args }));			
+		}
+
+		public static int Main(string[] args)
+		{
+			Application progInst = new Application();
+			return( progInst.Run(args) );				
+		}		
+	}
+
+	[AttributeUsage(AttributeTargets.Class)]
+	public class SubCommandAttribute : Attribute
+	{
+		public string ShortName;
+		public string LongName;
+		public string Description;
+		
+		public SubCommandAttribute(string longName)
+		{
+			ShortName = string.Empty;
+			LongName = longName.ToLower();
+			Description = string.Empty;
+		}
+		
+		public SubCommandAttribute(string longName, string shortName)
+		{
+			ShortName = shortName.ToLower();
+			LongName = longName.ToLower();
+			Description = string.Empty;
+		}
+
+		public SubCommandAttribute(string longName, string shortName, string desc)
+		{
+			ShortName = shortName.ToLower();
+			LongName = longName.ToLower();
+			Description = desc;
+		}
 	}
 }
