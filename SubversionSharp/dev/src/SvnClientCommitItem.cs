@@ -88,12 +88,12 @@ namespace Softec.SubversionSharp
         #endregion
 		
 		#region Properties wrappers
-		public AprString Path
+		public SvnPath Path
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mCommitItem->path));
+				return(new SvnPath(mCommitItem->path));
 			}
 		}
 		

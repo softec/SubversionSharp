@@ -53,7 +53,7 @@ namespace Softec.SubversionSharp
 			Conflicted
     	 }
 
-         public delegate void Func(IntPtr baton, AprString Path,  
+         public delegate void Func(IntPtr baton, SvnPath Path,  
         				 		   Action action, Svn.NodeKind kind,
         				 		   AprString mimeType, State contentState,
         				 		   State propState, int revNum);

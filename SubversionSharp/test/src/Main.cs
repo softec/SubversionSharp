@@ -43,14 +43,14 @@ class MainClass
 		client.Pool.Destroy();        
 	}
 	
-	public static void NotifyCallback(IntPtr baton, AprString Path,  
+	public static void NotifyCallback(IntPtr baton, SvnPath Path,  
         			 	 	          SvnWcNotify.Action action, Svn.NodeKind kind,
         			 		          AprString mimeType, SvnWcNotify.State contentState,
         			 		          SvnWcNotify.State propState, int revNum)
     {
     }
 	
-	public static SvnError GetCommitLogCallback(out AprString logMessage, out AprString tmpFile,
+	public static SvnError GetCommitLogCallback(out AprString logMessage, out SvnPath tmpFile,
 						 		   	  	        AprArray commitItems, IntPtr baton,
 								      	        AprPool pool)
 	{

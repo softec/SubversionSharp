@@ -74,8 +74,8 @@ namespace Softec.SubversionSharp
         {
         	SvnWcNotify.Func func = mFunc as SvnWcNotify.Func;
         	try {
-            	Debug.WriteLine(String.Format("[Callback:{0}]SvnWcNotifyFunc({1:X},{2},{3},{4},{5},{6},{7},{8})",func.Method.Name,baton.ToInt32(),new AprString(path),(SvnWcNotify.Action) action,(Svn.NodeKind) kind,new AprString(mime_type),(SvnWcNotify.State) content_state,(SvnWcNotify.State) prop_state,revision));
-        		func(baton, new AprString(path),
+            	Debug.WriteLine(String.Format("[Callback:{0}]SvnWcNotifyFunc({1:X},{2},{3},{4},{5},{6},{7},{8})",func.Method.Name,baton.ToInt32(),new SvnPath(path),(SvnWcNotify.Action) action,(Svn.NodeKind) kind,new AprString(mime_type),(SvnWcNotify.State) content_state,(SvnWcNotify.State) prop_state,revision));
+        		func(baton, new SvnPath(path),
         		     (SvnWcNotify.Action) action, (Svn.NodeKind) kind, 
         		     new AprString(mime_type), (SvnWcNotify.State) content_state,
         		     (SvnWcNotify.State) prop_state, revision);
@@ -103,7 +103,7 @@ namespace Softec.SubversionSharp
         	SvnClient.GetCommitLog func = mFunc as SvnClient.GetCommitLog;
         	try {
 	        	AprString logMessage;
-	        	AprString tmpFile;
+	        	SvnPath tmpFile;
             	Debug.Write(String.Format("[Callback:{0}]SvnClientGetCommitLog({1},{2:X},{3})...",func.Method.Name,new AprArray(commit_items),baton.ToInt32(),new AprPool(pool)));
         		err = func(out logMessage, out tmpFile,
          				   new AprArray(commit_items,typeof(SvnClientCommitItem)), baton,
@@ -159,8 +159,8 @@ namespace Softec.SubversionSharp
 	 	{
         	SvnWcStatus.Func func = mFunc as SvnWcStatus.Func;
         	try {
-            	Debug.WriteLine(String.Format("[Callback:{0}]SvnWcStatusFunc({1:X},{2},{3})",func.Method.Name,baton.ToInt32(),new AprString(path),new SvnWcStatus(status)));
-        		func(baton, new AprString(path), (SvnWcStatus) status);
+            	Debug.WriteLine(String.Format("[Callback:{0}]SvnWcStatusFunc({1:X},{2},{3})",func.Method.Name,baton.ToInt32(),new SvnPath(path),new SvnWcStatus(status)));
+        		func(baton, new SvnPath(path), (SvnWcStatus) status);
         	}
         	catch( Exception ) {
         		return;

@@ -111,12 +111,12 @@ namespace Softec.SubversionSharp
         #endregion
 		
 		#region Properties wrappers
-		public AprString Name
+		public SvnPath Name
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mEntry->name));
+				return(new SvnPath(mEntry->name));
 			}
 		}
 		 
@@ -228,39 +228,39 @@ namespace Softec.SubversionSharp
 			}
 		}
 		
-		public AprString ConflictOld
+		public SvnPath ConflictOld
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mEntry->conflict_old));
+				return(new SvnPath(mEntry->conflict_old));
 			}
 		}
 
-		public AprString ConflictNew
+		public SvnPath ConflictNew
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mEntry->conflict_new));
+				return(new SvnPath(mEntry->conflict_new));
 			}
 		}
 		
-		public AprString ConflictWork
+		public SvnPath ConflictWork
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mEntry->conflict_wrk));
+				return(new SvnPath(mEntry->conflict_wrk));
 			}
 		}
 
-		public AprString RejectFile
+		public SvnPath RejectFile
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mEntry->prejfile));
+				return(new SvnPath(mEntry->prejfile));
 			}
 		}
 

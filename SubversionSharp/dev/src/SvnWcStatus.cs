@@ -17,7 +17,7 @@ namespace Softec.SubversionSharp
 {
     public unsafe class SvnWcStatus : IAprUnmanaged
     {
-	 	public delegate void Func(IntPtr baton, AprString path, SvnWcStatus status);
+	 	public delegate void Func(IntPtr baton, SvnPath path, SvnWcStatus status);
 	 	
 		public enum Kind {
 			None = 1,

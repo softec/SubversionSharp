@@ -16,7 +16,7 @@ namespace Softec.SubversionSharp
 {
     public class SvnClientBase
     {
-    	public delegate SvnError GetCommitLog(out AprString logMessage, out AprString tmpFile,
+    	public delegate SvnError GetCommitLog(out AprString logMessage, out SvnPath tmpFile,
          						 		   	  AprArray commitItems, IntPtr baton,
          								      AprPool pool);
 
@@ -29,7 +29,7 @@ namespace Softec.SubversionSharp
  											   AprString author, AprString date, AprString line, 
  											   AprPool pool);
          								                								                								       
-		public static int Checkout(string url, string path, 
+		public static int Checkout(SvnUrl url, SvnPath path, 
 								   SvnOptRevision revision, 
 								   bool recurse, SvnClientContext ctx, AprPool pool)
 		{
@@ -45,7 +45,7 @@ namespace Softec.SubversionSharp
 		}
 		
 		
-		public static int Update(string path, 
+		public static int Update(SvnPath path, 
 								 SvnOptRevision revision, 
 								 bool recurse, SvnClientContext ctx, AprPool pool)
 		{
@@ -60,7 +60,7 @@ namespace Softec.SubversionSharp
 			return(rev);
 		}
 		
-		public static int Switch(string path, string url, 
+		public static int Switch(SvnPath path, SvnUrl url, 
 								 SvnOptRevision revision, 
 								 bool recurse, SvnClientContext ctx, AprPool pool)
 		{
@@ -75,7 +75,7 @@ namespace Softec.SubversionSharp
 			return(rev);
 		}
 		
-		public static void Add(string path,
+		public static void Add(SvnPath path,
 							   bool recurse, 
 							   SvnClientContext ctx, AprPool pool)
 		{
@@ -110,7 +110,7 @@ namespace Softec.SubversionSharp
 			return(commitInfo);
 		}
 		
-		public static SvnClientCommitInfo Import(string path, string url, bool nonrecursive,  
+		public static SvnClientCommitInfo Import(SvnPath path, SvnUrl url, bool nonrecursive,  
 							   					 SvnClientContext ctx, AprPool pool)
 		{
 			IntPtr commitInfo;
@@ -136,7 +136,7 @@ namespace Softec.SubversionSharp
 			return(commitInfo);
 		}
 		
-		public static int Status(string path,
+		public static int Status(SvnPath path,
 								 SvnOptRevision revision,
 								 SvnWcStatus.Func statusFunc, IntPtr statusBaton,
 								 bool descend, bool getAll, bool update, bool noIgnore,
@@ -178,14 +178,30 @@ namespace Softec.SubversionSharp
 				throw new SvnException(err);
 		}
 		
-		public static void Blame(string pathOrUrl,
+		public static void Blame(SvnPath pathOrUrl,
 								 SvnOptRevision start, SvnOptRevision end, 
 								 BlameReceiver receiver, IntPtr baton,
 							     SvnClientContext ctx, AprPool pool)
 		{
+			InternalBlame(pathOrUrl, start, end, receiver, baton, ctx, pool);
+		}
+		
+		public static void Blame(SvnUrl pathOrUrl,
+								 SvnOptRevision start, SvnOptRevision end, 
+								 BlameReceiver receiver, IntPtr baton,
+							     SvnClientContext ctx, AprPool pool)
+		{
+			InternalBlame(pathOrUrl, start, end, receiver, baton, ctx, pool);
+		}
+		
+		protected static void InternalBlame(IAprUnmanaged pathOrUrl,
+								 		  SvnOptRevision start, SvnOptRevision end, 
+										  BlameReceiver receiver, IntPtr baton,
+										  SvnClientContext ctx, AprPool pool)
+		{
 			SvnDelegate receiverDelegate = new SvnDelegate(receiver);
 			Debug.WriteLine(String.Format("svn_client_blame({0},{1},{2},{3},{4:X},{5},{6})",pathOrUrl,start,end,receiver.Method.Name,baton.ToInt32(),ctx,pool));
-			SvnError err = Svn.svn_client_blame(pathOrUrl, start, end,
+			SvnError err = Svn.svn_client_blame(pathOrUrl.ToIntPtr(), start, end,
 											    (Svn.svn_client_blame_receiver_t)receiverDelegate.Wrapper,
 											    baton,
 											    ctx, pool);
@@ -194,8 +210,41 @@ namespace Softec.SubversionSharp
 		}
 		
 		public static void Diff(AprArray diffOptions,
-								string path1, SvnOptRevision revision1,
-								string path2, SvnOptRevision revision2,
+								SvnPath path1, SvnOptRevision revision1,
+								SvnPath path2, SvnOptRevision revision2,
+								bool recurse, bool ignoreAncestry, bool noDiffDeleted,
+								AprFile outFile, AprFile errFile,  
+							    SvnClientContext ctx, AprPool pool)
+		{
+			InternalDiff(diffOptions, path1, revision1, path2, revision2,
+						 recurse, ignoreAncestry, noDiffDeleted, outFile, errFile, ctx, pool);
+		}
+		
+		public static void Diff(AprArray diffOptions,
+								SvnUrl path1, SvnOptRevision revision1,
+								SvnPath path2, SvnOptRevision revision2,
+								bool recurse, bool ignoreAncestry, bool noDiffDeleted,
+								AprFile outFile, AprFile errFile,  
+							    SvnClientContext ctx, AprPool pool)
+		{
+			InternalDiff(diffOptions, path1, revision1, path2, revision2,
+						 recurse, ignoreAncestry, noDiffDeleted, outFile, errFile, ctx, pool);
+		}
+		
+		public static void Diff(AprArray diffOptions,
+								SvnPath path1, SvnOptRevision revision1,
+								SvnUrl path2, SvnOptRevision revision2,
+								bool recurse, bool ignoreAncestry, bool noDiffDeleted,
+								AprFile outFile, AprFile errFile,  
+							    SvnClientContext ctx, AprPool pool)
+		{
+			InternalDiff(diffOptions, path1, revision1, path2, revision2,
+						 recurse, ignoreAncestry, noDiffDeleted, outFile, errFile, ctx, pool);
+		}
+		
+		public static void Diff(AprArray diffOptions,
+								SvnUrl path1, SvnOptRevision revision1,
+								SvnUrl path2, SvnOptRevision revision2,
 								bool recurse, bool ignoreAncestry, bool noDiffDeleted,
 								AprFile outFile, AprFile errFile,  
 							    SvnClientContext ctx, AprPool pool)
@@ -209,14 +258,52 @@ namespace Softec.SubversionSharp
 				throw new SvnException(err);
 		}
 		
-		public static void Merge(string source1, SvnOptRevision revision1,
-								 string source2, SvnOptRevision revision2,
-								 string targetWCPath, bool recurse,
+		protected static void InternalDiff(AprArray diffOptions,
+								IAprUnmanaged path1, SvnOptRevision revision1,
+								IAprUnmanaged path2, SvnOptRevision revision2,
+								bool recurse, bool ignoreAncestry, bool noDiffDeleted,
+								AprFile outFile, AprFile errFile,  
+							    SvnClientContext ctx, AprPool pool)
+		{
+			Debug.WriteLine(String.Format("svn_client_diff({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11})",diffOptions,path1,revision1,path2,revision2,recurse,ignoreAncestry,noDiffDeleted,outFile,errFile,ctx,pool));
+			SvnError err = Svn.svn_client_diff(diffOptions, path1.ToIntPtr(), revision1, 
+											   path2.ToIntPtr(), revision2,
+											   (recurse ? 1 : 0), (ignoreAncestry ? 1 : 0),
+											   (noDiffDeleted ? 1 : 0), outFile, errFile,
+											   ctx, pool);
+			if( !err.IsNoError )
+				throw new SvnException(err);
+		}
+		
+		public static void Merge(SvnPath source1, SvnOptRevision revision1,
+								 SvnPath source2, SvnOptRevision revision2,
+								 SvnPath targetWCPath, bool recurse,
 								 bool ignoreAncestry, bool force, bool dryRun,
 							     SvnClientContext ctx, AprPool pool)
 		{
+			InternalMerge(source1, revision1, source2, revision2, targetWCPath, recurse,
+						  ignoreAncestry, force, dryRun, ctx, pool);
+		}
+		
+		public static void Merge(SvnUrl source1, SvnOptRevision revision1,
+								 SvnUrl source2, SvnOptRevision revision2,
+								 SvnPath targetWCPath, bool recurse,
+								 bool ignoreAncestry, bool force, bool dryRun,
+							     SvnClientContext ctx, AprPool pool)
+		{
+			InternalMerge(source1, revision1, source2, revision2, targetWCPath, recurse,
+						  ignoreAncestry, force, dryRun, ctx, pool);
+		}
+		
+		protected static void InternalMerge(IAprUnmanaged source1, SvnOptRevision revision1,
+										  IAprUnmanaged source2, SvnOptRevision revision2,
+										  SvnPath targetWCPath, bool recurse,
+										  bool ignoreAncestry, bool force, bool dryRun,
+										  SvnClientContext ctx, AprPool pool)
+		{
 			Debug.WriteLine(String.Format("svn_client_merge({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10})",source1,revision1,source2,revision2,targetWCPath,recurse,ignoreAncestry,force,dryRun,ctx,pool));
-			SvnError err = Svn.svn_client_merge(source1, revision1, source2, revision2,
+			SvnError err = Svn.svn_client_merge(source1.ToIntPtr(), revision1, 
+												source2.ToIntPtr(), revision2,
 											    targetWCPath, (recurse ? 1 : 0),
 											    (ignoreAncestry ? 1 : 0), (force ? 1 : 0),
 											    (dryRun ? 1 : 0),
@@ -225,7 +312,7 @@ namespace Softec.SubversionSharp
 				throw new SvnException(err);
 		}
 		
-		public static void CleanUp(string dir,
+		public static void CleanUp(SvnPath dir,
 							       SvnClientContext ctx, AprPool pool)
 		{
 			Debug.WriteLine(String.Format("svn_client_cleanup({0},{1},{2})",dir,ctx,pool));
@@ -234,7 +321,7 @@ namespace Softec.SubversionSharp
 				throw new SvnException(err);
 		}
 		
-		public static void Relocate(string dir, string from, string to,
+		public static void Relocate(SvnPath dir, SvnUrl from, SvnUrl to,
 									bool recurse,
 							        SvnClientContext ctx, AprPool pool)
 		{
@@ -253,7 +340,7 @@ namespace Softec.SubversionSharp
 				throw new SvnException(err);
 		}
 		
-		public static void Resolved(string path, bool recurse, 								  
+		public static void Resolved(SvnPath path, bool recurse, 								  
 							        SvnClientContext ctx, AprPool pool)
 		{
 			Debug.WriteLine(String.Format("svn_client_resolved({0},{1},{2},{3})",path,recurse,ctx,pool));
@@ -262,14 +349,28 @@ namespace Softec.SubversionSharp
 				throw new SvnException(err);
 		}
 		
-		public static SvnClientCommitInfo Copy(string srcPath, SvnOptRevision srcRevision,
-											   string dstPath,
+		public static void Copy(SvnPath srcPath, SvnOptRevision srcRevision,
+								SvnPath dstPath,
+								SvnClientContext ctx, AprPool pool)
+		{
+			InternalCopy(srcPath, srcRevision, dstPath, ctx, pool);
+		}
+							        
+		public static SvnClientCommitInfo Copy(SvnUrl srcPath, SvnOptRevision srcRevision,
+											   SvnUrl dstPath,
 							   				   SvnClientContext ctx, AprPool pool)
+		{
+			return InternalCopy(srcPath, srcRevision, dstPath, ctx, pool);
+		}
+							        
+		protected static SvnClientCommitInfo InternalCopy(IAprUnmanaged srcPath, SvnOptRevision srcRevision,
+														IAprUnmanaged dstPath,
+							   							SvnClientContext ctx, AprPool pool)
 		{
 			IntPtr commitInfo;
 			Debug.Write(String.Format("svn_client_copy({0},{1},{2},{3},{4})...",srcPath,srcRevision,dstPath,ctx,pool));
-			SvnError err = Svn.svn_client_copy(out commitInfo, srcPath, srcRevision,
-											   dstPath,
+			SvnError err = Svn.svn_client_copy(out commitInfo, srcPath.ToIntPtr(), srcRevision,
+											   dstPath.ToIntPtr(),
 											   ctx, pool);
 			if( !err.IsNoError )
 				throw new SvnException(err);
@@ -277,14 +378,29 @@ namespace Softec.SubversionSharp
 			return(commitInfo);
 		}
 							        
-		public static SvnClientCommitInfo Move(string srcPath, SvnOptRevision srcRevision,
-											   string dstPath, bool force,
+		public static void Move(SvnPath srcPath, SvnOptRevision srcRevision,
+								SvnPath dstPath, bool force,
+								SvnClientContext ctx, AprPool pool)
+		{
+			InternalMove(srcPath, srcRevision, dstPath, force, ctx, pool);
+		}
+		
+		public static SvnClientCommitInfo Move(SvnUrl srcPath, SvnOptRevision srcRevision,
+											   SvnUrl dstPath, bool force,
 							   				   SvnClientContext ctx, AprPool pool)
+		{
+			return InternalMove(srcPath, srcRevision, dstPath, force, ctx, pool);
+		}
+		
+		public static SvnClientCommitInfo InternalMove(IAprUnmanaged srcPath, 
+													   SvnOptRevision srcRevision,
+													   IAprUnmanaged dstPath, bool force,
+							   						   SvnClientContext ctx, AprPool pool)
 		{
 			IntPtr commitInfo;
 			Debug.Write(String.Format("svn_client_move({0},{1},{2},{3},{4},{5})...",srcPath,srcRevision,dstPath,force,ctx,pool));
-			SvnError err = Svn.svn_client_move(out commitInfo, srcPath, srcRevision,
-											   dstPath, (force ? 1 : 0),
+			SvnError err = Svn.svn_client_move(out commitInfo, srcPath.ToIntPtr(), srcRevision,
+											   dstPath.ToIntPtr(), (force ? 1 : 0),
 											   ctx, pool);
 			if( !err.IsNoError )
 				throw new SvnException(err);
@@ -292,18 +408,30 @@ namespace Softec.SubversionSharp
 			return(commitInfo);
 		}
 		
-		public static void PropSet(string propName, SvnString propVal, string target, 
+		public static void PropSet(string propName, SvnString propVal, SvnPath target, 
 								   bool recurse, AprPool pool)		
 		{
+			InternalPropSet(propName, propVal, target, recurse, pool);		
+		}
+		
+		public static void PropSet(string propName, SvnString propVal, SvnUrl target, 
+								   bool recurse, AprPool pool)		
+		{
+			InternalPropSet(propName, propVal, target, recurse, pool);		
+		}
+		
+		protected static void InternalPropSet(string propName, SvnString propVal, IAprUnmanaged target, 
+											bool recurse, AprPool pool)		
+		{
 			Debug.WriteLine(String.Format("svn_client_propset({0},{1},{2},{3},{4})",propName,propVal,target,recurse,pool));
-			SvnError err = Svn.svn_client_propset(propName, propVal, target,
+			SvnError err = Svn.svn_client_propset(propName, propVal, target.ToIntPtr(),
 												  (recurse ? 1 : 0), pool);
 			if( !err.IsNoError )
 				throw new SvnException(err);
 		}
 		
 		public static int RevPropSet(string propName, SvnString propVal,
-								  	 string url, SvnOptRevision revision, bool force,
+								  	 SvnUrl url, SvnOptRevision revision, bool force,
 								  	 SvnClientContext ctx, AprPool pool)		
 		{
 			int rev;
@@ -317,13 +445,27 @@ namespace Softec.SubversionSharp
 			return(rev);
 		}
 		
-		public static AprHash PropGet(string propName, string target,
+		public static AprHash PropGet(string propName, SvnPath target,
 									  SvnOptRevision revision, bool recurse, 
 								  	  SvnClientContext ctx, AprPool pool)		
 		{
+			return InternalPropGet(propName, target, revision, recurse, ctx, pool);		
+		}
+		
+		public static AprHash PropGet(string propName, SvnUrl target,
+									  SvnOptRevision revision, bool recurse, 
+								  	  SvnClientContext ctx, AprPool pool)		
+		{
+			return InternalPropGet(propName, target, revision, recurse, ctx, pool);		
+		}
+		
+		protected static AprHash InternalPropGet(string propName, IAprUnmanaged target,
+											   SvnOptRevision revision, bool recurse, 
+								  			   SvnClientContext ctx, AprPool pool)		
+		{
 			IntPtr h;
 			Debug.Write(String.Format("svn_client_propget({0},{1},{2},{3},{4},{5})...",propName,target,revision,recurse,ctx,pool));
-			SvnError err = Svn.svn_client_propget(out h, propName, target, revision,
+			SvnError err = Svn.svn_client_propget(out h, propName, target.ToIntPtr(), revision,
 												  (recurse ? 1 : 0),
 												  ctx, pool);
 			if( !err.IsNoError )
@@ -332,7 +474,7 @@ namespace Softec.SubversionSharp
 			return(h);
 		}
 		
-		public static SvnString RevPropGet(string propName, string url,
+		public static SvnString RevPropGet(string propName, SvnUrl url,
 										   SvnOptRevision revision, out int setRev, 
 										   SvnClientContext ctx, AprPool pool)		
 		{
@@ -346,13 +488,27 @@ namespace Softec.SubversionSharp
 			return(s);
 		}
 		
-		public static AprHash PropList(string target,
+		public static AprHash PropList(SvnPath target,
 									   SvnOptRevision revision, bool recurse, 
 								  	   SvnClientContext ctx, AprPool pool)		
 		{
+			return InternalPropList(target, revision, recurse, ctx, pool);		
+		}
+		
+		public static AprHash PropList(SvnUrl target,
+									   SvnOptRevision revision, bool recurse, 
+								  	   SvnClientContext ctx, AprPool pool)		
+		{
+			return InternalPropList(target, revision, recurse, ctx, pool);		
+		}
+		
+		protected static AprHash InternalPropList(IAprUnmanaged target,
+									   			SvnOptRevision revision, bool recurse, 
+								  	   			SvnClientContext ctx, AprPool pool)		
+		{
 			IntPtr h;
 			Debug.Write(String.Format("svn_client_proplist({0},{1},{2},{3},{4})...",target,revision,recurse,ctx,pool));
-			SvnError err = Svn.svn_client_proplist(out h, target, revision,
+			SvnError err = Svn.svn_client_proplist(out h, target.ToIntPtr(), revision,
 												   (recurse ? 1 : 0),
 												   ctx, pool);
 			if( !err.IsNoError )
@@ -361,7 +517,7 @@ namespace Softec.SubversionSharp
 			return(h);
 		}
 		
-		public static AprHash RevPropList(string url,
+		public static AprHash RevPropList(SvnUrl url,
 										  SvnOptRevision revision, out int setRev, 
 										  SvnClientContext ctx, AprPool pool)		
 		{
@@ -375,13 +531,27 @@ namespace Softec.SubversionSharp
 			return(h);
 		}
 
-		public static int Export(string from, string to, 
-								   SvnOptRevision revision, 
-								   bool force, SvnClientContext ctx, AprPool pool)
+		public static void Export(SvnPath from, SvnPath to, 
+								  SvnOptRevision revision, 
+								  bool force, SvnClientContext ctx, AprPool pool)
+		{
+			InternalExport(from, to, revision, force, ctx, pool);
+		}
+		
+		public static int Export(SvnUrl from, SvnPath to, 
+								 SvnOptRevision revision, 
+								 bool force, SvnClientContext ctx, AprPool pool)
+		{
+			return InternalExport(from, to, revision, force, ctx, pool);
+		}
+		
+		protected static int InternalExport(IAprUnmanaged from, SvnPath to, 
+										  SvnOptRevision revision, 
+										  bool force, SvnClientContext ctx, AprPool pool)
 		{
 			int rev;
 			Debug.Write(String.Format("svn_client_export({0},{1},{2},{3},{4},{5})...",from,to,revision,force,ctx,pool));
-			SvnError err = Svn.svn_client_export(out rev, from, to, 
+			SvnError err = Svn.svn_client_export(out rev, from.ToIntPtr(), to, 
 												 revision, 
 												 (force ? 1 :0), ctx, pool);
 			if( !err.IsNoError )
@@ -390,13 +560,27 @@ namespace Softec.SubversionSharp
 			return(rev);
 		}
 		
-		public static AprHash List(string pathOrUrl,
+		public static AprHash List(SvnPath pathOrUrl,
 								   SvnOptRevision revision, bool recurse, 
 								   SvnClientContext ctx, AprPool pool)		
 		{
+			return InternalList(pathOrUrl, revision, recurse, ctx, pool);		
+		}
+		
+		public static AprHash List(SvnUrl pathOrUrl,
+								   SvnOptRevision revision, bool recurse, 
+								   SvnClientContext ctx, AprPool pool)		
+		{
+			return InternalList(pathOrUrl, revision, recurse, ctx, pool);		
+		}
+		
+		protected static AprHash InternalList(IAprUnmanaged pathOrUrl,
+								   			SvnOptRevision revision, bool recurse, 
+											SvnClientContext ctx, AprPool pool)		
+		{
 			IntPtr h;
 			Debug.Write(String.Format("svn_client_list({0},{1},{2},{3},{4})...",pathOrUrl,revision,recurse,ctx,pool));
-			SvnError err = Svn.svn_client_ls(out h, pathOrUrl, revision, (recurse ? 1 : 0),
+			SvnError err = Svn.svn_client_ls(out h, pathOrUrl.ToIntPtr(), revision, (recurse ? 1 : 0),
 											 ctx, pool);
 			if( !err.IsNoError )
 				throw new SvnException(err);
@@ -404,28 +588,52 @@ namespace Softec.SubversionSharp
 			return(h);
 		}
 		
-		public static void Cat(SvnStream stream, string pathOrUrl,
+		public static void Cat(SvnStream stream, SvnPath pathOrUrl,
 							   SvnOptRevision revision, 
 							   SvnClientContext ctx, AprPool pool)		
 		{		
+			InternalCat(stream, pathOrUrl, revision, ctx, pool);		
+		}
+		
+		public static void Cat(SvnStream stream, SvnUrl pathOrUrl,
+							   SvnOptRevision revision, 
+							   SvnClientContext ctx, AprPool pool)		
+		{		
+			InternalCat(stream, pathOrUrl, revision, ctx, pool);		
+		}
+		
+		protected static void InternalCat(SvnStream stream, IAprUnmanaged pathOrUrl,
+										SvnOptRevision revision, 
+										SvnClientContext ctx, AprPool pool)		
+		{		
 			Debug.WriteLine(String.Format("svn_client_cat({0},{1},{2},{3},{4})",stream,pathOrUrl,revision,ctx,pool));
-			SvnError err = Svn.svn_client_cat(stream, pathOrUrl, revision, ctx, pool);
+			SvnError err = Svn.svn_client_cat(stream, pathOrUrl.ToIntPtr(), revision, ctx, pool);
 			if( !err.IsNoError )
 				throw new SvnException(err);
 		}
 		
-		public static AprString UrlFromPath(string pathOrUrl, AprPool pool)
+		public static SvnUrl UrlFromPath(SvnPath pathOrUrl, AprPool pool)
+		{
+			return InternalUrlFromPath(pathOrUrl, pool);
+		}
+		
+		public static SvnUrl UrlFromPath(SvnUrl pathOrUrl, AprPool pool)
+		{
+			return InternalUrlFromPath(pathOrUrl, pool);
+		}
+		
+		protected static SvnUrl InternalUrlFromPath(IAprUnmanaged pathOrUrl, AprPool pool)
 		{
 			IntPtr s;
 			Debug.Write(String.Format("svn_client_url_from_path({0},{1})...",pathOrUrl,pool));
-			SvnError err = Svn.svn_client_url_from_path(out s, pathOrUrl, pool);
+			SvnError err = Svn.svn_client_url_from_path(out s, pathOrUrl.ToIntPtr(), pool);
 			if( !err.IsNoError )
 				throw new SvnException(err);
 			Debug.WriteLine(String.Format("Done({0})",s));
 			return(s);
 		}
 		
-		public static AprString UuidFromUrl(string url, SvnClientContext ctx, AprPool pool)
+		public static AprString UuidFromUrl(SvnUrl url, SvnClientContext ctx, AprPool pool)
 		{
 			IntPtr s;
 			Debug.Write(String.Format("svn_client_uuid_from_url({0},{1})...",url,ctx,pool));
