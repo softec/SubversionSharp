@@ -96,6 +96,7 @@ namespace Softec.Applications
 			Regex FindTextArg = new Regex(@"^[/-][Tt][Ee][Xx][Tt]$", RegexOptions.Compiled);
 			Regex FindUTF8Arg = new Regex(@"^[/-][Uu][Tt][Ff]8$", RegexOptions.Compiled);
 			Regex FindCallConvAttribute = new Regex(@"\.custom instance void \[CallConvAttribute\]Softec.CallConv(.*?)Attribute::\.ctor\(\) = \([^)]*\)", RegexOptions.Compiled);
+			Regex FindAssembly = new Regex(@"\.assembly[ ]+([^ ]*?)_stdcall", RegexOptions.Compiled);
 			Regex FindInvokeMethod = new Regex(@"([ ]*)Invoke\(.*", RegexOptions.Compiled);
 
 			bool textMode = false;
@@ -173,7 +174,14 @@ Usage: CallConvHack [/TEXT [/UTF8] | infile] [outfile]
 						continue;
 					}
 
-					Match m = FindCallConvAttribute.Match(line);
+					Match m = FindAssembly.Match(line);
+					if (m.Success)
+					{
+						output.WriteLine(".assembly {0}", m.Groups[1].Value, callingConvention);
+						continue;
+					}
+
+					m = FindCallConvAttribute.Match(line);
 					if (m.Success)
 					{
 						callingConvention = m.Groups[1].Value;
