@@ -11,7 +11,6 @@
 
 using System;
 using System.Runtime.Serialization;
-using Softec;
 
 namespace Softec.AprSharp
 {

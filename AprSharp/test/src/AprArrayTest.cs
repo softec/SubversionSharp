@@ -98,6 +98,43 @@ namespace Softec.AprSharp.Test
 		}
 		
 		[Test]
+		public void PushPopObject()
+		{
+			AprPool p = AprPool.Create();
+        	Assert.IsFalse(p.IsNull,"#B01");
+		
+        	AprArray a = AprArray.Make(p,5,typeof(int));
+        	Assert.IsFalse(a.IsNull,"#B02");
+        	
+        	a.Push(1);
+        	a.Push(2);
+        	a.Push(3);
+        	a.Push(4);
+        	a.Push(5);
+        	
+        	Assert.AreEqual(5,a.PopObject(),"#B05");
+        	Assert.AreEqual(4,a.PopObject(),"#BO6");
+        	Assert.AreEqual(3,a.PopObject(),"#BO7");
+        	Assert.AreEqual(2,a.PopObject(),"#BO8");
+        	Assert.AreEqual(1,a.PopObject(),"#BO9");
+
+        	a = AprArray.Make(p,5,typeof(AprString));
+        	
+        	a.Push(new AprString(p,"This"));
+        	a.Push(new AprString(p,"is"));
+        	a.Push(new AprString(p,"a"));
+        	a.Push(new AprString(p,"test."));
+
+        	Assert.AreEqual("test.",a.PopObject().ToString(),"#B10");
+        	Assert.AreEqual("a",a.PopObject().ToString(),"#B11");
+        	Assert.AreEqual("is",a.PopObject().ToString(),"#B12");
+        	Assert.AreEqual("This",a.PopObject().ToString(),"#B13");
+
+           	p.Destroy();
+        	Assert.IsTrue(p.IsNull,"#B14");
+		}
+		
+		[Test]
 		public void Copy()
 		{
 			AprPool p = AprPool.Create();
@@ -204,6 +241,34 @@ namespace Softec.AprSharp.Test
 
            	p.Destroy();
         	Assert.IsTrue(p.IsNull,"#C04");
-        }		
+        }
+        
+        [Test]
+		public void CopyTo()
+		{
+			AprPool p = AprPool.Create();
+        	Assert.IsFalse(p.IsNull,"#C01");
+		
+        	AprArray a = AprArray.Make(p,5,typeof(AprString));
+        	Assert.IsFalse(a.IsNull,"#C02");
+        	
+        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"1"));
+        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"2"));
+        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"3"));
+        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"4"));
+        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"5"));
+        	
+        	AprString[] arr = new AprString[5]; 
+        	a.CopyTo(arr,0);
+        	
+        	Assert.AreEqual("1",arr[0].ToString(),"#C03");
+        	Assert.AreEqual("2",arr[1].ToString(),"#C04");
+        	Assert.AreEqual("3",arr[2].ToString(),"#C05");
+        	Assert.AreEqual("4",arr[3].ToString(),"#C06");
+        	Assert.AreEqual("5",arr[4].ToString(),"#C07");
+        	
+           	p.Destroy();
+        	Assert.IsTrue(p.IsNull,"#C08");
+		}
     }
 }

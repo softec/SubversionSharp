@@ -19,6 +19,7 @@
     <File name="./AprHash.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./AprHashIndex.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./AprArray.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./AprInvalidOperationException.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References />
   <DeploymentInformation target="" script="" strategy="File" />
