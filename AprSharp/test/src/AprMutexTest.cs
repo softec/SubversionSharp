@@ -57,8 +57,22 @@ namespace Softec.AprSharp.Test
         	m.Destroy();
         	Assert.IsTrue(m.IsNull,"#A05");
         	
-        	p.Destroy();
-        	Assert.IsTrue(p.IsNull,"#A06");
+			m = AprThreadMutex.Create(AprThreadMutex.AprThreadMutexFlags.Unnested,p);
+			Assert.IsFalse(m.IsNull,"#A06");
+			Assert.AreEqual(((IntPtr)p).ToInt32(),((IntPtr)(m.Pool)).ToInt32(),"#A04");
+
+			m.Destroy();
+			Assert.IsTrue(m.IsNull,"#A07");
+
+			m = AprThreadMutex.Create(AprThreadMutex.AprThreadMutexFlags.Nested,p);
+			Assert.IsFalse(m.IsNull,"#A08");
+			Assert.AreEqual(((IntPtr)p).ToInt32(),((IntPtr)(m.Pool)).ToInt32(),"#A04");
+
+			m.Destroy();
+			Assert.IsTrue(m.IsNull,"#A09");
+			
+			p.Destroy();
+        	Assert.IsTrue(p.IsNull,"#A10");
 		}
 
 		[Test]
@@ -67,7 +81,7 @@ namespace Softec.AprSharp.Test
 			AprPool p = AprPool.Create();
         	Assert.IsFalse(p.IsNull,"#B01");
 		
-        	AprThreadMutex m = AprThreadMutex.Create(p);
+        	AprThreadMutex m = AprThreadMutex.Create(AprThreadMutex.AprThreadMutexFlags.Unnested,p);
         	Assert.IsFalse(m.IsNull,"#B02");
         	Assert.AreEqual(((IntPtr)p).ToInt32(),((IntPtr)(m.Pool)).ToInt32(),"#B03");
 
@@ -87,8 +101,8 @@ namespace Softec.AprSharp.Test
 			AprPool p = AprPool.Create();
         	Assert.IsFalse(p.IsNull,"#B01");
 		
-        	AprThreadMutex m = AprThreadMutex.Create(p);
-        	Assert.IsFalse(m.IsNull,"#B02");
+			AprThreadMutex m = AprThreadMutex.Create(AprThreadMutex.AprThreadMutexFlags.Unnested,p);
+			Assert.IsFalse(m.IsNull,"#B02");
         	Assert.AreEqual(((IntPtr)p).ToInt32(),((IntPtr)(m.Pool)).ToInt32(),"#B03");
 
         	m.Lock();
