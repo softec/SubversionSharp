@@ -70,15 +70,15 @@ namespace Softec.SubversionSharp
         private void SvnWcNotifyFuncWrapper(IntPtr baton, IntPtr path, 
         									int action, int kind, 
         									IntPtr mime_type, int content_state, 
-        									int prop_state, uint revision)
+        									int prop_state, int revision)
         {
         	SvnWcNotify.Func func = mFunc as SvnWcNotify.Func;
         	try {
-            	Debug.WriteLine(String.Format("[Callback:{0}]SvnWcNotifyFunc({1:X},{2},{3},{4},{5},{6},{7},{8})",func.Method.Name,baton,new AprString(path),(SvnWcNotify.Action) action,(Svn.NodeKind) kind,new AprString(mime_type),(SvnWcNotify.State) content_state,(SvnWcNotify.State) prop_state,unchecked((int) revision)));
+            	Debug.WriteLine(String.Format("[Callback:{0}]SvnWcNotifyFunc({1:X},{2},{3},{4},{5},{6},{7},{8})",func.Method.Name,baton,new AprString(path),(SvnWcNotify.Action) action,(Svn.NodeKind) kind,new AprString(mime_type),(SvnWcNotify.State) content_state,(SvnWcNotify.State) prop_state,revision));
         		func(baton, new AprString(path),
         		     (SvnWcNotify.Action) action, (Svn.NodeKind) kind, 
         		     new AprString(mime_type), (SvnWcNotify.State) content_state,
-        		     (SvnWcNotify.State) prop_state, unchecked((int) revision));
+        		     (SvnWcNotify.State) prop_state, revision);
         	}
         	catch( Exception ) {
         		return;
@@ -177,16 +177,16 @@ namespace Softec.SubversionSharp
     	
     	//[CLSCompliant(false))]
  		private IntPtr SvnLogMessageReceiverWrapper(IntPtr baton, IntPtr changed_paths, 
- 												    uint revision, IntPtr author,
+ 												    int revision, IntPtr author,
  												    IntPtr date, IntPtr message,
  												    IntPtr pool)
  		{
        		SvnError err = SvnError.NoError;
         	SvnClient.LogMessageReceiver func = mFunc as SvnClient.LogMessageReceiver;
         	try {
-            	Debug.Write(String.Format("[Callback:{0}]SvnLogMessageReceiver({1:X},{2},{3},{4},{5},{6},{7})...",func.Method.Name,baton,new AprHash(changed_paths),unchecked((int)revision),new AprString(author),new AprString(date),new AprString(message),new AprPool(pool)));
+            	Debug.Write(String.Format("[Callback:{0}]SvnLogMessageReceiver({1:X},{2},{3},{4},{5},{6},{7})...",func.Method.Name,baton,new AprHash(changed_paths),revision,new AprString(author),new AprString(date),new AprString(message),new AprPool(pool)));
         		err = func(baton, new AprHash(changed_paths),
-        				   unchecked((int)revision), new AprString(author),
+        				   revision, new AprString(author),
         				   new AprString(date), new AprString(message),
         				   new AprPool(pool));
            		Debug.WriteLine((err.IsNoError) ? "Return(NoError)" : String.Format("Return({0})",err.Message));
@@ -200,7 +200,36 @@ namespace Softec.SubversionSharp
         	return(err);        
  		}         								       
     	
-    	    	
+
+		// svn_client_blame_receiver_t Wrapper   	
+    	public SvnDelegate(SvnClient.BlameReceiver func)
+    	{
+    		mFunc = func;
+    		mWrapperFunc = new Svn.svn_client_blame_receiver_t(SvnClientBlameReceiverWrapper);
+    	}
+    	
+ 		private IntPtr SvnClientBlameReceiverWrapper(IntPtr baton, long lineNo, int revision,
+ 													 IntPtr author, IntPtr date, IntPtr line,
+ 													 IntPtr pool)
+ 		{
+       		SvnError err = SvnError.NoError;
+        	SvnClient.BlameReceiver func = mFunc as SvnClient.BlameReceiver;
+        	try {
+            	Debug.Write(String.Format("[Callback:{0}]SvnClientBlameReceiver({1:X},{2},{3},{4},{5},{6},{7})...",func.Method.Name,baton,lineNo,revision,new AprString(author),new AprString(date),new AprString(line),new AprPool(pool)));
+        		err = func(baton, lineNo, revision,
+        				   new AprString(author), new AprString(date), new AprString(line),
+        				   new AprPool(pool));
+           		Debug.WriteLine((err.IsNoError) ? "Return(NoError)" : String.Format("Return({0})",err.Message));
+        	}
+        	catch( SvnException e ) {
+        		err = SvnError.Create(e.AprErr, SvnError.NoError, e.Message);
+        	}
+        	catch( Exception e ) {
+        		err = SvnError.Create(215000, SvnError.NoError, e.Message);
+        	}
+        	return(err);        
+ 		}         								       
+    	    	    	    	    	    	
     	    	    	    	
        	// svn_auth_simple_prompt_func_t Wrapper
     	public SvnDelegate(SvnAuthProviderObject.SimplePrompt func)

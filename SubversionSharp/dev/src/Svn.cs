@@ -86,7 +86,7 @@ namespace Softec.SubversionSharp
         internal delegate void svn_wc_notify_func_t(IntPtr baton, IntPtr path, 
         											int action, int kind, 
         											IntPtr mime_type, int content_state, 
-        											int prop_state, uint revision);
+        											int prop_state, int revision);
         #endregion
         											
         #region SvnConfig
@@ -182,22 +182,27 @@ namespace Softec.SubversionSharp
         internal delegate void svn_wc_status_func_t(IntPtr baton, IntPtr path, IntPtr status);
         
  		internal delegate IntPtr svn_log_message_receiver_t(IntPtr baton, IntPtr changed_paths, 
- 															uint revision, IntPtr author, 
+ 															int revision, IntPtr author, 
  															IntPtr date, IntPtr message, 
  															IntPtr pool);
+ 															
+ 		internal delegate IntPtr svn_client_blame_receiver_t(IntPtr baton, long line_no, 
+ 															 int revision, IntPtr author, 
+ 															 IntPtr date, IntPtr line, 
+ 															 IntPtr pool);
         													 
         [DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
-		internal IntPtr svn_client_checkout(out uint result_rev, string URL, 
+		internal IntPtr svn_client_checkout(out int result_rev, string URL, 
 											string path, IntPtr revision, int recurse, 
 											IntPtr ctx, IntPtr pool);
 											
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
-		internal IntPtr svn_client_update (out uint result_rev, string path, 
+		internal IntPtr svn_client_update (out int result_rev, string path, 
 										   IntPtr revision, int recurse,
 										   IntPtr ctx, IntPtr pool);
 		
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
-		internal IntPtr svn_client_switch(out uint result_rev, string path, string url, 
+		internal IntPtr svn_client_switch(out int result_rev, string path, string url, 
 										  IntPtr revision, int recurse, 
 										  IntPtr ctx, IntPtr pool);
 										  
@@ -224,7 +229,7 @@ namespace Softec.SubversionSharp
 						  	              IntPtr ctx, IntPtr pool);
 
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
-		internal IntPtr svn_client_status(out uint result_rev, 
+		internal IntPtr svn_client_status(out int result_rev, 
 										  string path, IntPtr revision,
 										  svn_wc_status_func_t status_func, IntPtr status_baton, 
 										  int descend, int get_all, int update, int no_ignore, 
@@ -238,7 +243,7 @@ namespace Softec.SubversionSharp
  	
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
 		internal IntPtr svn_client_blame(string path_or_url, IntPtr start, IntPtr end, 
-										 IntPtr receiver, IntPtr receiver_baton, 
+										 svn_client_blame_receiver_t receiver, IntPtr receiver_baton, 
 										 IntPtr ctx, IntPtr pool);
 
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
@@ -290,7 +295,7 @@ namespace Softec.SubversionSharp
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
 		internal IntPtr svn_client_revprop_set(string propname, IntPtr propval, 
 											   string Url, IntPtr revision, 
-											   out uint set_rev, int force, 
+											   out int set_rev, int force, 
 											   IntPtr ctx, IntPtr pool);
 
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
@@ -300,7 +305,7 @@ namespace Softec.SubversionSharp
 
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
 		internal IntPtr svn_client_revprop_get(string propname, out IntPtr propval, 
-											   string URL, IntPtr revision, out uint set_rev, 
+											   string URL, IntPtr revision, out int set_rev, 
 											   IntPtr ctx, IntPtr pool);
 
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
@@ -310,11 +315,11 @@ namespace Softec.SubversionSharp
 
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
 		internal IntPtr svn_client_revprop_list(out IntPtr props,
-												string URL, IntPtr revision, out uint set_rev, 
+												string URL, IntPtr revision, out int set_rev, 
 												IntPtr ctx, IntPtr pool);
 
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
-		internal IntPtr svn_client_export(out uint result_rev, 
+		internal IntPtr svn_client_export(out int result_rev, 
 										  string from, string to, IntPtr revision, int force, 
 										  IntPtr ctx, IntPtr pool);
 

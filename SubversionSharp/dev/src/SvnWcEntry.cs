@@ -30,7 +30,7 @@ namespace Softec.SubversionSharp
 		private struct svn_wc_entry_t
 		{
 			public IntPtr name;
-			public uint revision;
+			public int revision;
 			public IntPtr url;
 			public IntPtr repos;
 			public IntPtr uuid;
@@ -41,7 +41,7 @@ namespace Softec.SubversionSharp
 			public int absent;
 			public int incomplete;
 			public IntPtr copyfrom_url;
-			public uint copyfrom_rev;
+			public int copyfrom_rev;
 			public IntPtr conflict_old;
 			public IntPtr conflict_new;
 			public IntPtr conflict_wrk;
@@ -49,7 +49,7 @@ namespace Softec.SubversionSharp
 			public long text_time;
 			public long prop_time;
 			public IntPtr checksum;
-			public uint cmt_rev;
+			public int cmt_rev;
 			public long cmt_date;
 			public IntPtr cmt_author;
    		} 
@@ -115,7 +115,7 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(unchecked((int)mEntry->revision));
+				return(mEntry->revision);
 			}
 		}
 		
@@ -214,7 +214,7 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(unchecked((int)mEntry->copyfrom_rev));
+				return(mEntry->copyfrom_rev);
 			}
 		}
 		
@@ -286,7 +286,7 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(unchecked((int)mEntry->cmt_rev));
+				return(mEntry->cmt_rev);
 			}
 		}
 

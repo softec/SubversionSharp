@@ -23,13 +23,17 @@ namespace Softec.SubversionSharp
  		public delegate SvnError LogMessageReceiver(IntPtr baton, AprHash changed_paths, 
  													int revision, AprString author,
  													AprString date, AprString message,
- 													AprPool pool);         								       
+ 													AprPool pool);
+
+ 		public delegate SvnError BlameReceiver(IntPtr baton, long line_no, int revision, 
+ 											   AprString author, AprString date, AprString line, 
+ 											   AprPool pool);
          								                								                								       
 		public static int Checkout(string url, string path, 
 								   SvnOptRevision revision, 
 								   bool recurse, SvnClientContext ctx, AprPool pool)
 		{
-			uint rev;
+			int rev;
 			Debug.Write(String.Format("svn_client_checkout({0},{1},{2},{3},{4},{5})...",url,path,revision,recurse,ctx,pool));
 			SvnError err = Svn.svn_client_checkout(out rev, url, path, 
 												   revision, 
@@ -37,7 +41,7 @@ namespace Softec.SubversionSharp
 			if( !err.IsNoError )
 				throw new SvnException(err);
 			Debug.WriteLine(String.Format("Done({0})",rev));
-			return(unchecked((int)rev));
+			return(rev);
 		}
 		
 		
@@ -45,7 +49,7 @@ namespace Softec.SubversionSharp
 								 SvnOptRevision revision, 
 								 bool recurse, SvnClientContext ctx, AprPool pool)
 		{
-			uint rev;
+			int rev;
 			Debug.Write(String.Format("svn_client_update({0},{1},{2},{3},{4})...",path,revision,recurse,ctx,pool));
 			SvnError err = Svn.svn_client_update(out rev, path, 
 												 revision,
@@ -53,14 +57,14 @@ namespace Softec.SubversionSharp
 			if( !err.IsNoError )
 				throw new SvnException(err);
 			Debug.WriteLine(String.Format("Done({0})",rev));
-			return(unchecked((int)rev));
+			return(rev);
 		}
 		
 		public static int Switch(string path, string url, 
 								 SvnOptRevision revision, 
 								 bool recurse, SvnClientContext ctx, AprPool pool)
 		{
-			uint rev;
+			int rev;
 			Debug.Write(String.Format("svn_client_switch({0},{1},{2},{3},{4},{5})...",path,url,revision,recurse,ctx,pool));
 			SvnError err = Svn.svn_client_switch(out rev, path, url, 
 												 revision, 
@@ -68,7 +72,7 @@ namespace Softec.SubversionSharp
 			if( !err.IsNoError )
 				throw new SvnException(err);
 			Debug.WriteLine(String.Format("Done({0})",rev));
-			return(unchecked((int)rev));
+			return(rev);
 		}
 		
 		public static void Add(string path,
@@ -138,7 +142,7 @@ namespace Softec.SubversionSharp
 								 bool descend, bool getAll, bool update, bool noIgnore,
 			   					 SvnClientContext ctx, AprPool pool)
 		{
-			uint rev;
+			int rev;
 			SvnDelegate statusDelegate = new SvnDelegate(statusFunc);
 			Debug.Write(String.Format("svn_client_status({0},{1},{2},{3},{4:X},{5},{6},{7},{8},{9})...",path,revision,statusFunc.Method.Name,statusBaton.ToInt32(),(descend) ? 1 : 0,(getAll) ? 1 : 0,(update) ? 1 : 0,(noIgnore) ? 1 : 0,ctx,pool));
 			SvnError err = Svn.svn_client_status(out rev, path, revision,
@@ -151,7 +155,7 @@ namespace Softec.SubversionSharp
 				throw new SvnException(err);
 			Debug.WriteLine(String.Format("Done({0})",rev));
 			if( update )
-				return(unchecked((int)rev));
+				return(rev);
 			else
 				return(-1);
 		}
@@ -170,6 +174,21 @@ namespace Softec.SubversionSharp
 											  (Svn.svn_log_message_receiver_t)receiverDelegate.Wrapper,
 											  baton,
 											  ctx, pool);
+			if( !err.IsNoError )
+				throw new SvnException(err);
+		}
+		
+		public static void Blame(string path_or_url,
+								 SvnOptRevision start, SvnOptRevision end, 
+								 BlameReceiver receiver, IntPtr baton,
+							     SvnClientContext ctx, AprPool pool)
+		{
+			SvnDelegate receiverDelegate = new SvnDelegate(receiver);
+			Debug.WriteLine(String.Format("svn_client_blame({0},{1},{2},{3},{4},{5},{6})",path_or_url,start,end,receiver.Method.Name,baton,ctx,pool));
+			SvnError err = Svn.svn_client_blame(path_or_url, start, end,
+											    (Svn.svn_client_blame_receiver_t)receiverDelegate.Wrapper,
+											    baton,
+											    ctx, pool);
 			if( !err.IsNoError )
 				throw new SvnException(err);
 		}
