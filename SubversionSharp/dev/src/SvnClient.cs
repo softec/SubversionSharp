@@ -19,7 +19,12 @@ namespace Softec.SubversionSharp
     	public delegate SvnError GetCommitLog(out AprString logMessage, out AprString tmpFile,
          						 		   	  AprArray commitItems, IntPtr baton,
          								      AprPool pool);
-         								       
+
+ 		public delegate SvnError LogMessageReceiver(IntPtr baton, AprHash changed_paths, 
+ 													int revision, AprString author,
+ 													AprString date, AprString message,
+ 													AprPool pool);         								       
+         								                								                								       
 		public static int Checkout(string url, string path, 
 								   SvnOptRevision revision, 
 								   bool recurse, SvnClientContext ctx, AprPool pool)
@@ -125,6 +130,48 @@ namespace Softec.SubversionSharp
 				throw new SvnException(err);
 			Debug.WriteLine(String.Format("Done({0})",commitInfo));
 			return(commitInfo);
+		}
+		
+		public static int Status(string path,
+								 SvnOptRevision revision,
+								 SvnWcStatus.Func statusFunc, IntPtr statusBaton,
+								 bool descend, bool getAll, bool update, bool noIgnore,
+			   					 SvnClientContext ctx, AprPool pool)
+		{
+			uint rev;
+			SvnDelegate statusDelegate = new SvnDelegate(statusFunc);
+			Debug.Write(String.Format("svn_client_status({0},{1},{2},{3},{4:X},{5},{6},{7},{8},{9})...",path,revision,statusFunc.Method.Name,statusBaton.ToInt32(),(descend) ? 1 : 0,(getAll) ? 1 : 0,(update) ? 1 : 0,(noIgnore) ? 1 : 0,ctx,pool));
+			SvnError err = Svn.svn_client_status(out rev, path, revision,
+												 (Svn.svn_wc_status_func_t) statusDelegate.Wrapper,
+												 statusBaton,
+												 (descend) ? 1 : 0, (getAll) ? 1 : 0,
+												 (update) ? 1 : 0, (noIgnore) ? 1 : 0,
+												 ctx, pool);
+			if( !err.IsNoError )
+				throw new SvnException(err);
+			Debug.WriteLine(String.Format("Done({0})",rev));
+			if( update )
+				return(unchecked((int)rev));
+			else
+				return(-1);
+		}
+		
+		public static void Log(AprArray targets,
+							   SvnOptRevision start, SvnOptRevision end,
+							   bool discoverChangedPaths, bool strictNodeHistory,
+							   LogMessageReceiver receiver, IntPtr baton,
+							   SvnClientContext ctx, AprPool pool)
+		{
+			SvnDelegate receiverDelegate = new SvnDelegate(receiver);
+			Debug.WriteLine(String.Format("svn_client_log({0},{1},{2},{3},{4},{5},{6},{7},{8})",targets,start,end,(discoverChangedPaths ? 1 :0),(strictNodeHistory ? 1 :0),receiver.Method.Name,baton,ctx,pool));
+			SvnError err = Svn.svn_client_log(targets, start, end,
+											  (discoverChangedPaths ? 1 :0),
+											  (strictNodeHistory ? 1 :0),
+											  (Svn.svn_log_message_receiver_t)receiverDelegate.Wrapper,
+											  baton,
+											  ctx, pool);
+			if( !err.IsNoError )
+				throw new SvnException(err);
 		}
 	}
 }

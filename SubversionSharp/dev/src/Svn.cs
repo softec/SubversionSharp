@@ -179,6 +179,13 @@ namespace Softec.SubversionSharp
         													 IntPtr commit_items, IntPtr baton,
         													 IntPtr pool);
         													 
+        internal delegate void svn_wc_status_func_t(IntPtr baton, IntPtr path, IntPtr status);
+        
+ 		internal delegate IntPtr svn_log_message_receiver_t(IntPtr baton, IntPtr changed_paths, 
+ 															uint revision, IntPtr author, 
+ 															IntPtr date, IntPtr message, 
+ 															IntPtr pool);
+        													 
         [DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
 		internal IntPtr svn_client_checkout(out uint result_rev, string URL, 
 											string path, IntPtr revision, int recurse, 
@@ -219,14 +226,14 @@ namespace Softec.SubversionSharp
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
 		internal IntPtr svn_client_status(out uint result_rev, 
 										  string path, IntPtr revision,
-										  IntPtr status_func, IntPtr status_baton, 
+										  svn_wc_status_func_t status_func, IntPtr status_baton, 
 										  int descend, int get_all, int update, int no_ignore, 
 						  	              IntPtr ctx, IntPtr pool);
 
 		[DllImport("svn_client-1")] static extern
 		internal IntPtr svn_client_log(IntPtr targets, IntPtr start, IntPtr end,
 									   int discover_changed_paths, int strict_node_history, 
-									   IntPtr receiver, IntPtr receiver_baton, 
+									   svn_log_message_receiver_t receiver, IntPtr receiver_baton, 
 									   IntPtr ctx, IntPtr pool);
  	
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
