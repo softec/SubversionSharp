@@ -87,7 +87,10 @@ namespace Softec.AprSharp
 
         public override string ToString()
         {
-            return(Marshal.PtrToStringAnsi(mString));
+        	if( IsNull )
+        		return("[apr_string:NULL]");
+        	else
+            	return(Marshal.PtrToStringAnsi(mString));
         }
         #endregion
         
