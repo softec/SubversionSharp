@@ -373,7 +373,7 @@ namespace Softec.SubversionSharp.Test {
 			
 			Console.Write("Enter log message: ");
 			logMessage = new AprString(Console.ReadLine(), pool);
-			tmpFile = new AprString();
+			tmpFile = new SvnPath(pool);
 			
 			return(SvnError.NoError);
 		}
