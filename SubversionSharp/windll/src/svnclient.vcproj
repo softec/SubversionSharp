@@ -19,7 +19,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\..\subversion\include;..\..\..\subversion\apr\include;&quot;..\..\..\subversion\include\apr-util&quot;;&quot;..\..\..\subversion\include\apr-iconv&quot;"
+				AdditionalIncludeDirectories="&quot;..\..\..\subversion-debug\include&quot;;&quot;..\..\..\subversion-debug\include\apr&quot;;&quot;..\..\..\subversion-debug\include\apr-util&quot;;&quot;..\..\..\subversion-debug\include\apr-iconv&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;SVNCLIENT_EXPORTS"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -35,11 +35,11 @@
 				AdditionalDependencies="libapr.lib libaprutil.lib xml.lib libapriconv.lib libsvn_client-1.lib libsvn_delta-1.lib libsvn_diff-1.lib libsvn_ra-1.lib libsvn_ra_dav-1.lib libsvn_ra_local-1.lib libsvn_ra_svn-1.lib libsvn_fs-1.lib libsvn_repos-1.lib libsvn_subr-1.lib libsvn_wc-1.lib libneon.lib libdb42.lib ws2_32.lib"
 				OutputFile="$(OutDir)/svn_client-1.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\..\..\subversion\lib;..\..\..\subversion\lib\apr;&quot;..\..\..\subversion\lib\apr-util&quot;;&quot;..\..\..\subversion\lib\apr-iconv&quot;;..\..\..\subversion\lib\neon;&quot;..\..\..\subversion\db4-win32\lib&quot;"
-				IgnoreDefaultLibraryNames="LIBC;LIBCMTD;LIBCMT;MSVCRTD"
+				AdditionalLibraryDirectories="..\..\..\subversion-debug\lib;..\..\..\subversion-debug\lib\apr;&quot;..\..\..\subversion-debug\lib\apr-util&quot;;&quot;..\..\..\subversion-debug\lib\apr-iconv&quot;;..\..\..\subversion-debug\lib\neon;&quot;..\..\..\subversion-debug\db4-win32\lib&quot;"
+				IgnoreDefaultLibraryNames="LIBC;LIBCMTD;MSVCRTD"
 				ModuleDefinitionFile="svnclient.def"
 				GenerateDebugInformation="TRUE"
-				ProgramDatabaseFile="$(OutDir)/svnclient.pdb"
+				ProgramDatabaseFile="$(OutDir)/svnclient-1.pdb"
 				SubSystem="2"
 				ImportLibrary="$(OutDir)/svnclient.lib"
 				TargetMachine="1"/>
@@ -72,24 +72,29 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="..\..\..\subversion\include;..\..\..\subversion\apr\include;&quot;..\..\..\subversion\apr-util\include&quot;;&quot;..\..\..\subversion\apr-iconv\include&quot;"
+				Optimization="2"
+				AdditionalIncludeDirectories="..\..\..\subversion\include;..\..\..\subversion\include\apr;&quot;..\..\..\subversion\include\apr-util&quot;;&quot;..\..\..\subversion\include\apr-iconv&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;SVNCLIENT_EXPORTS"
+				BasicRuntimeChecks="0"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="TRUE"
+				Detect64BitPortabilityProblems="FALSE"
 				DebugInformationFormat="3"/>
 			<Tool
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="libapr.lib libaprutil.lib xml.lib libapriconv.lib libsvn_client-1.lib libsvn_delta-1.lib libsvn_diff-1.lib libsvn_ra-1.lib libsvn_ra_dav-1.lib libsvn_ra_local-1.lib libsvn_ra_svn-1.lib libsvn_fs-1.lib libsvn_repos-1.lib libsvn_subr-1.lib libsvn_wc-1.lib libneon.lib libdb42.lib ws2_32.lib"
 				OutputFile="$(OutDir)/svn_client-1.dll"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\..\subversion\lib;..\..\..\subversion\lib\apr;&quot;..\..\..\subversion\lib\apr-util&quot;;&quot;..\..\..\subversion\lib\apr-iconv&quot;;..\..\..\subversion\lib\neon;&quot;..\..\..\subversion\db4-win32\lib&quot;"
+				IgnoreDefaultLibraryNames="LIBC;LIBCMT"
 				ModuleDefinitionFile="svnclient.def"
-				GenerateDebugInformation="TRUE"
+				GenerateDebugInformation="FALSE"
 				SubSystem="2"
-				OptimizeReferences="2"
-				EnableCOMDATFolding="2"
+				OptimizeReferences="0"
+				EnableCOMDATFolding="0"
 				ImportLibrary="$(OutDir)/svnclient.lib"
 				TargetMachine="1"/>
 			<Tool
