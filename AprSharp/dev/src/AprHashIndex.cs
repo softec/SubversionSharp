@@ -20,7 +20,7 @@ namespace Softec.AprSharp
         IntPtr mHashIndex;
 
         #region Generic embedding functions of an IntPtr
-        private AprHashIndex(IntPtr ptr)
+        public AprHashIndex(IntPtr ptr)
         {
             mHashIndex = ptr;
         }

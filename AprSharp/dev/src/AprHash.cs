@@ -20,7 +20,7 @@ namespace Softec.AprSharp
         IntPtr mHash;
 
         #region Generic embedding functions of an IntPtr
-        private AprHash(IntPtr ptr)
+        public AprHash(IntPtr ptr)
         {
             mHash = ptr;
         }
@@ -104,14 +104,14 @@ namespace Softec.AprSharp
         
         public void Set(string key, string value)
         {
-        	AprString aprKey = AprString.Duplicate(Pool, key);
-        	AprString aprValue = AprString.Duplicate(Pool, value);
+        	AprString aprKey = new AprString(Pool, key);
+        	AprString aprValue = new AprString(Pool, value);
         	Set((IntPtr)aprKey, -1, (IntPtr)aprValue);
         }
 
         public void Set(string key, IntPtr value)
         {
-        	AprString aprKey = AprString.Duplicate(Pool, key);
+        	AprString aprKey = new AprString(Pool, key);
         	Set((IntPtr)aprKey, -1, value);
         }
 
@@ -134,7 +134,7 @@ namespace Softec.AprSharp
 
         public string GetAsString(string key)
         {
-        	AprString aprKey = AprString.Duplicate(Pool, key);
+        	AprString aprKey = new AprString(Pool, key);
         	return(GetAsString((IntPtr)aprKey,-1));
 		}
 
@@ -150,7 +150,7 @@ namespace Softec.AprSharp
 		
         public IntPtr Get(string key)
         {
-        	AprString aprKey = AprString.Duplicate(Pool, key);
+        	AprString aprKey = new AprString(Pool, key);
         	return(Get((IntPtr)aprKey,-1));
 		}
 		
@@ -333,7 +333,7 @@ namespace Softec.AprSharp
             {
                 if( mPool.IsNull )
                     throw new AprNullReferenceException(); 
-                mKey = AprString.Duplicate(mPool, value);
+                mKey = new AprString(mPool, value);
                 mKeySize = -1;
             }
         }
@@ -348,7 +348,7 @@ namespace Softec.AprSharp
             {
                 if( mPool.IsNull )
                     throw new AprNullReferenceException(); 
-                mValue = AprString.Duplicate(mPool, value);
+                mValue = new AprString(mPool, value);
             }
         }
     }

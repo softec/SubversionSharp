@@ -195,10 +195,10 @@ namespace Softec.AprSharp.Test
         	AprArray a = AprArray.Make(p,4,Marshal.SizeOf(typeof(IntPtr)));
         	Assert.IsFalse(a.IsNull,"#C02");
         	
-        	Marshal.WriteIntPtr(a.Push(),AprString.Duplicate(p,"This"));
-        	Marshal.WriteIntPtr(a.Push(),AprString.Duplicate(p,"is"));
-        	Marshal.WriteIntPtr(a.Push(),AprString.Duplicate(p,"a"));
-        	Marshal.WriteIntPtr(a.Push(),AprString.Duplicate(p,"test."));
+        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"This"));
+        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"is"));
+        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"a"));
+        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"test."));
         	
         	Assert.AreEqual("This is a test.",a.StrCat(p,' '),"#CO3");        	
 

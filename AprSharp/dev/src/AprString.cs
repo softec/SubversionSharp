@@ -19,11 +19,43 @@ namespace Softec.AprSharp
         IntPtr mString;
 
         #region Generic embedding functions of an IntPtr
-        private AprString(IntPtr ptr)
+        public AprString(IntPtr ptr)
         {
             mString = ptr;
         }
+
+        public AprString(AprPool pool, string str)
+        {
+            mString = Apr.apr_pstrdup(pool, str);
+        }
         
+        public AprString(AprPool pool, AprString str)
+        {
+            mString = Apr.apr_pstrdup(pool, str);
+        }
+
+        public AprString(AprPool pool, string str, int size)
+        {
+            mString = Apr.apr_pstrndup(pool, str, unchecked((uint)size));
+        }
+        
+        public AprString(AprPool pool, AprString str, int size)
+        {
+            mString = Apr.apr_pstrndup(pool, str, unchecked((uint)size));
+        }
+
+        [CLSCompliant(false)]
+        public AprString(AprPool pool, string str, uint size)
+        {
+            mString = Apr.apr_pstrndup(pool, str, size);
+        }
+
+        [CLSCompliant(false)]
+        public AprString(AprPool pool, AprString str, uint size)
+        {
+            mString = Apr.apr_pstrndup(pool, str, size);
+        }
+
         public bool IsNull
         {
         	get
@@ -62,34 +94,34 @@ namespace Softec.AprSharp
         #region Methods wrappers
         public static AprString Duplicate(AprPool pool, string str)
         {
-            return(new AprString(Apr.apr_pstrdup(pool, str)));
+            return(new AprString(pool, str));
         }
 
         public static AprString Duplicate(AprPool pool, AprString str)
         {
-            return(new AprString(Apr.apr_pstrdup(pool, str)));
+            return(new AprString(pool, str));
         }
 
         public static AprString Duplicate(AprPool pool, string str, int size)
         {
-            return(AprString.Duplicate(pool, str, unchecked((uint)size)));
+            return(new AprString(pool, str, size));
         }
 
         [CLSCompliant(false)]
         public static AprString Duplicate(AprPool pool, string str, uint size)
         {
-            return(new AprString(Apr.apr_pstrndup(pool, str, size)));
+            return(new AprString(pool, str, size));
         }
         
         public static AprString Duplicate(AprPool pool, AprString str, int size)
         {
-            return(AprString.Duplicate(pool, str, unchecked((uint)size)));
+            return(new AprString(pool, str, size));
         }
         
         [CLSCompliant(false)]
         public static AprString Duplicate(AprPool pool, AprString str, uint size)
         {
-            return(new AprString(Apr.apr_pstrndup(pool, str, size)));
+            return(new AprString(pool, str, size));
         }
         #endregion
     }

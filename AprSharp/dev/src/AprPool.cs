@@ -19,7 +19,7 @@ namespace Softec.AprSharp
         IntPtr mPool;
 
         #region Generic embedding functions of an IntPtr
-        private AprPool(IntPtr ptr)
+        public AprPool(IntPtr ptr)
         {
             mPool = ptr;
         }

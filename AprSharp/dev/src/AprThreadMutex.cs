@@ -26,7 +26,7 @@ namespace Softec.AprSharp
         }
 
         #region Generic embedding functions of an IntPtr
-        private AprThreadMutex(IntPtr ptr)
+        public AprThreadMutex(IntPtr ptr)
         {
             mThreadMutex = ptr;
         }

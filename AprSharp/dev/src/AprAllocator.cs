@@ -20,7 +20,7 @@ namespace Softec.AprSharp
         private IntPtr mAllocator;
 
         #region Generic embedding functions of an IntPtr
-        private AprAllocator(IntPtr ptr)
+        public AprAllocator(IntPtr ptr)
         {
             mAllocator = ptr;
         }
