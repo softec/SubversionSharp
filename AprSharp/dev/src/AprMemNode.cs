@@ -40,9 +40,12 @@ namespace Softec.AprSharp
             mMemNode = ptr.ToPointer();
         }
         
-        public bool IsNull()
+        public bool IsNull
         {
-            return( mMemNode == null );
+        	get
+        	{
+            	return( mMemNode == null );
+            }
         }
 
         private void CheckPtr()

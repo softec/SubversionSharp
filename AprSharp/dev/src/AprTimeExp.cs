@@ -52,9 +52,12 @@ namespace Softec.AprSharp
             mTimeExp = ptr.ToPointer();
         }
         
-        public bool IsNull()
+        public bool IsNull
         {
-            return( mTimeExp == null );
+        	get
+        	{
+            	return( mTimeExp == null );
+            }
         }
 
         private void CheckPtr()

@@ -29,66 +29,66 @@ namespace Softec.AprSharp.Test
 		public void CreateDestroy()
 		{
 			AprPool p = new AprPool();
-			Assert.IsTrue(p.IsNull(),"#A01");
+			Assert.IsTrue(p.IsNull,"#A01");
 			
 			p = AprPool.Create();
-			Assert.IsFalse(p.IsNull(),"#A02");
+			Assert.IsFalse(p.IsNull,"#A02");
 			
 			p.Destroy();
-			Assert.IsTrue(p.IsNull(),"#A03");
+			Assert.IsTrue(p.IsNull,"#A03");
 		}
 
 		[Test]
 		public void CreateDestroySubPool()
 		{
 			AprPool p = new AprPool();
-			Assert.IsTrue(p.IsNull(),"#B01");
+			Assert.IsTrue(p.IsNull,"#B01");
 			
 			p = AprPool.Create();
-			Assert.IsFalse(p.IsNull(),"#B02");
+			Assert.IsFalse(p.IsNull,"#B02");
 
 			AprPool sp = AprPool.Create(p);
-			Assert.IsFalse(sp.IsNull(),"#B03");
+			Assert.IsFalse(sp.IsNull,"#B03");
 			Assert.AreEqual(((IntPtr)p).ToInt32(),((IntPtr)(sp.Parent)).ToInt32(),"#B04");
 			
 			sp.Destroy();
-			Assert.IsTrue(sp.IsNull(),"#B05");
+			Assert.IsTrue(sp.IsNull,"#B05");
 			
 			p.Destroy();
-			Assert.IsTrue(p.IsNull(),"#B06");
+			Assert.IsTrue(p.IsNull,"#B06");
 		}
 		
 		[Test]
 		public void CreateDestroyWithCustomAllocator()
 		{
 		    AprAllocator a = AprAllocator.Create();
-			Assert.IsFalse(a.IsNull(),"#C01");
+			Assert.IsFalse(a.IsNull,"#C01");
 
 			AprPool p = AprPool.Create(a);
-			Assert.IsFalse(p.IsNull(),"#C02");
+			Assert.IsFalse(p.IsNull,"#C02");
 			Assert.AreEqual(((IntPtr)a).ToInt32(),((IntPtr)(p.Allocator)).ToInt32(),"#C03");
 			
 			a.Owner = p;
 			Assert.AreEqual(((IntPtr)p).ToInt32(),((IntPtr)(a.Owner)).ToInt32(),"#C04");
 			
 			p.Destroy();
-			Assert.IsTrue(p.IsNull(),"#C05");
+			Assert.IsTrue(p.IsNull,"#C05");
 		}
 
 		[Test]
 		public void CreateDestroySubPoolWithCustomAllocator()
 		{
 			AprPool p = new AprPool();
-			Assert.IsTrue(p.IsNull(),"#D01");
+			Assert.IsTrue(p.IsNull,"#D01");
 			
 			p = AprPool.Create();
-			Assert.IsFalse(p.IsNull(),"#D02");
+			Assert.IsFalse(p.IsNull,"#D02");
 
 		    AprAllocator a = AprAllocator.Create();
-			Assert.IsFalse(a.IsNull(),"#D03");
+			Assert.IsFalse(a.IsNull,"#D03");
 
 			AprPool sp = AprPool.Create(p,a);
-			Assert.IsFalse(sp.IsNull(),"#D04");
+			Assert.IsFalse(sp.IsNull,"#D04");
 			Assert.AreEqual(((IntPtr)p).ToInt32(),((IntPtr)(sp.Parent)).ToInt32(),"#D05");
 			Assert.AreEqual(((IntPtr)a).ToInt32(),((IntPtr)(sp.Allocator)).ToInt32(),"#D06");
 
@@ -96,20 +96,20 @@ namespace Softec.AprSharp.Test
 			Assert.AreEqual(((IntPtr)p).ToInt32(),((IntPtr)(a.Owner)).ToInt32(),"#D07");
 			
 			sp.Destroy();
-			Assert.IsTrue(sp.IsNull(),"#D08");
+			Assert.IsTrue(sp.IsNull,"#D08");
 			
 			p.Destroy();
-			Assert.IsTrue(p.IsNull(),"#D09");
+			Assert.IsTrue(p.IsNull,"#D09");
 		}
 		
 		[Test]
 		public void Alloc()
 		{
 			AprPool p = new AprPool();
-			Assert.IsTrue(p.IsNull(),"#E01");
+			Assert.IsTrue(p.IsNull,"#E01");
 			
 			p = AprPool.Create();
-			Assert.IsFalse(p.IsNull(),"#E02");
+			Assert.IsFalse(p.IsNull,"#E02");
 			
 			Assert.IsTrue(p.Alloc(128).ToInt32() != 0,"#E03");
 			Assert.IsTrue(p.Alloc(256).ToInt32() != 0,"#E04");
@@ -123,34 +123,34 @@ namespace Softec.AprSharp.Test
 			Assert.IsTrue(p.Alloc(16384).ToInt32() != 0,"#E12");
 			
 			p.Destroy();
-			Assert.IsTrue(p.IsNull(),"#E13");
+			Assert.IsTrue(p.IsNull,"#E13");
 		}
 
 		[Test]
 		public void CAlloc()
 		{
 			AprPool p = new AprPool();
-			Assert.IsTrue(p.IsNull(),"#F01");
+			Assert.IsTrue(p.IsNull,"#F01");
 			
 			p = AprPool.Create();
-			Assert.IsFalse(p.IsNull(),"#F02");
+			Assert.IsFalse(p.IsNull,"#F02");
 			
 			IntPtr m = p.CAlloc(256);
 			Assert.IsTrue(m.ToInt32() != 0,"#F03");
 			Assert.IsTrue(Marshal.ReadInt32(m) == 0,"#F04");
 			
 			p.Destroy();
-			Assert.IsTrue(p.IsNull(),"#F04");
+			Assert.IsTrue(p.IsNull,"#F04");
 		}
 		
 		[Test]
 		public void AllocLoop()
 		{
 			AprPool p = new AprPool();
-			Assert.IsTrue(p.IsNull(),"#G000001");
+			Assert.IsTrue(p.IsNull,"#G000001");
 			
 			p = AprPool.Create();
-			Assert.IsFalse(p.IsNull(),"#G000002");
+			Assert.IsFalse(p.IsNull,"#G000002");
 			
 			for(int i=24;i<4096;i+=24)
 			{
@@ -158,17 +158,17 @@ namespace Softec.AprSharp.Test
 			}
 
 			p.Destroy();
-			Assert.IsTrue(p.IsNull(),"#G000004");
+			Assert.IsTrue(p.IsNull,"#G000004");
 		}
 
 		[Test]
 		public void CAllocLoop()
 		{
 			AprPool p = new AprPool();
-			Assert.IsTrue(p.IsNull(),"#H000001");
+			Assert.IsTrue(p.IsNull,"#H000001");
 			
 			p = AprPool.Create();
-			Assert.IsFalse(p.IsNull(),"#H000002");
+			Assert.IsFalse(p.IsNull,"#H000002");
 
 			for(int i=24;i<4096;i+=24)
 			{
@@ -179,21 +179,21 @@ namespace Softec.AprSharp.Test
 			}
 
 			p.Destroy();
-			Assert.IsTrue(p.IsNull(),"#H000004");
+			Assert.IsTrue(p.IsNull,"#H000004");
 		}
 		
 		[Test]
 		public void Parentship()
 		{
 			AprPool p = AprPool.Create();
-			Assert.IsFalse(p.IsNull(),"#I01");
+			Assert.IsFalse(p.IsNull,"#I01");
 
 			AprPool sp = AprPool.Create(p);
-			Assert.IsFalse(sp.IsNull(),"#I02");
+			Assert.IsFalse(sp.IsNull,"#I02");
 			Assert.AreEqual(((IntPtr)p).ToInt32(),((IntPtr)(sp.Parent)).ToInt32(),"#I03");
 
 			AprPool ssp = AprPool.Create(sp);
-			Assert.IsFalse(ssp.IsNull(),"#I05");
+			Assert.IsFalse(ssp.IsNull,"#I05");
 			Assert.AreEqual(((IntPtr)sp).ToInt32(),((IntPtr)(ssp.Parent)).ToInt32(),"#I06");
 			
 			Assert.IsTrue(p.IsAncestor(sp),"#I08");
@@ -204,7 +204,7 @@ namespace Softec.AprSharp.Test
 			Assert.IsFalse(ssp.IsAncestor(sp),"#I13");
 			
 			p.Destroy();
-			Assert.IsTrue(p.IsNull(),"#I14");
+			Assert.IsTrue(p.IsNull,"#I14");
 		}
 
 	}

@@ -25,14 +25,17 @@ namespace Softec.AprSharp
             mHash = ptr;
         }
         
-        public bool IsNull()
+        public bool IsNull
         {
-            return( mHash == IntPtr.Zero );
+        	get
+        	{
+            	return( mHash == IntPtr.Zero );
+            }
         }
 
         private void CheckPtr()
         {
-            if( IsNull() )
+            if( IsNull )
                 throw new AprNullReferenceException(); 
         }
 
@@ -328,7 +331,7 @@ namespace Softec.AprSharp
             }
             set
             {
-                if( mPool.IsNull() )
+                if( mPool.IsNull )
                     throw new AprNullReferenceException(); 
                 mKey = AprString.Duplicate(mPool, value);
                 mKeySize = -1;
@@ -343,7 +346,7 @@ namespace Softec.AprSharp
             }
             set
             {
-                if( mPool.IsNull() )
+                if( mPool.IsNull )
                     throw new AprNullReferenceException(); 
                 mValue = AprString.Duplicate(mPool, value);
             }
@@ -380,11 +383,11 @@ namespace Softec.AprSharp
   		        mHashIndex = AprHashIndex.First(mPool, mHash);
   		        reset = false;
   		    }
-  		    else if(!mHashIndex.IsNull())
+  		    else if(!mHashIndex.IsNull)
   		    {
   		        mHashIndex.Next();
   		    }
-  		    return(!mHashIndex.IsNull());
+  		    return(!mHashIndex.IsNull);
   		}
   		
   		public void Reset()

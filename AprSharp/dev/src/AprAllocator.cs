@@ -25,14 +25,17 @@ namespace Softec.AprSharp
             mAllocator = ptr;
         }
         
-        public bool IsNull()
+        public bool IsNull
         {
-            return( mAllocator == IntPtr.Zero );
+        	get
+        	{
+            	return( mAllocator == IntPtr.Zero );
+            }
         }
 
         private void CheckPtr()
         {
-            if( IsNull() )
+            if( IsNull )
                 throw new AprNullReferenceException(); 
         }
 

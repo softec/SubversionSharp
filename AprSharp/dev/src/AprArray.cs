@@ -40,9 +40,12 @@ namespace Softec.AprSharp
             mArray = ptr.ToPointer();
         }
         
-        public bool IsNull()
+        public bool IsNull
         {
-            return( mArray == null );
+        	get
+        	{
+            	return( mArray == null );
+            }
         }
 
         private void CheckPtr()

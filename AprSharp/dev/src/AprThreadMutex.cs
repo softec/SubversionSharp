@@ -31,14 +31,17 @@ namespace Softec.AprSharp
             mThreadMutex = ptr;
         }
         
-        public bool IsNull()
+        public bool IsNull
         {
-            return( mThreadMutex == IntPtr.Zero );
+        	get
+        	{
+            	return( mThreadMutex == IntPtr.Zero );
+            }
         }
 
         private void CheckPtr()
         {
-            if( IsNull() )
+            if( IsNull )
                 throw new AprNullReferenceException(); 
         }
 

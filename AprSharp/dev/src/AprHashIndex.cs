@@ -25,14 +25,17 @@ namespace Softec.AprSharp
             mHashIndex = ptr;
         }
         
-        public bool IsNull()
+        public bool IsNull
         {
-            return( mHashIndex == IntPtr.Zero );
+        	get
+        	{
+            	return( mHashIndex == IntPtr.Zero );
+            }
         }
 
         private void CheckPtr()
         {
-            if( IsNull() )
+            if( IsNull )
                 throw new AprNullReferenceException(); 
         }
 

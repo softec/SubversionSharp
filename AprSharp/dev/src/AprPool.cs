@@ -24,14 +24,17 @@ namespace Softec.AprSharp
             mPool = ptr;
         }
         
-        public bool IsNull()
+        public bool IsNull
         {
-            return( mPool == IntPtr.Zero );
+        	get
+        	{
+            	return( mPool == IntPtr.Zero );
+            }
         }
 
         private void CheckPtr()
         {
-            if( IsNull() )
+            if( IsNull )
                 throw new AprNullReferenceException(); 
         }
 

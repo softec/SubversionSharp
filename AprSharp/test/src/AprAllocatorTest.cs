@@ -28,19 +28,19 @@ namespace Softec.AprSharp.Test
 		public void CreateDestroy()
 		{
 			AprAllocator a = new AprAllocator();
-			Assert.IsTrue(a.IsNull(),"#A01");
+			Assert.IsTrue(a.IsNull,"#A01");
 			
 			a = AprAllocator.Create();
-			Assert.IsFalse(a.IsNull(),"#A02");
+			Assert.IsFalse(a.IsNull,"#A02");
 			
 			a.Destroy();
-			Assert.IsTrue(a.IsNull(),"#A03");
+			Assert.IsTrue(a.IsNull,"#A03");
 		}
 
 		private AprMemNode AllocHelper(AprAllocator a, int size, string test)
 		{
 			AprMemNode m = a.Alloc(size);
-			Assert.IsFalse(m.IsNull(),test+"a");
+			Assert.IsFalse(m.IsNull,test+"a");
 			if( (size+24) <= 8192 ) {
 				Assert.AreEqual(1,m.NativeIndex,test+"c");
 				Assert.AreEqual((8192-24),(m.EndP.ToInt32()-m.FirstAvail.ToInt32()),test+"d");
@@ -55,13 +55,13 @@ namespace Softec.AprSharp.Test
 		public void AllocSimple()
 		{
 			AprAllocator a = AprAllocator.Create();
-			Assert.IsFalse(a.IsNull(),"#B01");
+			Assert.IsFalse(a.IsNull,"#B01");
 
 			AprMemNode m = AllocHelper(a,256,"#B02");
 			a.Free(m);
 			
 			a.Destroy();
-			Assert.IsTrue(a.IsNull(),"#B03");
+			Assert.IsTrue(a.IsNull,"#B03");
 		}
 		
 
@@ -69,7 +69,7 @@ namespace Softec.AprSharp.Test
 		public void AllocCriticalSize()
 		{
 			AprAllocator a = AprAllocator.Create();
-			Assert.IsFalse(a.IsNull(),"#C01");
+			Assert.IsFalse(a.IsNull,"#C01");
 
 			AprMemNode m = AllocHelper(a,256,"#C02");
 			a.Free(m);
@@ -95,14 +95,14 @@ namespace Softec.AprSharp.Test
 			a.Free(m1);
 
 			a.Destroy();
-			Assert.IsTrue(a.IsNull(),"#C08");
+			Assert.IsTrue(a.IsNull,"#C08");
 		}
 		
 		[Test]
 		public void AllocLoop()
 		{
 			AprAllocator a = AprAllocator.Create();
-			Assert.IsFalse(a.IsNull(),"#D000001");
+			Assert.IsFalse(a.IsNull,"#D000001");
 
 			int adrChange = 0;
 			int currAdr = 0;
@@ -122,14 +122,14 @@ namespace Softec.AprSharp.Test
 			Assert.AreEqual(1024,adrChange,1,"#D000002");
 			
 			a.Destroy();
-			Assert.IsTrue(a.IsNull(),"#D000003");
+			Assert.IsTrue(a.IsNull,"#D000003");
 		}
 
 		[Test]
 		public void AllocLoopMaxFree()
 		{
 			AprAllocator a = AprAllocator.Create();
-			Assert.IsFalse(a.IsNull(),"#E000001");
+			Assert.IsFalse(a.IsNull,"#E000001");
 			a.MaxFree = 81920;
 			
 			int adrChange = 0;
@@ -150,7 +150,7 @@ namespace Softec.AprSharp.Test
 			Assert.AreEqual(50,adrChange,50,"#D000002"); // Normaly less than 10
 
 			a.Destroy();
-			Assert.IsTrue(a.IsNull(),"#E000003");
+			Assert.IsTrue(a.IsNull,"#E000003");
 		}
 	}
 }
