@@ -7,6 +7,7 @@
     <File name="./AprTimeTest.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./AprStringTest.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./AprArrayTest.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./AprHashTest.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Gac" refto="nunit.framework, Version=2.1.91.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" localcopy="True" />
