@@ -109,7 +109,12 @@ namespace Softec.AprSharp
         
         public string ToString(string format)
         {
-            StringBuilder str = new StringBuilder(256);
+        	return(ToString(format,256));
+        }
+
+        public string ToString(string format, int size)
+        {
+            StringBuilder str = new StringBuilder(size);
             uint len;
             Debug.Write(String.Format("apr_strftime({0:X},{1})...",(new IntPtr(mTimeExp)).ToInt32(),format));
             int res = Apr.apr_strftime(str, out len, (uint)str.Capacity, format, new IntPtr(mTimeExp));
@@ -244,7 +249,7 @@ namespace Softec.AprSharp
                 CheckPtr();
                 if( value<1 || value>31 )
                     throw new AprArgumentOutOfRangeException("Day",value, 1, 31);
-                mTimeExp->tm_mday=value-1;
+                mTimeExp->tm_mday=value;
             }
         }
 
@@ -274,7 +279,7 @@ namespace Softec.AprSharp
             set
             {
                 CheckPtr();
-                if( value<1900 )
+                if( value<1970 )
                     throw new AprArgumentOutOfRangeException("Year",value, "Expect an integer value over 1900.");
                 mTimeExp->tm_year=value-1900;
             }

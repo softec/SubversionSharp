@@ -21,6 +21,9 @@ namespace Softec.AprSharp
         {
         }
 
+		public const int APR_RFC822_DATE_LEN = 30;
+		public const int APR_CTIME_LEN   	 = 25;
+
         public static long Now()
         {
             return(Apr.apr_time_now());
@@ -28,7 +31,7 @@ namespace Softec.AprSharp
 
         public static string Rfc822Date(long value)
         {
-            StringBuilder buf = new StringBuilder(32);
+            StringBuilder buf = new StringBuilder(APR_RFC822_DATE_LEN);
             int res = Apr.apr_rfc822_date(buf,value);
             if (res != 0)
                 throw new AprException(res);
@@ -37,7 +40,7 @@ namespace Softec.AprSharp
 
         public static string CTime(long value)
         {
-            StringBuilder buf = new StringBuilder(32);
+            StringBuilder buf = new StringBuilder(APR_CTIME_LEN);
             int res = Apr.apr_ctime(buf,value);
             if (res != 0)
                 throw new AprException(res);
