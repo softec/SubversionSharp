@@ -73,7 +73,7 @@ namespace Softec.AprSharp
         }
                 
         public static AprPool Create(AprPool pool, AprAllocator allocator)
-                        {
+        {
             IntPtr ptr;
             
             Debug.Write(String.Format("apr_pool_create_ex({0},{1})...",pool,allocator));
@@ -89,7 +89,7 @@ namespace Softec.AprSharp
         public void Destroy()
         {
             CheckPtr();
-            Debug.Write(String.Format("apr_pool_destroy({0:X})...",((Int32)mPool)));
+            Debug.Write(String.Format("apr_pool_destroy({0:X})...",this));
             Apr.apr_pool_destroy(mPool);
             Debug.WriteLine("Done");
             ClearPtr();
@@ -98,7 +98,7 @@ namespace Softec.AprSharp
         public void Clear()
         {
             CheckPtr();
-            Debug.Write(String.Format("apr_pool_clear({0:X})...",((Int32)mPool)));
+            Debug.Write(String.Format("apr_pool_clear({0:X})...",this));
             Apr.apr_pool_clear(mPool);
             Debug.WriteLine("Done");
         }
@@ -112,7 +112,7 @@ namespace Softec.AprSharp
         public unsafe byte *Alloc(uint size)
         {
             CheckPtr();
-            Debug.WriteLine(String.Format("apr_palloc({0:X})",((Int32)mPool)));
+            Debug.WriteLine(String.Format("apr_palloc({0:X})",this));
             return((byte *)Apr.apr_palloc(mPool, size));
         }
 
@@ -125,14 +125,14 @@ namespace Softec.AprSharp
         public unsafe byte *CAlloc(uint size)
         {
             CheckPtr();
-            Debug.WriteLine(String.Format("apr_pcalloc({0:X})",((Int32)mPool)));
+            Debug.WriteLine(String.Format("apr_pcalloc({0:X})",this));
             return((byte *)Apr.apr_pcalloc(mPool, size));
         }
 
         public bool IsAncestor(AprPool pool)
         {
             CheckPtr();
-            Debug.WriteLine(String.Format("apr_pool_is_ancestor({0:X},{1:X})",((Int32)mPool),((Int32)pool.mPool)));
+            Debug.WriteLine(String.Format("apr_pool_is_ancestor({0:X},{1:X})",this,pool));
             return((Apr.apr_pool_is_ancestor(mPool,pool) == 0) ? false : true);
         }
         #endregion
@@ -141,7 +141,7 @@ namespace Softec.AprSharp
         public AprAllocator Allocator
         {
             get {
-                Debug.WriteLine(String.Format("apr_pool_allocator_get({0:X})",((Int32)mPool)));
+                Debug.WriteLine(String.Format("apr_pool_allocator_get({0:X})",this));
                 return(Apr.apr_pool_allocator_get(mPool));
             }
         }
@@ -149,7 +149,7 @@ namespace Softec.AprSharp
         public AprPool Parent
         {
             get {
-                Debug.WriteLine(String.Format("apr_pool_parent_get({0:X})",((Int32)mPool)));
+                Debug.WriteLine(String.Format("apr_pool_parent_get({0:X})",this));
                 return(Apr.apr_pool_parent_get(mPool));
             }
         }
