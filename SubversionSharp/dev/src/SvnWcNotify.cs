@@ -52,7 +52,7 @@ namespace Softec.SubversionSharp
 			CommitModified,
 			CommitAdded,
 			CommitDeleted,
-			Replaced,
+			CommitReplaced,
 			PostfixTxdelta,
 			BlameRevision
     	 }
