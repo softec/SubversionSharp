@@ -39,7 +39,7 @@ namespace Softec.SubversionSharp
         
         public SvnAuthSslServerCertInfo(IntPtr ptr)
         {
-            mSslServerCertInfo = ptr.ToPointer();
+            mSslServerCertInfo = (svn_auth_ssl_server_cert_info *) ptr.ToPointer();
         }
         
         public bool IsNull

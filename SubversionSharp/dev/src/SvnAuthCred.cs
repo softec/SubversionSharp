@@ -35,7 +35,7 @@ namespace Softec.SubversionSharp
         
         public SvnAuthCredSimple(IntPtr ptr)
         {
-            mCred = ptr.ToPointer();
+            mCred = (svn_auth_cred_simple_t *)ptr.ToPointer();
         }
         
         public bool IsNull
@@ -140,7 +140,7 @@ namespace Softec.SubversionSharp
         
         public SvnAuthCredUsername(IntPtr ptr)
         {
-            mCred = ptr.ToPointer();
+            mCred = (svn_auth_cred_username_t *)ptr.ToPointer();
         }
         
         public bool IsNull
@@ -232,7 +232,7 @@ namespace Softec.SubversionSharp
         
         public SvnAuthCredSslServerTrust(IntPtr ptr)
         {
-            mCred = ptr.ToPointer();
+            mCred = (svn_auth_cred_ssl_server_trust_t *) ptr.ToPointer();
         }
         
         public bool IsNull
@@ -337,7 +337,7 @@ namespace Softec.SubversionSharp
         
         public SvnAuthCredSslClientCert(IntPtr ptr)
         {
-            mCred = ptr.ToPointer();
+            mCred = (svn_auth_cred_ssl_client_cert_t *) ptr.ToPointer();
         }
         
         public bool IsNull
@@ -430,7 +430,7 @@ namespace Softec.SubversionSharp
         
         public SvnAuthCredSslClientCertPw(IntPtr ptr)
         {
-            mCred = ptr.ToPointer();
+            mCred = (svn_auth_cred_ssl_client_cert_pw_t *) ptr.ToPointer();
         }
         
         public bool IsNull

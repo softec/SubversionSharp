@@ -38,7 +38,7 @@ namespace Softec.SubversionSharp
 
         public SvnError(IntPtr ptr)
         {
-            mError = ptr.ToPointer();
+            mError = (svn_error_t *) ptr.ToPointer();
         }
         
         public static SvnError NoError;

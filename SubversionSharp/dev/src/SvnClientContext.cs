@@ -41,7 +41,7 @@ namespace Softec.SubversionSharp
         
         public SvnClientContext(IntPtr ptr)
         {
-            mClientContext = ptr.ToPointer();
+            mClientContext = (svn_client_ctx_t *) ptr.ToPointer();
         }
         
         public bool IsNull
