@@ -36,7 +36,7 @@ namespace Softec.SubversionSharp
     {
         private svn_auth_cred_simple_t *mCred;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct svn_auth_cred_simple_t
         {  
 			public IntPtr username;
@@ -158,7 +158,7 @@ namespace Softec.SubversionSharp
     {
         private svn_auth_cred_username_t *mCred;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct svn_auth_cred_username_t
         {  
 			public IntPtr username;
@@ -260,7 +260,7 @@ namespace Softec.SubversionSharp
  		
         private svn_auth_cred_ssl_server_trust_t *mCred;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct svn_auth_cred_ssl_server_trust_t
         {  
 			public int may_save;
@@ -352,7 +352,7 @@ namespace Softec.SubversionSharp
     {
         private svn_auth_cred_ssl_client_cert_t *mCred;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct svn_auth_cred_ssl_client_cert_t
         {
         	public IntPtr cert_file;  
@@ -445,7 +445,7 @@ namespace Softec.SubversionSharp
     {
         private svn_auth_cred_ssl_client_cert_pw_t *mCred;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct svn_auth_cred_ssl_client_cert_pw_t
         {
         	public IntPtr cert_file;  

@@ -4,6 +4,8 @@
     <File name="./AssemblyInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./Checkout.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./CmdBase.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./Add.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./Status.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="AprSharp" localcopy="True" />

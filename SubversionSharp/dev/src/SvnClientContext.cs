@@ -41,7 +41,7 @@ namespace Softec.SubversionSharp
         private SvnDelegate mLogMsgFunc;
         private SvnDelegate mCancelFunc;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct svn_client_ctx_t
         {  
 			public IntPtr auth_baton;

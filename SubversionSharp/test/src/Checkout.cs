@@ -1,4 +1,7 @@
 //  SvnTest, a client program used to test SubversionSharp library
+#region Copyright (C) 2004 SOFTEC sa.
+//
+//  SvnTest, a client program used to test SubversionSharp library
 //  Copyright 2004 by SOFTEC sa
 //
 //  This program is free software; you can redistribute it and/or
@@ -23,6 +26,7 @@
 //  Initial authors : 
 //		Denis Gervalle
 //		Olivier Desaive
+#endregion
 //
 using System;
 using System.Collections;
@@ -35,12 +39,12 @@ namespace Softec.SubversionSharp.Test {
 
 	[SubCommand("checkout","co", 
   @"URL... [PATH]
-    retrieve data from a repository and create a working copy.
+  Check out a working copy from a repository.
 
-    Note: If PATH is omitted, the basename of the URL will be used as
-    the destination. If multiple URLs are given each will be checked
-    out into a sub-directory of PATH, with the name of the sub-directory
-    being the basename of the URL."
+  Note: If PATH is omitted, the basename of the URL will be used as
+  the destination. If multiple URLs are given each will be checked
+  out into a sub-directory of PATH, with the name of the sub-directory
+  being the basename of the URL."
 	)]
 	class CheckoutCmd : CmdBaseWithAuth
 	{
@@ -88,10 +92,20 @@ namespace Softec.SubversionSharp.Test {
 				for(int i = 0; i < nbUrl; i++)							
 				{
 					string[] seg = urls[i].Segments;
-					client.Checkout(new SvnUrl(urls[i], client.Pool),
-									new SvnPath(path + seg[seg.Length-1], client.Pool),
-									oRevision,
-									oRecurse);
+					try 
+					{
+						client.Checkout(new SvnUrl(urls[i], client.Pool),
+										new SvnPath(path + seg[seg.Length-1], client.Pool),
+										oRevision,
+										oRecurse);
+					}
+					catch( Exception e )
+					{
+						if( oDebug )
+							Console.WriteLine(e);
+						else
+							Console.WriteLine(e.Message);
+					}
 					client.Clear();
 				}
 			}

@@ -36,7 +36,7 @@ namespace Softec.SubversionSharp
    {
         private svn_error_t *mError;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct svn_error_t
         {
             public int apr_err;

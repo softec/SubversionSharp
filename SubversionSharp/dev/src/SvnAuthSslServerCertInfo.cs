@@ -37,7 +37,7 @@ namespace Softec.SubversionSharp
     {
         private svn_auth_ssl_server_cert_info *mSslServerCertInfo;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
         private struct svn_auth_ssl_server_cert_info
         {  
 			public IntPtr hostname;

@@ -55,7 +55,7 @@ namespace Softec.SubversionSharp
 
         private svn_wc_status_t *mStatus;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
 		private struct svn_wc_status_t
 		{
 			public IntPtr entry;

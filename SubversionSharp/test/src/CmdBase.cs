@@ -1,4 +1,7 @@
 //  SvnTest, a client program used to test SubversionSharp library
+#region Copyright (C) 2004 SOFTEC sa.
+//
+//  SvnTest, a client program used to test SubversionSharp library
 //  Copyright 2004 by SOFTEC sa
 //
 //  This program is free software; you can redistribute it and/or
@@ -23,6 +26,7 @@
 //  Initial authors : 
 //		Denis Gervalle
 //		Olivier Desaive
+#endregion
 //
 using System;
 using System.Collections;
@@ -94,6 +98,7 @@ namespace Softec.SubversionSharp.Test {
 			int res;
 			
 			mSubCmd = sc;
+			BreakSingleDashManyLettersIntoManyOptions = true;
 			ProcessArgs(args);
 
 			try {
@@ -152,7 +157,7 @@ namespace Softec.SubversionSharp.Test {
 		private WhatToDoNext UsageAppend(WhatToDoNext ret)
 		{
 			if(mSubCmd.Description != string.Empty)
-				Console.WriteLine("{0} {1}",mSubCmd.LongName,mSubCmd.Description);
+				Console.WriteLine("\n{0} {1}\n",mSubCmd.LongName,mSubCmd.Description);
 			return(ret);
 		}
 			
@@ -179,7 +184,7 @@ namespace Softec.SubversionSharp.Test {
 	    	switch(action)
 	    	{
 	    		case SvnWcNotify.Action.Add:
-					if (!mimeType.IsNull && mimeType.ToString().StartsWith("text/"))
+					if (!mimeType.IsNull && !mimeType.ToString().StartsWith("text/"))
 						Console.WriteLine("A  (bin)  {0}", Path);
 					else
 						Console.WriteLine("A         {0}", Path);
@@ -190,7 +195,7 @@ namespace Softec.SubversionSharp.Test {
 	    			break;
 	    		
 	    		case SvnWcNotify.Action.CommitAdded:
-					if (!mimeType.IsNull && mimeType.ToString().StartsWith("text/"))
+					if (!mimeType.IsNull && !mimeType.ToString().StartsWith("text/"))
 	    				Console.WriteLine("Adding  (bin)  {0}", Path);
 					else
 	    				Console.WriteLine("Adding         {0}", Path);

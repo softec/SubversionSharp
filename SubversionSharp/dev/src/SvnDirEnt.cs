@@ -36,7 +36,7 @@ namespace Softec.SubversionSharp
     {
         private svn_dirent_t *mDirEnt;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
 		private struct svn_dirent_t
 		{
 			public int kind;

@@ -36,7 +36,7 @@ namespace Softec.SubversionSharp
     {
         private svn_string_t *mString;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
 		private struct svn_string_t
 		{
 			public IntPtr data;

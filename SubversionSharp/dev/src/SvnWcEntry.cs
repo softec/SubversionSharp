@@ -43,7 +43,7 @@ namespace Softec.SubversionSharp
 
         private svn_wc_entry_t *mEntry;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
 		private struct svn_wc_entry_t
 		{
 			public IntPtr name;
@@ -69,7 +69,7 @@ namespace Softec.SubversionSharp
 			public int cmt_rev;
 			public long cmt_date;
 			public IntPtr cmt_author;
-   		} 
+   		}
 
         #region Generic embedding functions of an IntPtr
         private SvnWcEntry(svn_wc_entry_t *ptr)

@@ -36,7 +36,7 @@ namespace Softec.SubversionSharp
     {
         private svn_stringbuf_t *mStringBuf;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
 		private struct svn_stringbuf_t
 		{
   			public IntPtr pool;

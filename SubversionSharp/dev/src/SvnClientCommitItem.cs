@@ -36,7 +36,7 @@ namespace Softec.SubversionSharp
     {
         private svn_client_commit_item_t *mCommitItem;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
 		private struct svn_client_commit_item_t
 		{
 			public IntPtr path;

@@ -36,7 +36,7 @@ namespace Softec.SubversionSharp
     {
         private svn_client_commit_info_t *mCommitInfo;
 
-        [StructLayout( LayoutKind.Sequential )]
+        [StructLayout( LayoutKind.Sequential, Pack=4 )]
 		private struct svn_client_commit_info_t
 		{
      		public int revision;

@@ -159,11 +159,11 @@ namespace Softec.SubversionSharp.Test {
 			Description = string.Empty;
 		}
 		
-		public SubCommandAttribute(string longName, string shortName)
+		public SubCommandAttribute(string longName, string desc)
 		{
-			ShortName = shortName.ToLower();
+			ShortName = string.Empty;
 			LongName = longName.ToLower();
-			Description = string.Empty;
+			Description = desc;
 		}
 
 		public SubCommandAttribute(string longName, string shortName, string desc)
