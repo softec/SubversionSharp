@@ -58,7 +58,10 @@ namespace Softec.SubversionSharp
 			Head
 		}
 
-        internal delegate IntPtr svn_cancel_func_t(IntPtr baton);
+#if WIN32
+        [Softec.CallConvCdecl]
+#endif
+		internal delegate IntPtr svn_cancel_func_t(IntPtr baton);
         public delegate SvnError CancelFunc(IntPtr baton);
         
         #region Wrapper around APR Pool
@@ -162,9 +165,12 @@ namespace Softec.SubversionSharp
         #endregion
 
         #region SvnStream
-        internal delegate IntPtr svn_read_fn_t(IntPtr baton, IntPtr buffer, ref uint len);
-        internal delegate IntPtr svn_write_fn_t(IntPtr baton, IntPtr data, ref uint len);
-        internal delegate IntPtr svn_close_fn_t(IntPtr baton);
+        [Softec.CallConvCdecl] 
+		internal delegate IntPtr svn_read_fn_t(IntPtr baton, IntPtr buffer, ref uint len);
+        [Softec.CallConvCdecl]
+		internal delegate IntPtr svn_write_fn_t(IntPtr baton, IntPtr data, ref uint len);
+        [Softec.CallConvCdecl]
+		internal delegate IntPtr svn_close_fn_t(IntPtr baton);
         
         [DllImport("svn_client-1")] static extern
         internal IntPtr svn_stream_create(IntPtr baton, IntPtr pool);
@@ -198,7 +204,10 @@ namespace Softec.SubversionSharp
 	    [DllImport("svn_client-1")] static extern
         internal IntPtr svn_client_create_context(out IntPtr ctx, IntPtr pool);
         
-        internal delegate void svn_wc_notify_func_t(IntPtr baton, IntPtr path, 
+#if WIN32
+		[Softec.CallConvCdecl]
+#endif
+		internal delegate void svn_wc_notify_func_t(IntPtr baton, IntPtr path, 
         											int action, int kind, 
         											IntPtr mime_type, int content_state, 
         											int prop_state, int revision);
@@ -213,24 +222,38 @@ namespace Softec.SubversionSharp
         #endregion
         
         #region SvnAuthProvider
-        internal delegate IntPtr svn_auth_simple_prompt_func_t(out IntPtr cred, IntPtr baton, 
+#if WIN32
+		[Softec.CallConvCdecl]
+#endif
+		internal delegate IntPtr svn_auth_simple_prompt_func_t(out IntPtr cred, IntPtr baton, 
         	 												   IntPtr realm, IntPtr username, 
         													   int may_save, IntPtr pool);
 
+#if WIN32
+		[Softec.CallConvCdecl]
+#endif
 		internal delegate IntPtr svn_auth_username_prompt_func_t(out IntPtr cred, IntPtr baton, 
 															     IntPtr realm, int may_save, 
 															     IntPtr pool);
 															   
-		//[CLSCompliant(false)]
+#if WIN32
+		[Softec.CallConvCdecl]
+#endif
 		internal delegate IntPtr svn_auth_ssl_server_trust_prompt_func_t(out IntPtr cred, IntPtr baton, 
 																	     IntPtr realm, uint failures, 
 																	     IntPtr cert_info, 
 																	     int may_save, IntPtr pool);
 
+#if WIN32
+		[Softec.CallConvCdecl]
+#endif
 		internal delegate IntPtr svn_auth_ssl_client_cert_prompt_func_t(out IntPtr cred, IntPtr baton,
 																	    IntPtr realm, int may_save,
 																	    IntPtr pool);
 
+#if WIN32
+		[Softec.CallConvCdecl]
+#endif
 		internal delegate IntPtr svn_auth_ssl_client_cert_pw_prompt_func_t(out IntPtr cred, 
 																		   IntPtr baton,
 																  		   IntPtr realm, int may_save,
@@ -285,19 +308,31 @@ namespace Softec.SubversionSharp
 		#endregion
 
         #region SvnClient
-        internal delegate IntPtr svn_client_get_commit_log_t(out IntPtr log_message, 
+#if WIN32
+		[Softec.CallConvCdecl]
+#endif
+		internal delegate IntPtr svn_client_get_commit_log_t(out IntPtr log_message, 
         													 out IntPtr tmp_file, 
         													 IntPtr commit_items, IntPtr baton,
         													 IntPtr pool);
         													 
-        internal delegate void svn_wc_status_func_t(IntPtr baton, IntPtr path, IntPtr status);
+#if WIN32
+		[Softec.CallConvCdecl]
+#endif
+		internal delegate void svn_wc_status_func_t(IntPtr baton, IntPtr path, IntPtr status);
         
- 		internal delegate IntPtr svn_log_message_receiver_t(IntPtr baton, IntPtr changed_paths, 
+#if WIN32
+		[Softec.CallConvCdecl]
+#endif
+		internal delegate IntPtr svn_log_message_receiver_t(IntPtr baton, IntPtr changed_paths, 
  															int revision, IntPtr author, 
  															IntPtr date, IntPtr message, 
  															IntPtr pool);
  															
- 		internal delegate IntPtr svn_client_blame_receiver_t(IntPtr baton, long line_no, 
+#if WIN32
+		[Softec.CallConvCdecl]
+#endif
+		internal delegate IntPtr svn_client_blame_receiver_t(IntPtr baton, long line_no, 
  															 int revision, IntPtr author, 
  															 IntPtr date, IntPtr line, 
  															 IntPtr pool);
