@@ -52,7 +52,7 @@ namespace Softec.AprSharp
         #endregion
         
         #region Error
-	    [DllImport("apr-0"), CLSCompliant(false)]
+	    [DllImport("apr-0")] // CLSCompliant(false)
         private static extern void apr_strerror(int apr_status,
                                                 StringBuilder buf,
                                                 uint size);
@@ -72,7 +72,7 @@ namespace Softec.AprSharp
 	    [DllImport("apr-0")] static extern
         internal void apr_allocator_destroy(IntPtr allocator);
         
-        [DllImport("apr-0"), CLSCompliant(false)] static extern
+        [DllImport("apr-0")] /* CLSCompliant(false) */ static extern
         internal IntPtr apr_allocator_alloc(IntPtr allocator, 
                                             uint size);
         
@@ -87,7 +87,7 @@ namespace Softec.AprSharp
 	    [DllImport("apr-0")] static extern
         internal IntPtr apr_allocator_owner_get(IntPtr allocator);
         
-	    [DllImport("apr-0"), CLSCompliant(false)] static extern
+	    [DllImport("apr-0")] /* CLSCompliant(false) */ static extern
         internal void apr_allocator_max_free_set(IntPtr allocator,
                                                  uint size);
 
@@ -100,7 +100,7 @@ namespace Softec.AprSharp
         #endregion
 
         #region ThreadMutex
-	    [DllImport("apr-0"), CLSCompliant(false)] static extern
+	    [DllImport("apr-0")] /* CLSCompliant(false) */ static extern
         internal int apr_thread_mutex_create(out IntPtr mutext,
                                              uint flags,
                                              IntPtr pool);
@@ -135,10 +135,10 @@ namespace Softec.AprSharp
 	    [DllImport("apr-0")] static extern
         internal void apr_pool_clear(IntPtr pool);
         
-	    [DllImport("apr-0"), CLSCompliant(false)] static extern
+	    [DllImport("apr-0")] /* CLSCompliant(false) */ static extern
         internal IntPtr apr_palloc(IntPtr pool, uint size);
         
-	    [DllImport("apr-0"), CLSCompliant(false)] static extern
+	    [DllImport("apr-0")] /* CLSCompliant(false) */ static extern
         internal IntPtr apr_pcalloc(IntPtr pool, uint size);
         
 	    [DllImport("apr-0")] static extern
@@ -226,7 +226,7 @@ namespace Softec.AprSharp
         [DllImport("apr-0")] static extern
         internal int apr_time_exp_tz(IntPtr result, long input, int offset);
         
-        [DllImport("apr-0"), CLSCompliant(false)] static extern
+        [DllImport("apr-0")] /* CLSCompliant(false) */ static extern
         internal int apr_strftime(StringBuilder s, out uint retsize,
                                   uint maxsize, string Format, IntPtr input);
         #endregion
@@ -237,9 +237,9 @@ namespace Softec.AprSharp
         [DllImport("apr-0", CharSet=CharSet.Ansi)] static extern
         internal IntPtr apr_pstrdup(IntPtr pool, string str);
                 
-        [DllImport("apr-0"), CLSCompliant(false)] static extern
+        [DllImport("apr-0")] /* CLSCompliant(false) */ static extern
         internal IntPtr apr_pstrndup(IntPtr pool, IntPtr str, uint size);
-        [DllImport("apr-0", CharSet=CharSet.Ansi), CLSCompliant(false)] static extern
+        [DllImport("apr-0", CharSet=CharSet.Ansi)] /* CLSCompliant(false) */ static extern
         internal IntPtr apr_pstrndup(IntPtr pool, string str, uint size);
 /*              
         [DllImport("apr-0")] static extern
@@ -318,7 +318,7 @@ namespace Softec.AprSharp
 		[DllImport("apr-0")] static extern
         internal IntPtr apr_hash_get (IntPtr ht, IntPtr key, int klen);
 
-		[DllImport("apr-0"), CLSCompliant(false)] static extern
+		[DllImport("apr-0")] /* CLSCompliant(false) */ static extern
         internal uint apr_hash_count(IntPtr ht);
 
 		[DllImport("apr-0")] static extern
