@@ -20,8 +20,6 @@ namespace Softec.AprSharp
     {
         const int Result = unchecked ((int)0xA0654003);
 
-        private string mParamName;
-        
         public AprArgumentNullException() 
                : base ("Argument cannot be null.")
         {
