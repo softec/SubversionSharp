@@ -1,5 +1,5 @@
 //  SubversionSharp, a wrapper library around the Subversion client API
-//  Copyright (C) 2004 SOFTEC sa.
+#region Copyright (C) 2004 SOFTEC sa.
 //
 //  This library is free software; you can redistribute it and/or
 //  modify it under the terms of the GNU Lesser General Public
@@ -23,6 +23,7 @@
 //  Initial authors : 
 //		Denis Gervalle
 //		Olivier Desaive
+#endregion
 //
 using System;
 using System.Runtime.Serialization;

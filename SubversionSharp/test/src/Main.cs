@@ -1,4 +1,7 @@
 //  SvnTest, a client program used to test SubversionSharp library
+#region Copyright (C) 2004 SOFTEC sa.
+//
+//  SvnTest, a client program used to test SubversionSharp library
 //  Copyright 2004 by SOFTEC sa
 //
 //  This program is free software; you can redistribute it and/or
@@ -23,6 +26,7 @@
 //  Initial authors : 
 //		Denis Gervalle
 //		Olivier Desaive
+#endregion
 //
 using System;
 using System.Collections;

@@ -71,7 +71,19 @@ namespace Softec.SubversionSharp.Test {
 					return new SvnRevision(Svn.Revision.Previous);
 					
 				default:
-					return new SvnRevision(AprTime.FromDateTime(DateTime.Parse(value)));
+					try 
+					{
+						return new SvnRevision(AprTime.FromDateTime(DateTime.Parse(value)));
+					}
+					catch( Exception e )
+					{
+						if( oDebug )
+							Console.WriteLine(e);
+						else
+							Console.WriteLine(e.Message);
+						System.Environment.Exit(1);
+						return(-1);
+					}
 			}
 		}
 		
