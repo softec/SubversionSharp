@@ -165,11 +165,17 @@ namespace Softec.SubversionSharp
         #endregion
 
         #region SvnStream
-        [Softec.CallConvCdecl] 
+#if WIN32
+        [Softec.CallConvCdecl]
+#endif 
 		internal delegate IntPtr svn_read_fn_t(IntPtr baton, IntPtr buffer, ref uint len);
+#if WIN32
         [Softec.CallConvCdecl]
+#endif 
 		internal delegate IntPtr svn_write_fn_t(IntPtr baton, IntPtr data, ref uint len);
+#if WIN32
         [Softec.CallConvCdecl]
+#endif 
 		internal delegate IntPtr svn_close_fn_t(IntPtr baton);
         
         [DllImport("svn_client-1", CallingConvention=CallingConvention.Cdecl)] static extern
