@@ -156,7 +156,7 @@ namespace Softec.AprSharp
         
         public unsafe int Length {
         	get {
-        		byte *p = mString.ToPointer();
+        		byte *p = (byte *)mString.ToPointer();
         		while(*p++ != 0);
         		return(unchecked((int)((uint)p-(uint)mString.ToPointer()-1)));
 			}
