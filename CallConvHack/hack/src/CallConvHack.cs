@@ -92,12 +92,10 @@ namespace Softec.Applications
 		[STAThread]
 		static void Main(string[] args)
 		{
-			byte[] BOM = { 0xEF, 0xBB, 0xBF };
-
 			Regex FindHelpArg = new Regex(@"^[/-](\?|[Hh]([Ee][Ll][Pp])?)$", RegexOptions.Compiled);
 			Regex FindTextArg = new Regex(@"^[/-][Tt][Ee][Xx][Tt]$", RegexOptions.Compiled);
 			Regex FindUTF8Arg = new Regex(@"^[/-][Uu][Tt][Ff]8$", RegexOptions.Compiled);
-			Regex FindCallConvAttribute = new Regex(@"\.cubenstom instance void \[CallConvAttribute\]Softec.CallConv(.*?)Attribute::\.ctor\(\) = \([^)]*\)", RegexOptions.Compiled);
+			Regex FindCallConvAttribute = new Regex(@"\.custom instance void \[CallConvAttribute\]Softec.CallConv(.*?)Attribute::\.ctor\(\) = \([^)]*\)", RegexOptions.Compiled);
 			Regex FindInvokeMethod = new Regex(@"([ ]*)Invoke\(.*", RegexOptions.Compiled);
 
 			bool textMode = false;
@@ -171,7 +169,7 @@ Usage: CallConvHack [/TEXT [/UTF8] | infile] [outfile]
 
 					if (line == ".assembly extern CallConvAttribute")
 					{
-						while ((line = Console.ReadLine()) != null && line != "}") {}
+						while ((line = input.ReadLine()) != null && line != "}") {}
 						continue;
 					}
 
@@ -194,6 +192,8 @@ Usage: CallConvHack [/TEXT [/UTF8] | infile] [outfile]
 				}
 				output.WriteLine(line);
 			}
+
+			output.Close();
 		}
 	}
 }
