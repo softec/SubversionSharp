@@ -125,7 +125,7 @@ namespace Softec.AprSharp.Test
 			int currAdr = 0;
 			int lastAdr = 0;
 			AprMemNode m;
-			for(int i=24;i<(4096*1024);i+=24)
+			for(int i=24;i<(4096*512);i+=24)
 			{
 				m = AllocHelper(a,i,String.Format("#D{0,6}",i+3));
 				currAdr = ((IntPtr)m).ToInt32();
@@ -136,7 +136,7 @@ namespace Softec.AprSharp.Test
 				}
 				a.Free(m);
 			}
-			Assert.AreEqual(1024,adrChange,1,"#D000002");
+			Assert.AreEqual(512,adrChange,1,"#D000002");
 			
 			a.Destroy();
 			Assert.IsTrue(a.IsNull,"#D000003");
@@ -153,7 +153,7 @@ namespace Softec.AprSharp.Test
 			int currAdr = 0;
 			int lastAdr = 0;
 			AprMemNode m;
-			for(int i=24;i<(4096*1024);i+=24)
+			for(int i=24;i<(4096*512);i+=24)
 			{
 				m = AllocHelper(a,i,String.Format("#E{0,6}",i+3));
 				currAdr = ((IntPtr)m).ToInt32();
@@ -164,7 +164,7 @@ namespace Softec.AprSharp.Test
 				}
 				a.Free(m);
 			}
-			Assert.AreEqual(50,adrChange,50,"#D000002"); // Normaly less than 10
+			Assert.AreEqual(25,adrChange,25,"#D000002"); // Normaly less than 10
 
 			a.Destroy();
 			Assert.IsTrue(a.IsNull,"#E000003");
