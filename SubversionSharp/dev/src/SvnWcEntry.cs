@@ -133,7 +133,7 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(new SvnPath(mEntry->name));
+				return(mEntry->name);
 			}
 		}
 		 
@@ -146,21 +146,21 @@ namespace Softec.SubversionSharp
 			}
 		}
 		
-		public AprString Url
+		public SvnUrl Url
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mEntry->url));
+				return(mEntry->url);
 			}
 		}
 		 
-		public AprString Repos
+		public SvnUrl Repos
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mEntry->repos));
+				return(mEntry->repos);
 			}
 		}
 		 
@@ -169,7 +169,7 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(new AprString(mEntry->uuid));
+				return(mEntry->uuid);
 			}
 		}
 		 
@@ -227,12 +227,12 @@ namespace Softec.SubversionSharp
 			}
 		}
 
-		public AprString CopyFromUrl
+		public SvnUrl CopyFromUrl
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mEntry->copyfrom_url));
+				return(mEntry->copyfrom_url);
 			}
 		}
 		 
@@ -250,7 +250,7 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(new SvnPath(mEntry->conflict_old));
+				return(mEntry->conflict_old);
 			}
 		}
 
@@ -259,7 +259,7 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(new SvnPath(mEntry->conflict_new));
+				return(mEntry->conflict_new);
 			}
 		}
 		
@@ -268,7 +268,7 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(new SvnPath(mEntry->conflict_wrk));
+				return(mEntry->conflict_wrk);
 			}
 		}
 
@@ -277,7 +277,7 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(new SvnPath(mEntry->prejfile));
+				return(mEntry->prejfile);
 			}
 		}
 
@@ -304,11 +304,11 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(new AprString(mEntry->checksum));
+				return(mEntry->checksum);
 			}
 		}
 		
-		public int CmtRev
+		public int CommitRev
 		{
 			get
 			{
@@ -317,7 +317,7 @@ namespace Softec.SubversionSharp
 			}
 		}
 
-		public long CmtDate
+		public long CommitDate
 		{
 			get
 			{
@@ -326,12 +326,12 @@ namespace Softec.SubversionSharp
 			}
 		}
 
-		public AprString CmtAuthor
+		public SvnData CommitAuthor
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mEntry->cmt_author));
+				return(mEntry->cmt_author);
 			}
 		}
 		#endregion

@@ -96,7 +96,7 @@ namespace Softec.SubversionSharp
 							   bool recurse, 
 							   SvnClientContext ctx, AprPool pool)
 		{
-			Debug.WriteLine(String.Format("svn_client_add({0},{1},{2},{3},{4})",path,recurse,ctx,pool));
+			Debug.WriteLine(String.Format("svn_client_add({0},{1},{2},{3})",path,recurse,ctx,pool));
 			SvnError err = Svn.svn_client_add(path, 
 											  (recurse ? 1 :0), ctx, pool);
 			if( !err.IsNoError )

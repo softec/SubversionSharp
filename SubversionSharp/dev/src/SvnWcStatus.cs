@@ -130,7 +130,7 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(new SvnWcEntry(mStatus->entry));
+				return(mStatus->entry);
 			}
 		}
 		 

@@ -115,16 +115,16 @@ namespace Softec.SubversionSharp
 			get
 			{
 				CheckPtr();
-				return(new AprString(mCommitInfo->date));
+				return(mCommitInfo->date);
 			}
 		}
 
-		public AprString Author
+		public SvnData Author
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mCommitInfo->date));
+				return(mCommitInfo->author);
 			}
 		}
 		#endregion

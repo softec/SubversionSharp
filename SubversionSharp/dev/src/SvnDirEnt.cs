@@ -149,12 +149,12 @@ namespace Softec.SubversionSharp
 			}
 		}
 		
-		public AprString LastAuthor
+		public SvnData LastAuthor
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mDirEnt->last_author));
+				return(mDirEnt->last_author);
 			}
 		}
 		#endregion

@@ -414,7 +414,7 @@ namespace Softec.SubversionSharp
         #endregion
 
         #region Wrapper Properties
-        public AprString CertFile
+        public SvnPath CertFile
 		{
 			get
 			{

@@ -27,6 +27,7 @@
     <File name="./SvnClient.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnPath.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnUrl.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnData.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="AprSharp" localcopy="True" />

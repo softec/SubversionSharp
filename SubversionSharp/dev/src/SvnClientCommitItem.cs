@@ -123,12 +123,12 @@ namespace Softec.SubversionSharp
 			}
 		} 
 
-		public AprString Url
+		public SvnUrl Url
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mCommitItem->url));
+				return(mCommitItem->url);
 			}
 		}
 
@@ -141,12 +141,12 @@ namespace Softec.SubversionSharp
 			}
 		} 
 
-		public AprString CopyFromUrl
+		public SvnUrl CopyFromUrl
 		{
 			get
 			{
 				CheckPtr();
-				return(new AprString(mCommitItem->copyfrom_url));
+				return(mCommitItem->copyfrom_url);
 			}
 		}
 
