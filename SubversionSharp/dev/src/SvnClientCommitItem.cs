@@ -15,7 +15,7 @@ using Softec.AprSharp;
 
 namespace Softec.SubversionSharp
 {
-    public unsafe class SvnClientCommitItem
+    public unsafe class SvnClientCommitItem : IAprUnmanaged
     {
         private svn_client_commit_item_t *mCommitItem;
 
@@ -61,6 +61,11 @@ namespace Softec.SubversionSharp
             mCommitItem = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mCommitItem);
+        }
+        
         public static implicit operator IntPtr(SvnClientCommitItem clientCommit)
         {
             return new IntPtr(clientCommit.mCommitItem);

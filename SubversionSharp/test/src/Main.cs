@@ -35,10 +35,10 @@ class MainClass
         client.Context.CancelFunc = new SvnDelegate(new Svn.CancelFunc(CancelCallback));
         
 		client.Checkout("https://www.softec.st/svn/test", 
-						"/home/denisg/dev/lib/SubversionSharp/test/bin/Debug/test",
+						"test",
 						100, true);
-		client.Update("/home/denisg/dev/lib/SubversionSharp/test/bin/Debug/test",
-					  SvnOptRevision.RevisionKind.Head, true);
+		client.Update("test",
+					  Svn.Revision.Head, true);
 
 		client.Pool.Destroy();        
 	}

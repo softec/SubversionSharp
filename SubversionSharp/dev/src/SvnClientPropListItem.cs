@@ -15,7 +15,7 @@ using Softec.AprSharp;
 
 namespace Softec.SubversionSharp
 {
-    public unsafe class SvnClientPropListItem
+    public unsafe class SvnClientPropListItem : IAprUnmanaged
     {
         private svn_client_proplist_item_t *mPropList;
 
@@ -56,6 +56,11 @@ namespace Softec.SubversionSharp
             mPropList = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mPropList);
+        }
+        
         public static implicit operator IntPtr(SvnClientPropListItem clientPropList)
         {
             return new IntPtr(clientPropList.mPropList);

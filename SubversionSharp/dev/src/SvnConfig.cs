@@ -15,7 +15,7 @@ using Softec.AprSharp;
 namespace Softec.SubversionSharp
 {
 
-    public struct SvnConfig
+    public struct SvnConfig : IAprUnmanaged
     {
         IntPtr mConfig;
 
@@ -44,6 +44,11 @@ namespace Softec.SubversionSharp
             mConfig = IntPtr.Zero;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return mConfig;
+        }
+        
         public static implicit operator IntPtr(SvnConfig config)
         {
             return config.mConfig;

@@ -14,7 +14,7 @@ using Softec.AprSharp;
 
 namespace Softec.SubversionSharp
 {
-    public struct SvnStream
+    public struct SvnStream : IAprUnmanaged
     {
         public delegate SvnError ReadFunc(IntPtr baton, IntPtr buffer, ref int len);
         public delegate SvnError WriteFunc(IntPtr baton, IntPtr data, ref int len);
@@ -69,6 +69,11 @@ namespace Softec.SubversionSharp
             mStream = IntPtr.Zero;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return mStream;
+        }
+        
         public static implicit operator IntPtr(SvnStream stream)
         {
             return stream.mStream;

@@ -15,7 +15,7 @@ using Softec.AprSharp;
 
 namespace Softec.SubversionSharp
 {
-    public unsafe class SvnStringBuf
+    public unsafe class SvnStringBuf : IAprUnmanaged
     {
         private svn_stringbuf_t *mStringBuf;
 
@@ -102,6 +102,11 @@ namespace Softec.SubversionSharp
             mStringBuf = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mStringBuf);
+        }
+        
         public static implicit operator IntPtr(SvnStringBuf str)
         {
             return new IntPtr(str.mStringBuf);

@@ -17,11 +17,12 @@ namespace Softec.SubversionSharp
 {
     public class SvnClient : SvnClientBase
     {
+    	AprPool mGlobalPool;
     	AprPool mPool;
     	SvnClientContext mContext;
     	ArrayList mAuthObjs;
     	
-    	#region ctors
+    	#region ctors and finalize
     	static SvnClient()
     	{
 			SvnConfig.Ensure();
@@ -29,221 +30,232 @@ namespace Softec.SubversionSharp
     	
     	public SvnClient()
     	{
-    		mPool = Svn.PoolCreate();
-	        mContext = SvnClientContext.Create(mPool);
-	        mContext.Config = SvnConfig.GetConfig(mPool);
+    		mGlobalPool = Svn.PoolCreate();
+    		mPool = Svn.PoolCreate(mGlobalPool);
+	        mContext = SvnClientContext.Create(mGlobalPool);
+	        mContext.Config = SvnConfig.GetConfig(mGlobalPool);
 	        mAuthObjs = null;
     	}
     	
     	public SvnClient(AprPool pool)
     	{
-	        mPool = pool;
-	        mContext = SvnClientContext.Create(mPool);
-	        mContext.Config = SvnConfig.GetConfig(mPool);
+	        mGlobalPool = pool;
+    		mPool = Svn.PoolCreate(mGlobalPool);
+	        mContext = SvnClientContext.Create(mGlobalPool);
+	        mContext.Config = SvnConfig.GetConfig(mGlobalPool);
 	        mAuthObjs = null;
     	}
     	
     	public SvnClient(SvnClientContext ctx, AprPool pool)
     	{
-    		mPool = pool;
+    		mGlobalPool = pool;
+    		mPool = Svn.PoolCreate(mGlobalPool);
     		mContext = ctx;
 	        mAuthObjs = null;
     	}
        	#endregion
     	
-    	#region Checkout methods
-		public int Checkout(string url, string path, SvnOptRevision.RevisionKind revision, 
-							bool recurse, AprPool pool)
-		{
-	        SvnOptRevision optRev = SvnOptRevision.Alloc(pool);
-			optRev.Kind = revision;
-			return Checkout(url, path, optRev, recurse, mContext, pool);
-		}
-		
-		public int Checkout(string url, string path, SvnOptRevision.RevisionKind revision, 
-							bool recurse)
-		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			int rev = Checkout(url, path, revision, recurse, pool);
-			pool.Destroy();
-			return(rev);
-		}
-
-		public int Checkout(string url, string path, int revision, bool recurse, AprPool pool)
-		{
-	        SvnOptRevision optRev = SvnOptRevision.Alloc(pool);
-			optRev.Number = revision;
-			return Checkout(url, path, optRev, recurse, mContext, pool);
-		}
-		
-		public int Checkout(string url, string path, int revision, bool recurse)
-		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			int rev = Checkout(url, path, revision, recurse, pool);
-			pool.Destroy();
-			return(rev);
-		}
-
-		public int Checkout(string url, string path, long revision,	bool recurse, AprPool pool)
-		{
-	        SvnOptRevision optRev = SvnOptRevision.Alloc(pool);
-			optRev.Date = revision;
-			return Checkout(url, path, optRev, recurse, mContext, pool);
-		}
-		
-		public int Checkout(string url, string path, long revision,	bool recurse)
-		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			int rev = Checkout(url, path, revision, recurse, pool);
-			pool.Destroy();
-			return(rev);
-		}
-		#endregion
+    	#region Methods
+    	public void Clear()
+    	{
+    		mPool.Clear();
+    	}
     	
-    	#region Update methods
-		public int Update(string path, SvnOptRevision.RevisionKind revision, bool recurse,
-						  AprPool pool)
-		{
-	        SvnOptRevision optRev = SvnOptRevision.Alloc(pool);
-			optRev.Kind = revision;
-			return Update(path, optRev, recurse, mContext, pool);
-		}
-		
-		public int Update(string path, SvnOptRevision.RevisionKind revision, bool recurse)
-		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			int rev = Update(path, revision, recurse, pool);
-			return(rev);
-		}
-
-		public int Update(string path, int revision, bool recurse, AprPool pool)
-		{
-	        SvnOptRevision optRev = SvnOptRevision.Alloc(pool);
-			optRev.Number = revision;
-			return Update(path, optRev, recurse, mContext, pool);
-		}
-		
-		public int Update(string path, int revision, bool recurse)
-		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			int rev = Update(path, revision, recurse, pool);
-			return(rev);
-		}
-
-		public int Update(string path, long revision, bool recurse, AprPool pool)
-		{
-	        SvnOptRevision optRev = SvnOptRevision.Alloc(pool);
-			optRev.Date = revision;
-			return Update(path, optRev, recurse, mContext, pool);
-		}
-		
-		public int Update(string path, long revision, bool recurse)
-		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			int rev = Update(path, revision, recurse, pool);
-			return(rev);
-		}
-
-		#endregion
+    	public void Reset()
+    	{
+    		mPool.Destroy();
+    		mPool = Svn.PoolCreate(mGlobalPool);
+    	}
+       	#endregion
     	
-    	#region Switch methods
-		public int Switch(string path, string url, 
-						  SvnOptRevision.RevisionKind revision, bool recurse,
-						  AprPool pool)
+    	#region Client methods
+		public int Checkout(string url, string path, SvnRevision revision, bool recurse)
 		{
-	        SvnOptRevision optRev = SvnOptRevision.Alloc(pool);
-			optRev.Kind = revision;
-			return Switch(path, url, optRev, recurse, mContext, pool);
+			return Checkout(url, path, revision.ToSvnOpt(mPool), recurse, 
+							mContext, mPool);
 		}
 		
-		public int Switch(string path, string url, 
-						  SvnOptRevision.RevisionKind revision, bool recurse)
+		public int Update(string path, SvnRevision revision, bool recurse)
 		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			int rev = Switch(path, url, revision, recurse, pool);
-			pool.Destroy();
-			return(rev);
-		}
-
-		public int Switch(string path, string url, int revision, bool recurse, AprPool pool)
-		{
-	        SvnOptRevision optRev = SvnOptRevision.Alloc(pool);
-			optRev.Number = revision;
-			return Switch(path, url, optRev, recurse, mContext, pool);
+			return Update(path, revision.ToSvnOpt(mPool), recurse,
+						  mContext, mPool);
 		}
 		
-		public int Switch(string path, string url, int revision, bool recurse)
+		public int Switch(string path, string url, SvnRevision revision, bool recurse)
 		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			int rev = Switch(path, url, revision, recurse, pool);
-			pool.Destroy();
-			return(rev);
-		}
-
-		public int Switch(string path, string url, long revision, bool recurse, AprPool pool)
-		{
-	        SvnOptRevision optRev = SvnOptRevision.Alloc(pool);
-			optRev.Date = revision;
-			return Switch(path, url, optRev, recurse, mContext, pool);
-		}
-		
-		public int Switch(string path, string url, long revision, bool recurse)
-		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			int rev = Switch(path, url, revision, recurse, pool);
-			pool.Destroy();
-			return(rev);
-		}
-		#endregion
-    	
-    	#region Add method
-		public void Add(string path, bool recurse, AprPool pool)
-		{
-			Add(path, recurse, mContext, pool);
+			return Switch(path, url, revision.ToSvnOpt(mPool), recurse,
+						  mContext, mPool);
 		}
 		
 		public void Add(string path, bool recurse)
 		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			Add(path, recurse, mContext, pool);
-			pool.Destroy();
+			Add(path, recurse, mContext, mPool);
 		}
-		#endregion
-    	
-    	#region Mkdir methods
-        public SvnClientCommitInfo Mkdir(AprArray paths, AprPool pool)
+
+        public SvnClientCommitInfo Mkdir(ICollection paths)
 		{
-			return Mkdir(paths, mContext, pool);
+			return Mkdir(AprArray.Make(mPool,paths), mContext, mPool);
 		}
 		
-        public void Mkdir(AprArray paths)
+		public SvnClientCommitInfo Delete(AprArray paths, bool force)
 		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			Mkdir(paths, mContext, pool);
-			pool.Destroy();
-		}
-		#endregion
-    	
-    	#region Delete methods
-		public SvnClientCommitInfo Delete(AprArray paths, bool force, AprPool pool)
-		{
-			return Delete(paths, force, mContext, pool);
+			return Delete(paths, force, mContext, mPool);
 		}
 		
-        public void Delete(AprArray paths, bool force)
+		public SvnClientCommitInfo Import(string path, string url, bool nonrecursive)
 		{
-			AprPool pool = Svn.PoolCreate(mPool);
-			Delete(paths, force, mContext, pool);
-			pool.Destroy();
+			return Import(path, url, nonrecursive, mContext, mPool);
 		}
-		#endregion
-    	
-    	#region Import methods
-		public SvnClientCommitInfo Import(string path, string url, bool nonrecursive,  
-										  AprPool pool)
+		
+		public SvnClientCommitInfo Commit(AprArray targets, bool nonrecursive, AprPool pool)
 		{
-			return Import(path, url, nonrecursive, mContext, pool);
+			return Commit(targets, nonrecursive, mContext, mPool);
 		}
+		
+		public int Status(string path, SvnRevision revision,
+						  SvnWcStatus.Func statusFunc, IntPtr statusBaton,
+						  bool descend, bool getAll, bool update, bool noIgnore)
+		{
+			return Status(path, revision.ToSvnOpt(mPool), statusFunc, statusBaton,
+						  descend, getAll, update, noIgnore, mContext, mPool);
+		}
+
+		public void Log(AprArray targets, 
+						SvnRevision start, SvnRevision end,
+						bool discoverChangedPaths, bool strictNodeHistory,
+						LogMessageReceiver receiver, IntPtr baton)
+		{
+			Log(targets, 
+				start.ToSvnOpt(mPool), end.ToSvnOpt(mPool),
+				discoverChangedPaths, strictNodeHistory, receiver, baton,
+				mContext, mPool);
+		}
+
+		public void Blame(string pathOrUrl,
+						  SvnRevision start, SvnRevision end, 
+						  BlameReceiver receiver, IntPtr baton)
+		{
+			Blame(pathOrUrl, 
+				  start.ToSvnOpt(mPool), end.ToSvnOpt(mPool),
+				  receiver, baton, mContext, mPool);
+		}
+
+		public void Diff(AprArray diffOptions,
+						 string path1, SvnRevision revision1,
+						 string path2, SvnRevision revision2,
+						 bool recurse, bool ignoreAncestry, bool noDiffDeleted,
+						 AprFile outFile, AprFile errFile)
+		{
+			Diff(diffOptions,
+				 path1, revision1.ToSvnOpt(mPool),
+				 path2, revision2.ToSvnOpt(mPool),
+				 recurse, ignoreAncestry, noDiffDeleted,
+				 outFile, errFile, mContext, mPool);
+		}
+		
+		public void Merge(string source1, SvnRevision revision1,
+						  string source2, SvnRevision revision2,
+						  string targetWCPath, bool recurse,
+						  bool ignoreAncestry, bool force, bool dryRun)
+		{
+			Merge(source1, revision1.ToSvnOpt(mPool),
+				  source2, revision2.ToSvnOpt(mPool),
+				  targetWCPath, recurse, ignoreAncestry, force, dryRun, mContext, mPool);
+		}
+		
+		public void CleanUp(string dir)
+		{
+			CleanUp(dir, mContext, mPool);
+		}
+		
+		public void Relocate(string dir, string from, string to, bool recurse)
+		{
+			Relocate(dir, from, to, recurse, mContext, mPool);
+		}
+		
+		public void Revert(AprArray paths, bool recurse)
+		{
+			Revert(paths, recurse, mContext, mPool);
+		}
+		
+		public void Resolved(string path, bool recurse)
+		{
+			Resolved(path, recurse, mContext, mPool);
+		}
+		
+		public SvnClientCommitInfo Copy(string srcPath, SvnRevision srcRevision, string dstPath)
+		{
+			return Copy(srcPath, srcRevision.ToSvnOpt(mPool), dstPath, mContext, mPool);
+		}
+							        
+		public SvnClientCommitInfo Move(string srcPath, SvnRevision srcRevision,
+										string dstPath, bool force)
+		{
+			return Move(srcPath, srcRevision.ToSvnOpt(mPool), dstPath, force,
+						mContext, mPool);
+		}
+		
+		public void PropSet(string propName, SvnString propVal, string target, bool recurse)		
+		{
+			PropSet(propName, propVal, target, recurse, mPool);
+		}
+		
+		public int RevPropSet(string propName, SvnString propVal,
+							  string url, SvnRevision revision, bool force)		
+		{
+			return RevPropSet(propName, propVal, url, revision.ToSvnOpt(mPool), force,
+							  mContext, mPool);
+		}
+		
+		public AprHash PropGet(string propName, string target,
+							   SvnRevision revision, bool recurse)		
+		{
+			return PropGet(propName, target, revision.ToSvnOpt(mPool), recurse,
+						   mContext, mPool);
+		}
+		
+		public SvnString RevPropGet(string propName, string url,
+									SvnRevision revision, out int setRev)		
+		{
+			return RevPropGet(propName, url, revision.ToSvnOpt(mPool), out setRev,
+							  mContext, mPool);
+		}
+		
+		public AprHash PropList(string target, SvnRevision revision, bool recurse)		
+		{
+			return PropList(target, revision.ToSvnOpt(mPool), recurse, mContext, mPool);
+		}
+		
+		public AprHash RevPropList(string url, SvnRevision revision, out int setRev)		
+		{
+			return RevPropList(url, revision.ToSvnOpt(mPool), out setRev, mContext, mPool);
+		}
+
+		public int Export(string from, string to, SvnRevision revision, bool force)
+		{
+			return Export(from, to, revision.ToSvnOpt(mPool), force, mContext, mPool);
+		}
+		
+		public AprHash List(string pathOrUrl, SvnRevision revision, bool recurse)		
+		{
+			return List(pathOrUrl, revision.ToSvnOpt(mPool), recurse, mContext, mPool);
+		}
+		
+		public void Cat(SvnStream stream, string pathOrUrl, SvnRevision revision)		
+		{
+			Cat(stream, pathOrUrl, revision.ToSvnOpt(mPool), mContext, mPool);
+		}
+		
+		public AprString UrlFromPath(string pathOrUrl)
+		{
+			return UrlFromPath(pathOrUrl, mPool);
+		}
+		
+		public AprString UuidFromUrl(string url)
+		{
+			return UuidFromUrl(url, mContext, mPool);
+		}
+
 		#endregion
     	
     	#region Authentication methods
@@ -251,35 +263,35 @@ namespace Softec.SubversionSharp
         {
         	if( mAuthObjs == null )
 				mAuthObjs = new ArrayList();
-        	mAuthObjs.Add(SvnAuthProviderObject.GetSimpleProvider(mPool));
+        	mAuthObjs.Add(SvnAuthProviderObject.GetSimpleProvider(mGlobalPool));
         }
         
         public void AddUsernameProvider()
         {
         	if( mAuthObjs == null )
 				mAuthObjs = new ArrayList();
-        	mAuthObjs.Add(SvnAuthProviderObject.GetUsernameProvider(mPool));
+        	mAuthObjs.Add(SvnAuthProviderObject.GetUsernameProvider(mGlobalPool));
         }
         
         public void AddSslServerTrustFileProvider()
         {
         	if( mAuthObjs == null )
 				mAuthObjs = new ArrayList();
-       		mAuthObjs.Add(SvnAuthProviderObject.GetSslServerTrustFileProvider(mPool));
+       		mAuthObjs.Add(SvnAuthProviderObject.GetSslServerTrustFileProvider(mGlobalPool));
         }
         
         public void AddSslClientCertFileProvider()
         {
         	if( mAuthObjs == null )
 				mAuthObjs = new ArrayList();
-        	mAuthObjs.Add(SvnAuthProviderObject.GetSslClientCertFileProvider(mPool));
+        	mAuthObjs.Add(SvnAuthProviderObject.GetSslClientCertFileProvider(mGlobalPool));
         }
         
         public void AddSslClientCertPwFileProvider()
         {
         	if( mAuthObjs == null )
 				mAuthObjs = new ArrayList();
-        	mAuthObjs.Add(SvnAuthProviderObject.GetSslClientCertPwFileProvider(mPool));
+        	mAuthObjs.Add(SvnAuthProviderObject.GetSslClientCertPwFileProvider(mGlobalPool));
         }
 
         public void AddPromptProvider(SvnAuthProviderObject.SimplePrompt promptFunc,
@@ -288,7 +300,7 @@ namespace Softec.SubversionSharp
         	if( mAuthObjs == null )
 				mAuthObjs = new ArrayList();
         	mAuthObjs.Add(SvnAuthProviderObject.GetPromptProvider(promptFunc, promptBaton, 
-        														  retryLimit, mPool));
+        														  retryLimit, mGlobalPool));
         }
 
 		public void AddPromptProvider(SvnAuthProviderObject.UsernamePrompt promptFunc,
@@ -297,7 +309,7 @@ namespace Softec.SubversionSharp
         	if( mAuthObjs == null )
 				mAuthObjs = new ArrayList();
         	mAuthObjs.Add(SvnAuthProviderObject.GetPromptProvider(promptFunc, promptBaton, 
-        														  retryLimit, mPool));
+        														  retryLimit, mGlobalPool));
         }
 
 		public void AddPromptProvider(SvnAuthProviderObject.SslServerTrustPrompt promptFunc,
@@ -306,7 +318,7 @@ namespace Softec.SubversionSharp
         	if( mAuthObjs == null )
 				mAuthObjs = new ArrayList();
         	mAuthObjs.Add(SvnAuthProviderObject.GetPromptProvider(promptFunc, promptBaton, 
-        														  mPool));
+        														  mGlobalPool));
         }
 
 		public void AddPromptProvider(SvnAuthProviderObject.SslClientCertPrompt promptFunc,
@@ -315,7 +327,7 @@ namespace Softec.SubversionSharp
         	if( mAuthObjs == null )
 				mAuthObjs = new ArrayList();
         	mAuthObjs.Add(SvnAuthProviderObject.GetPromptProvider(promptFunc, promptBaton, 
-        														  retryLimit, mPool));
+        														  retryLimit, mGlobalPool));
         }
 
 		public void AddPromptProvider(SvnAuthProviderObject.SslClientCertPwPrompt promptFunc,
@@ -324,19 +336,26 @@ namespace Softec.SubversionSharp
         	if( mAuthObjs == null )
 				mAuthObjs = new ArrayList();
         	mAuthObjs.Add(SvnAuthProviderObject.GetPromptProvider(promptFunc, promptBaton, 
-        														  retryLimit, mPool));
+        														  retryLimit, mGlobalPool));
         }
         
         public void OpenAuth()
         {
         	if( mAuthObjs == null )
 				mAuthObjs = new ArrayList();
-        	mContext.AuthBaton = SvnAuthBaton.Open(mAuthObjs,mPool);
+        	mContext.AuthBaton = SvnAuthBaton.Open(mAuthObjs,mGlobalPool);
         	mAuthObjs = null;
         }
        	#endregion
     	
     	#region Member access throught properties
+    	public AprPool GlobalPool
+    	{
+    		get
+    		{
+    			return(mGlobalPool);
+    		}
+    	}
     	public AprPool Pool
     	{
     		get

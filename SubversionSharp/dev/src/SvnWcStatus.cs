@@ -15,7 +15,7 @@ using Softec.AprSharp;
 
 namespace Softec.SubversionSharp
 {
-    public unsafe class SvnWcStatus
+    public unsafe class SvnWcStatus : IAprUnmanaged
     {
 	 	public delegate void Func(IntPtr baton, AprString path, SvnWcStatus status);
 	 	
@@ -81,6 +81,11 @@ namespace Softec.SubversionSharp
             mStatus = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mStatus);
+        }
+        
         public static implicit operator IntPtr(SvnWcStatus status)
         {
             return new IntPtr(status.mStatus);

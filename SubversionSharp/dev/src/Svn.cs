@@ -30,6 +30,16 @@ namespace Softec.SubversionSharp
 			Unknown
     	}
 
+		public enum Revision {
+			Unspecified,
+			Number,
+			Date,
+			Committed,
+			Previous,
+			Base,
+			Working,
+			Head
+		}
 
         internal delegate IntPtr svn_cancel_func_t(IntPtr baton);
         public delegate SvnError CancelFunc(IntPtr baton);

@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 
 namespace Softec.SubversionSharp
 {
-    public unsafe struct SvnAuthCredSimple
+    public unsafe struct SvnAuthCredSimple : IAprUnmanaged
     {
         private svn_auth_cred_simple_t *mCred;
 
@@ -57,6 +57,11 @@ namespace Softec.SubversionSharp
             mCred = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mCred);
+        }
+        
         public static implicit operator IntPtr(SvnAuthCredSimple cred)
         {
             return new IntPtr(cred.mCred);

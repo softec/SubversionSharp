@@ -16,7 +16,7 @@ using Softec.AprSharp;
 
 namespace Softec.SubversionSharp
 {
-    public struct SvnAuthBaton
+    public struct SvnAuthBaton : IAprUnmanaged
     {
     	public enum Param {
 			DefaultUsername,
@@ -102,9 +102,14 @@ namespace Softec.SubversionSharp
             mAuthBaton = IntPtr.Zero;
         }
 
-        public static implicit operator IntPtr(SvnAuthBaton authProviderObject)
+        public IntPtr ToIntPtr()
         {
-            return authProviderObject.mAuthBaton;
+            return mAuthBaton;
+        }
+        
+        public static implicit operator IntPtr(SvnAuthBaton authBaton)
+        {
+            return authBaton.mAuthBaton;
         }
         
         public static implicit operator SvnAuthBaton(IntPtr ptr)

@@ -15,7 +15,7 @@ using Softec.AprSharp;
 
 namespace Softec.SubversionSharp
 {
-    public unsafe class SvnDirEnt
+    public unsafe class SvnDirEnt : IAprUnmanaged
     {
         private svn_dirent_t *mDirEnt;
 
@@ -60,6 +60,11 @@ namespace Softec.SubversionSharp
             mDirEnt = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mDirEnt);
+        }
+        
         public static implicit operator IntPtr(SvnDirEnt entry)
         {
             return new IntPtr(entry.mDirEnt);

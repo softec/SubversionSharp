@@ -178,14 +178,14 @@ namespace Softec.SubversionSharp
 				throw new SvnException(err);
 		}
 		
-		public static void Blame(string path_or_url,
+		public static void Blame(string pathOrUrl,
 								 SvnOptRevision start, SvnOptRevision end, 
 								 BlameReceiver receiver, IntPtr baton,
 							     SvnClientContext ctx, AprPool pool)
 		{
 			SvnDelegate receiverDelegate = new SvnDelegate(receiver);
-			Debug.WriteLine(String.Format("svn_client_blame({0},{1},{2},{3},{4:X},{5},{6})",path_or_url,start,end,receiver.Method.Name,baton.ToInt32(),ctx,pool));
-			SvnError err = Svn.svn_client_blame(path_or_url, start, end,
+			Debug.WriteLine(String.Format("svn_client_blame({0},{1},{2},{3},{4:X},{5},{6})",pathOrUrl,start,end,receiver.Method.Name,baton.ToInt32(),ctx,pool));
+			SvnError err = Svn.svn_client_blame(pathOrUrl, start, end,
 											    (Svn.svn_client_blame_receiver_t)receiverDelegate.Wrapper,
 											    baton,
 											    ctx, pool);

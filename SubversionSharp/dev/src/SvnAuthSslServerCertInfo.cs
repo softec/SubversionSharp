@@ -16,7 +16,7 @@ using System.Runtime.InteropServices;
 namespace Softec.SubversionSharp
 {
 
-    public unsafe struct SvnAuthSslServerCertInfo
+    public unsafe struct SvnAuthSslServerCertInfo : IAprUnmanaged
     {
         private svn_auth_ssl_server_cert_info *mSslServerCertInfo;
 
@@ -61,6 +61,11 @@ namespace Softec.SubversionSharp
             mSslServerCertInfo = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mSslServerCertInfo);
+        }
+        
         public static implicit operator IntPtr(SvnAuthSslServerCertInfo clientContext)
         {
             return new IntPtr(clientContext.mSslServerCertInfo);

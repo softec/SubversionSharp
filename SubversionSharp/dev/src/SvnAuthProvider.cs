@@ -14,7 +14,7 @@ using Softec.AprSharp;
 
 namespace Softec.SubversionSharp
 {
-    public struct SvnAuthProviderObject
+    public struct SvnAuthProviderObject : IAprUnmanaged
     {
         private IntPtr mAuthProviderObject;
         internal SvnDelegate mAuthProvider;
@@ -51,6 +51,11 @@ namespace Softec.SubversionSharp
             mAuthProviderObject = IntPtr.Zero;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return mAuthProviderObject;
+        }
+        
         public static implicit operator IntPtr(SvnAuthProviderObject authProviderObject)
         {
             return authProviderObject.mAuthProviderObject;

@@ -16,14 +16,13 @@ using System.Runtime.InteropServices;
 namespace Softec.SubversionSharp
 {
 
-    public unsafe class SvnClientContext
+    public unsafe class SvnClientContext : IAprUnmanaged
     {
         private svn_client_ctx_t *mClientContext;
         private SvnAuthBaton mAuthBaton;
         private SvnDelegate mNotifyFunc;
         private SvnDelegate mLogMsgFunc;
         private SvnDelegate mCancelFunc;
-        private GCHandle mHandle;
 
         [StructLayout( LayoutKind.Sequential )]
         private struct svn_client_ctx_t
@@ -46,7 +45,6 @@ namespace Softec.SubversionSharp
         	mNotifyFunc = SvnDelegate.NullFunc;
         	mLogMsgFunc = SvnDelegate.NullFunc;
        		mCancelFunc = SvnDelegate.NullFunc;
-        	mHandle = new GCHandle();
         }
         
         public SvnClientContext(IntPtr ptr)
@@ -56,7 +54,6 @@ namespace Softec.SubversionSharp
         	mNotifyFunc = SvnDelegate.NullFunc;
         	mLogMsgFunc = SvnDelegate.NullFunc;
        		mCancelFunc = SvnDelegate.NullFunc;
-        	mHandle = new GCHandle();
         }
         
         public bool IsNull
@@ -78,6 +75,11 @@ namespace Softec.SubversionSharp
             mClientContext = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mClientContext);
+        }
+        
         public static implicit operator IntPtr(SvnClientContext clientContext)
         {
             return new IntPtr(clientContext.mClientContext);

@@ -15,7 +15,7 @@ using Softec.AprSharp;
 
 namespace Softec.SubversionSharp
 {
-    public unsafe class SvnString
+    public unsafe class SvnString : IAprUnmanaged
     {
         private svn_string_t *mString;
 
@@ -100,6 +100,11 @@ namespace Softec.SubversionSharp
             mString = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mString);
+        }
+        
         public static implicit operator IntPtr(SvnString str)
         {
             return new IntPtr(str.mString);

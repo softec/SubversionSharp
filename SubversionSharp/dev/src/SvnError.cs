@@ -15,7 +15,7 @@ using Softec.AprSharp;
 
 namespace Softec.SubversionSharp
 {
-   public unsafe class SvnError
+   public unsafe class SvnError : IAprUnmanaged
    {
         private svn_error_t *mError;
 
@@ -51,6 +51,14 @@ namespace Softec.SubversionSharp
             }
         }
 
+        public bool IsNull
+        {
+        	get
+        	{
+            	return( mError == null );
+            }
+        }
+        
         private void CheckPtr()
         {
             if( mError == null )
@@ -62,6 +70,14 @@ namespace Softec.SubversionSharp
             mError = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+        	if( IsNoError )
+        		return IntPtr.Zero;
+        	else
+            	return new IntPtr(mError);
+        }
+        
         public static implicit operator IntPtr(SvnError error)
         {
         	if( error.IsNoError )

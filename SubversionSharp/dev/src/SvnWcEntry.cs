@@ -15,7 +15,7 @@ using Softec.AprSharp;
 
 namespace Softec.SubversionSharp
 {
-    public unsafe class SvnWcEntry
+    public unsafe class SvnWcEntry : IAprUnmanaged
     {
 		public enum WcSchedule {
 			Normal,
@@ -84,6 +84,11 @@ namespace Softec.SubversionSharp
             mEntry = null;
         }
 
+        public IntPtr ToIntPtr()
+        {
+            return new IntPtr(mEntry);
+        }
+        
         public static implicit operator IntPtr(SvnWcEntry entry)
         {
             return new IntPtr(entry.mEntry);
