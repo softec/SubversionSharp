@@ -24,34 +24,34 @@ namespace Softec.AprSharp
             mString = ptr;
         }
 
-        public AprString(AprPool pool, string str)
+        public AprString(string str, AprPool pool)
         {
             mString = Apr.apr_pstrdup(pool, str);
         }
         
-        public AprString(AprPool pool, AprString str)
+        public AprString(AprString str, AprPool pool)
         {
             mString = Apr.apr_pstrdup(pool, str);
         }
 
-        public AprString(AprPool pool, string str, int size)
+        public AprString(string str, int size, AprPool pool)
         {
             mString = Apr.apr_pstrndup(pool, str, unchecked((uint)size));
         }
         
-        public AprString(AprPool pool, AprString str, int size)
+        public AprString(AprString str, int size, AprPool pool)
         {
             mString = Apr.apr_pstrndup(pool, str, unchecked((uint)size));
         }
 
         [CLSCompliant(false)]
-        public AprString(AprPool pool, string str, uint size)
+        public AprString(string str, uint size, AprPool pool)
         {
             mString = Apr.apr_pstrndup(pool, str, size);
         }
 
         [CLSCompliant(false)]
-        public AprString(AprPool pool, AprString str, uint size)
+        public AprString(AprString str, uint size, AprPool pool)
         {
             mString = Apr.apr_pstrndup(pool, str, size);
         }
@@ -97,34 +97,34 @@ namespace Softec.AprSharp
         #region Methods wrappers
         public static AprString Duplicate(AprPool pool, string str)
         {
-            return(new AprString(pool, str));
+            return(new AprString(str, pool));
         }
 
         public static AprString Duplicate(AprPool pool, AprString str)
         {
-            return(new AprString(pool, str));
+            return(new AprString(str, pool));
         }
 
         public static AprString Duplicate(AprPool pool, string str, int size)
         {
-            return(new AprString(pool, str, size));
+            return(new AprString(str, size, pool));
         }
 
         [CLSCompliant(false)]
         public static AprString Duplicate(AprPool pool, string str, uint size)
         {
-            return(new AprString(pool, str, size));
+            return(new AprString(str, size, pool));
         }
         
         public static AprString Duplicate(AprPool pool, AprString str, int size)
         {
-            return(new AprString(pool, str, size));
+            return(new AprString(str, size, pool));
         }
         
         [CLSCompliant(false)]
         public static AprString Duplicate(AprPool pool, AprString str, uint size)
         {
-            return(new AprString(pool, str, size));
+            return(new AprString(str, size, pool));
         }
         #endregion
     }

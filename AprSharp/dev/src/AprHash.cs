@@ -104,14 +104,14 @@ namespace Softec.AprSharp
         
         public void Set(string key, string value)
         {
-        	AprString aprKey = new AprString(Pool, key);
-        	AprString aprValue = new AprString(Pool, value);
+        	AprString aprKey = new AprString(key, Pool);
+        	AprString aprValue = new AprString(value, Pool);
         	Set((IntPtr)aprKey, -1, (IntPtr)aprValue);
         }
 
         public void Set(string key, IntPtr value)
         {
-        	AprString aprKey = new AprString(Pool, key);
+        	AprString aprKey = new AprString(key, Pool);
         	Set((IntPtr)aprKey, -1, value);
         }
 
@@ -134,7 +134,7 @@ namespace Softec.AprSharp
 
         public string GetAsString(string key)
         {
-        	AprString aprKey = new AprString(Pool, key);
+        	AprString aprKey = new AprString(key, Pool);
         	return(GetAsString((IntPtr)aprKey,-1));
 		}
 
@@ -150,7 +150,7 @@ namespace Softec.AprSharp
 		
         public IntPtr Get(string key)
         {
-        	AprString aprKey = new AprString(Pool, key);
+        	AprString aprKey = new AprString(key, Pool);
         	return(Get((IntPtr)aprKey,-1));
 		}
 		
@@ -333,7 +333,7 @@ namespace Softec.AprSharp
             {
                 if( mPool.IsNull )
                     throw new AprNullReferenceException(); 
-                mKey = new AprString(mPool, value);
+                mKey = new AprString(value, mPool);
                 mKeySize = -1;
             }
         }
@@ -348,7 +348,7 @@ namespace Softec.AprSharp
             {
                 if( mPool.IsNull )
                     throw new AprNullReferenceException(); 
-                mValue = new AprString(mPool, value);
+                mValue = new AprString(value, mPool);
             }
         }
     }

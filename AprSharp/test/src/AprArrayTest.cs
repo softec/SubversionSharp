@@ -120,10 +120,10 @@ namespace Softec.AprSharp.Test
 
         	a = AprArray.Make(p,5,typeof(AprString));
         	
-        	a.Push(new AprString(p,"This"));
-        	a.Push(new AprString(p,"is"));
-        	a.Push(new AprString(p,"a"));
-        	a.Push(new AprString(p,"test."));
+        	a.Push(new AprString("This",p));
+        	a.Push(new AprString("is",p));
+        	a.Push(new AprString("a",p));
+        	a.Push(new AprString("test.",p));
 
         	Assert.AreEqual("test.",a.PopObject().ToString(),"#B10");
         	Assert.AreEqual("a",a.PopObject().ToString(),"#B11");
@@ -232,10 +232,10 @@ namespace Softec.AprSharp.Test
         	AprArray a = AprArray.Make(p,4,Marshal.SizeOf(typeof(IntPtr)));
         	Assert.IsFalse(a.IsNull,"#E02");
         	
-        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"This"));
-        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"is"));
-        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"a"));
-        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"test."));
+        	Marshal.WriteIntPtr(a.Push(),new AprString("This",p));
+        	Marshal.WriteIntPtr(a.Push(),new AprString("is",p));
+        	Marshal.WriteIntPtr(a.Push(),new AprString("a",p));
+        	Marshal.WriteIntPtr(a.Push(),new AprString("test.",p));
         	
         	Assert.AreEqual("This is a test.",a.StrCat(p,' '),"#EO3");        	
 
@@ -252,11 +252,11 @@ namespace Softec.AprSharp.Test
         	AprArray a = AprArray.Make(p,5,typeof(AprString));
         	Assert.IsFalse(a.IsNull,"#F02");
         	
-        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"1"));
-        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"2"));
-        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"3"));
-        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"4"));
-        	Marshal.WriteIntPtr(a.Push(),new AprString(p,"5"));
+        	Marshal.WriteIntPtr(a.Push(),new AprString("1",p));
+        	Marshal.WriteIntPtr(a.Push(),new AprString("2",p));
+        	Marshal.WriteIntPtr(a.Push(),new AprString("3",p));
+        	Marshal.WriteIntPtr(a.Push(),new AprString("4",p));
+        	Marshal.WriteIntPtr(a.Push(),new AprString("5",p));
         	
         	AprString[] arr = new AprString[5]; 
         	a.CopyTo(arr,0);
