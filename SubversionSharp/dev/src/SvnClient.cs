@@ -94,12 +94,12 @@ namespace Softec.SubversionSharp
 
         public SvnClientCommitInfo Mkdir(ICollection paths)
 		{
-			return Mkdir(AprArray.Make(mPool,paths), mContext, mPool);
+			return Mkdir(AprArray.CastMake(mPool,paths), mContext, mPool);
 		}
 		
-		public SvnClientCommitInfo Delete(AprArray paths, bool force)
+		public SvnClientCommitInfo Delete(ICollection paths, bool force)
 		{
-			return Delete(paths, force, mContext, mPool);
+			return Delete(AprArray.CastMake(mPool,paths), force, mContext, mPool);
 		}
 		
 		public SvnClientCommitInfo Import(string path, string url, bool nonrecursive)
@@ -107,9 +107,9 @@ namespace Softec.SubversionSharp
 			return Import(path, url, nonrecursive, mContext, mPool);
 		}
 		
-		public SvnClientCommitInfo Commit(AprArray targets, bool nonrecursive, AprPool pool)
+		public SvnClientCommitInfo Commit(ICollection targets, bool nonrecursive)
 		{
-			return Commit(targets, nonrecursive, mContext, mPool);
+			return Commit(AprArray.CastMake(mPool,targets), nonrecursive, mContext, mPool);
 		}
 		
 		public int Status(string path, SvnRevision revision,
@@ -120,12 +120,12 @@ namespace Softec.SubversionSharp
 						  descend, getAll, update, noIgnore, mContext, mPool);
 		}
 
-		public void Log(AprArray targets, 
+		public void Log(ICollection targets, 
 						SvnRevision start, SvnRevision end,
 						bool discoverChangedPaths, bool strictNodeHistory,
 						LogMessageReceiver receiver, IntPtr baton)
 		{
-			Log(targets, 
+			Log(AprArray.CastMake(mPool,targets), 
 				start.ToSvnOpt(mPool), end.ToSvnOpt(mPool),
 				discoverChangedPaths, strictNodeHistory, receiver, baton,
 				mContext, mPool);
@@ -140,13 +140,13 @@ namespace Softec.SubversionSharp
 				  receiver, baton, mContext, mPool);
 		}
 
-		public void Diff(AprArray diffOptions,
+		public void Diff(ICollection diffOptions,
 						 string path1, SvnRevision revision1,
 						 string path2, SvnRevision revision2,
 						 bool recurse, bool ignoreAncestry, bool noDiffDeleted,
 						 AprFile outFile, AprFile errFile)
 		{
-			Diff(diffOptions,
+			Diff(AprArray.CastMake(mPool,diffOptions),
 				 path1, revision1.ToSvnOpt(mPool),
 				 path2, revision2.ToSvnOpt(mPool),
 				 recurse, ignoreAncestry, noDiffDeleted,
@@ -173,9 +173,9 @@ namespace Softec.SubversionSharp
 			Relocate(dir, from, to, recurse, mContext, mPool);
 		}
 		
-		public void Revert(AprArray paths, bool recurse)
+		public void Revert(ICollection paths, bool recurse)
 		{
-			Revert(paths, recurse, mContext, mPool);
+			Revert(AprArray.CastMake(mPool,paths), recurse, mContext, mPool);
 		}
 		
 		public void Resolved(string path, bool recurse)

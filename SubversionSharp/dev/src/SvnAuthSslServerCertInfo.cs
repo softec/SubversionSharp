@@ -66,6 +66,11 @@ namespace Softec.SubversionSharp
             return new IntPtr(mSslServerCertInfo);
         }
         
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(SvnAuthSslServerCertInfo clientContext)
         {
             return new IntPtr(clientContext.mSslServerCertInfo);

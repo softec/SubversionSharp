@@ -78,6 +78,11 @@ namespace Softec.SubversionSharp
             	return new IntPtr(mError);
         }
         
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(SvnError error)
         {
         	if( error.IsNoError )

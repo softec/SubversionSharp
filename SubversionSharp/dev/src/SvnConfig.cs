@@ -49,6 +49,11 @@ namespace Softec.SubversionSharp
             return mConfig;
         }
         
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(SvnConfig config)
         {
             return config.mConfig;

@@ -56,6 +56,11 @@ namespace Softec.SubversionSharp
             return mAuthProviderObject;
         }
         
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(SvnAuthProviderObject authProviderObject)
         {
             return authProviderObject.mAuthProviderObject;

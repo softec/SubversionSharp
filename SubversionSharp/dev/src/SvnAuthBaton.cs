@@ -107,6 +107,11 @@ namespace Softec.SubversionSharp
             return mAuthBaton;
         }
         
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(SvnAuthBaton authBaton)
         {
             return authBaton.mAuthBaton;

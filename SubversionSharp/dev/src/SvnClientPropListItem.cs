@@ -61,6 +61,11 @@ namespace Softec.SubversionSharp
             return new IntPtr(mPropList);
         }
         
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(SvnClientPropListItem clientPropList)
         {
             return new IntPtr(clientPropList.mPropList);

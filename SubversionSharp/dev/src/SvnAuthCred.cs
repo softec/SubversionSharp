@@ -62,6 +62,11 @@ namespace Softec.SubversionSharp
             return new IntPtr(mCred);
         }
         
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(SvnAuthCredSimple cred)
         {
             return new IntPtr(cred.mCred);

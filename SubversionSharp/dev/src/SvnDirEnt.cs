@@ -65,6 +65,11 @@ namespace Softec.SubversionSharp
             return new IntPtr(mDirEnt);
         }
         
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(SvnDirEnt entry)
         {
             return new IntPtr(entry.mDirEnt);

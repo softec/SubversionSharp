@@ -66,6 +66,11 @@ namespace Softec.SubversionSharp
             return new IntPtr(mCommitItem);
         }
         
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(SvnClientCommitItem clientCommit)
         {
             return new IntPtr(clientCommit.mCommitItem);

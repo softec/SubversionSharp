@@ -74,6 +74,11 @@ namespace Softec.SubversionSharp
             return mStream;
         }
         
+		public bool ReferenceEquals(IAprUnmanaged obj)
+		{
+			return(obj.ToIntPtr() == ToIntPtr());
+		}
+		
         public static implicit operator IntPtr(SvnStream stream)
         {
             return stream.mStream;
