@@ -17,7 +17,7 @@
 //
 //  Sources, support options and lastest version of the complete library
 //  is available from:
-//		http://www.softec.st/ClrProjects/AprSharp
+//		http://www.softec.st/AprSharp
 //		Support@softec.st
 //
 //  Initial authors : 
