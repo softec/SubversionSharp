@@ -25,14 +25,17 @@ namespace Softec.SubversionSharp
             mConfig = ptr;
         }
         
-        public bool IsNull()
+        public bool IsNull
         {
-            return( mConfig == IntPtr.Zero );
+        	get
+        	{
+            	return( mConfig == IntPtr.Zero );
+            }
         }
 
         private void CheckPtr()
         {
-            if( IsNull() )
+            if( IsNull )
                 throw new AprNullReferenceException(); 
         }
 
@@ -75,7 +78,7 @@ namespace Softec.SubversionSharp
         {
             Debug.WriteLine(String.Format("svn_config_ensure({0},{1})",IntPtr.Zero,pool));
             SvnError err = Svn.svn_config_ensure(IntPtr.Zero, pool);
-            if(!err.IsNoError())
+            if(!err.IsNoError)
                 throw new SvnException(err);
         }
 
@@ -83,7 +86,7 @@ namespace Softec.SubversionSharp
         {
             Debug.WriteLine(String.Format("svn_config_ensure({0},{1})",configDir,pool));
             SvnError err = Svn.svn_config_ensure(configDir, pool);
-            if(!err.IsNoError())
+            if(!err.IsNoError)
                 throw new SvnException(err);
         }
 
@@ -91,7 +94,7 @@ namespace Softec.SubversionSharp
         {
             Debug.WriteLine(String.Format("svn_config_ensure({0},{1})",configDir,pool));
             SvnError err = Svn.svn_config_ensure(configDir, pool);
-            if(!err.IsNoError())
+            if(!err.IsNoError)
                 throw new SvnException(err);
         }
 
@@ -100,7 +103,7 @@ namespace Softec.SubversionSharp
         	IntPtr h;
             Debug.WriteLine(String.Format("svn_config_get_config({0},{1})",IntPtr.Zero,pool));
             SvnError err = Svn.svn_config_get_config(out h, IntPtr.Zero, pool);
-            if(!err.IsNoError())
+            if(!err.IsNoError)
                 throw new SvnException(err);
             return h;
         }
@@ -110,7 +113,7 @@ namespace Softec.SubversionSharp
         	IntPtr h;
             Debug.WriteLine(String.Format("svn_config_get_config({0},{1})",configDir,pool));
             SvnError err = Svn.svn_config_get_config(out h, configDir, pool);
-            if(!err.IsNoError())
+            if(!err.IsNoError)
                 throw new SvnException(err);
             return h;
         }
@@ -120,7 +123,7 @@ namespace Softec.SubversionSharp
         	IntPtr h;
             Debug.WriteLine(String.Format("svn_config_get_config({0},{1})",configDir,pool));
             SvnError err = Svn.svn_config_get_config(out h, configDir, pool);
-            if(!err.IsNoError())
+            if(!err.IsNoError)
                 throw new SvnException(err);
             return h;
         }

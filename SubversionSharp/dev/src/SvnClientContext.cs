@@ -44,14 +44,17 @@ namespace Softec.SubversionSharp
             mClientContext = ptr.ToPointer();
         }
         
-        public bool IsNull()
+        public bool IsNull
         {
-            return( mClientContext == null );
+        	get
+        	{
+            	return( mClientContext == null );
+            }
         }
 
         private void CheckPtr()
         {
-            if( IsNull() )
+            if( IsNull )
                 throw new AprNullReferenceException(); 
         }
 
@@ -83,7 +86,7 @@ namespace Softec.SubversionSharp
             
             Debug.Write(String.Format("svn_client_create_context({0})...",pool));
             SvnError err = Svn.svn_client_create_context(out ptr, pool);
-            if(!err.IsNoError())
+            if(!err.IsNoError)
                 throw new SvnException(err);
             Debug.WriteLine(String.Format("Done({0:X})",((Int32)ptr)));
 

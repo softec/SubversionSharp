@@ -41,9 +41,12 @@ namespace Softec.SubversionSharp
             mError = ptr.ToPointer();
         }
         
-        public bool IsNoError()
+        public bool IsNoError
         {
-            return( mError == null );
+        	get
+        	{
+            	return( mError == null );
+            }
         }
 
         private void CheckPtr()
