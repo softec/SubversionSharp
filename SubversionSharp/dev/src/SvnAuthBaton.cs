@@ -135,7 +135,7 @@ namespace Softec.SubversionSharp
         	}
         	
 	   		if( mParamName[(int)param] == IntPtr.Zero )
-	   			mParamName[(int)param] = new AprString(mPool, ParamName[(int)param]);
+	   			mParamName[(int)param] = new AprString(ParamName[(int)param],mPool);
         			
             Debug.WriteLine(String.Format("svn_auth_set_parameter({0},{1:X},{2:X})",this,mParamName[(int)param].ToInt32(),value.ToInt32()));
         	Svn.svn_auth_set_parameter(mAuthBaton, mParamName[(int)param], value);
@@ -152,7 +152,7 @@ namespace Softec.SubversionSharp
         	}
         	
 	   		if( mParamName[(int)param] == IntPtr.Zero )
-	   			mParamName[(int)param] = new AprString(mPool, ParamName[(int)param]);
+	   			mParamName[(int)param] = new AprString(ParamName[(int)param],mPool);
 
         	IntPtr ptr;        			
             Debug.Write(String.Format("svn_auth_get_parameter({0},{1:X})...",this,mParamName[(int)param].ToInt32()));

@@ -78,6 +78,75 @@ namespace Softec.SubversionSharp
         [DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
         internal void svn_error_clear(IntPtr error);   
         #endregion
+        
+        #region SvnString
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_string_create(IntPtr cstring, IntPtr pool);
+        [DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+        internal IntPtr svn_string_create(string cstring, IntPtr pool);
+
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_string_ncreate(IntPtr cstring, uint size, IntPtr pool);
+        [DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+        internal IntPtr svn_string_ncreate(string cstring, uint size, IntPtr pool);
+
+		[DllImport("svn_client-1")] static extern
+        internal IntPtr svn_string_create_from_buf(IntPtr strbuf, IntPtr pool);
+        
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_string_dup(IntPtr original_string, IntPtr pool);
+        #endregion
+        
+        #region SvnStringBuf
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_stringbuf_create(IntPtr cstring, IntPtr pool);
+        [DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+        internal IntPtr svn_stringbuf_create(string cstring, IntPtr pool);
+
+		[DllImport("svn_client-1")] static extern
+        internal IntPtr svn_stringbuf_ncreate(IntPtr cstring, uint size, IntPtr pool);
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+        internal IntPtr svn_stringbuf_ncreate(string cstring, uint size, IntPtr pool);
+        
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+        internal IntPtr svn_stringbuf_create_from_string(IntPtr str, IntPtr pool);
+        
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_stringbuf_dup(IntPtr original_string, IntPtr pool);
+        #endregion
+
+        #region SvnStream
+        internal delegate IntPtr svn_read_fn_t(IntPtr baton, IntPtr buffer, ref uint len);
+        internal delegate IntPtr svn_write_fn_t(IntPtr baton, IntPtr data, ref uint len);
+        internal delegate IntPtr svn_close_fn_t(IntPtr baton);
+        
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_stream_create(IntPtr baton, IntPtr pool);
+
+        [DllImport("svn_client-1")] static extern
+        internal void 	svn_stream_set_baton(IntPtr stream, IntPtr baton);
+
+        [DllImport("svn_client-1")] static extern
+        internal void 	svn_stream_set_read(IntPtr stream, svn_read_fn_t read_fn);
+
+        [DllImport("svn_client-1")] static extern
+        internal void 	svn_stream_set_write(IntPtr stream, svn_write_fn_t write_fn);
+
+        [DllImport("svn_client-1")] static extern
+        internal void 	svn_stream_set_close(IntPtr stream, svn_close_fn_t close_fn);
+
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_stream_empty (IntPtr pool);
+
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_stream_from_aprfile(IntPtr file, IntPtr pool);
+
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_stream_for_stdout(out IntPtr stream, IntPtr pool);
+
+        [DllImport("svn_client-1")] static extern
+        internal IntPtr svn_stream_compressed (IntPtr stream, IntPtr pool);
+        #endregion
 
         #region SvnClientContext
 	    [DllImport("svn_client-1")] static extern
@@ -334,15 +403,10 @@ namespace Softec.SubversionSharp
 									   IntPtr ctx, IntPtr pool);
 
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
-		internal IntPtr svn_client_url_from_path(string url, string path_or_url, IntPtr pool);
+		internal IntPtr svn_client_url_from_path(out IntPtr url, string path_or_url, IntPtr pool);
 
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
-		internal IntPtr svn_client_uuid_from_url(string uuid, string url, IntPtr ctx, IntPtr pool);
-
-		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
-		internal IntPtr svn_client_uuid_from_path (string uuid, string path, 
-												   IntPtr adm_access,
-												   IntPtr ctx, IntPtr pool);
+		internal IntPtr svn_client_uuid_from_url(out IntPtr uuid, string url, IntPtr ctx, IntPtr pool);
         #endregion                
     }
 }   

@@ -74,7 +74,7 @@ namespace Softec.SubversionSharp
         {
         	SvnWcNotify.Func func = mFunc as SvnWcNotify.Func;
         	try {
-            	Debug.WriteLine(String.Format("[Callback:{0}]SvnWcNotifyFunc({1:X},{2},{3},{4},{5},{6},{7},{8})",func.Method.Name,baton,new AprString(path),(SvnWcNotify.Action) action,(Svn.NodeKind) kind,new AprString(mime_type),(SvnWcNotify.State) content_state,(SvnWcNotify.State) prop_state,revision));
+            	Debug.WriteLine(String.Format("[Callback:{0}]SvnWcNotifyFunc({1:X},{2},{3},{4},{5},{6},{7},{8})",func.Method.Name,baton.ToInt32(),new AprString(path),(SvnWcNotify.Action) action,(Svn.NodeKind) kind,new AprString(mime_type),(SvnWcNotify.State) content_state,(SvnWcNotify.State) prop_state,revision));
         		func(baton, new AprString(path),
         		     (SvnWcNotify.Action) action, (Svn.NodeKind) kind, 
         		     new AprString(mime_type), (SvnWcNotify.State) content_state,
@@ -104,7 +104,7 @@ namespace Softec.SubversionSharp
         	try {
 	        	AprString logMessage;
 	        	AprString tmpFile;
-            	Debug.Write(String.Format("[Callback:{0}]SvnClientGetCommitLog({1},{2:X},{3})...",func.Method.Name,new AprArray(commit_items),baton,new AprPool(pool)));
+            	Debug.Write(String.Format("[Callback:{0}]SvnClientGetCommitLog({1},{2:X},{3})...",func.Method.Name,new AprArray(commit_items),baton.ToInt32(),new AprPool(pool)));
         		err = func(out logMessage, out tmpFile,
          				   new AprArray(commit_items,typeof(SvnClientCommitItem)), baton,
          				   new AprPool(pool));
@@ -134,7 +134,7 @@ namespace Softec.SubversionSharp
        		SvnError err = SvnError.NoError;
         	Svn.CancelFunc func = mFunc as Svn.CancelFunc;
         	try {
-            	Debug.Write(String.Format("[Callback:{0}]SvnCancelFunc({1:X})...",func.Method.Name,baton));
+            	Debug.Write(String.Format("[Callback:{0}]SvnCancelFunc({1:X})...",func.Method.Name,baton.ToInt32()));
         		err = func(baton);
            		Debug.WriteLine((err.IsNoError) ? "Return(NoError)" : String.Format("Return({0})",err.Message));
         	}
@@ -159,7 +159,7 @@ namespace Softec.SubversionSharp
 	 	{
         	SvnWcStatus.Func func = mFunc as SvnWcStatus.Func;
         	try {
-            	Debug.WriteLine(String.Format("[Callback:{0}]SvnWcStatusFunc({1:X},{2},{3})",func.Method.Name,baton,new AprString(path),new SvnWcStatus(status)));
+            	Debug.WriteLine(String.Format("[Callback:{0}]SvnWcStatusFunc({1:X},{2},{3})",func.Method.Name,baton.ToInt32(),new AprString(path),new SvnWcStatus(status)));
         		func(baton, new AprString(path), (SvnWcStatus) status);
         	}
         	catch( Exception ) {
@@ -184,7 +184,7 @@ namespace Softec.SubversionSharp
        		SvnError err = SvnError.NoError;
         	SvnClient.LogMessageReceiver func = mFunc as SvnClient.LogMessageReceiver;
         	try {
-            	Debug.Write(String.Format("[Callback:{0}]SvnLogMessageReceiver({1:X},{2},{3},{4},{5},{6},{7})...",func.Method.Name,baton,new AprHash(changed_paths),revision,new AprString(author),new AprString(date),new AprString(message),new AprPool(pool)));
+            	Debug.Write(String.Format("[Callback:{0}]SvnLogMessageReceiver({1:X},{2},{3},{4},{5},{6},{7})...",func.Method.Name,baton.ToInt32(),new AprHash(changed_paths),revision,new AprString(author),new AprString(date),new AprString(message),new AprPool(pool)));
         		err = func(baton, new AprHash(changed_paths),
         				   revision, new AprString(author),
         				   new AprString(date), new AprString(message),
@@ -215,7 +215,7 @@ namespace Softec.SubversionSharp
        		SvnError err = SvnError.NoError;
         	SvnClient.BlameReceiver func = mFunc as SvnClient.BlameReceiver;
         	try {
-            	Debug.Write(String.Format("[Callback:{0}]SvnClientBlameReceiver({1:X},{2},{3},{4},{5},{6},{7})...",func.Method.Name,baton,lineNo,revision,new AprString(author),new AprString(date),new AprString(line),new AprPool(pool)));
+            	Debug.Write(String.Format("[Callback:{0}]SvnClientBlameReceiver({1:X},{2},{3},{4},{5},{6},{7})...",func.Method.Name,baton.ToInt32(),lineNo,revision,new AprString(author),new AprString(date),new AprString(line),new AprPool(pool)));
         		err = func(baton, lineNo, revision,
         				   new AprString(author), new AprString(date), new AprString(line),
         				   new AprPool(pool));
@@ -229,8 +229,90 @@ namespace Softec.SubversionSharp
         	}
         	return(err);        
  		}         								       
+ 
     	    	    	    	    	    	
+		// svn_read_fn_t Wrapper   	
+    	public SvnDelegate(SvnStream.ReadFunc func)
+    	{
+    		mFunc = func;
+    		mWrapperFunc = new Svn.svn_read_fn_t(SvnStreamReadWrapper);
+    	}
+    	
+ 		private IntPtr SvnStreamReadWrapper(IntPtr baton, IntPtr buffer, ref uint len)
+ 		{
+       		SvnError err = SvnError.NoError;
+        	SvnStream.ReadFunc func = mFunc as SvnStream.ReadFunc;
+        	try {
+            	Debug.Write(String.Format("[Callback:{0}]SvnStreamReadFunc({1:X},{2:X},{3})...",func.Method.Name,baton.ToInt32(),buffer.ToInt32(),len));
+	        	int slen = unchecked((int)len);
+        		err = func(baton, buffer, ref slen);
+	        	len = unchecked((uint)slen);
+           		Debug.WriteLine(String.Format("Done({0})",len));
+        	}
+        	catch( SvnException e ) {
+        		err = SvnError.Create(e.AprErr, SvnError.NoError, e.Message);
+        	}
+        	catch( Exception e ) {
+        		err = SvnError.Create(215000, SvnError.NoError, e.Message);
+        	}
+        	return(err);
+ 		}         								       
+ 		
+
+		// svn_write_fn_t Wrapper   	
+    	public SvnDelegate(SvnStream.WriteFunc func)
+    	{
+    		mFunc = func;
+    		mWrapperFunc = new Svn.svn_write_fn_t(SvnStreamWriteWrapper);
+    	}
+    	
+ 		private IntPtr SvnStreamWriteWrapper(IntPtr baton, IntPtr data, ref uint len)
+ 		{
+       		SvnError err = SvnError.NoError;
+        	SvnStream.WriteFunc func = mFunc as SvnStream.WriteFunc;
+        	try {
+            	Debug.Write(String.Format("[Callback:{0}]SvnStreamWriteFunc({1:X},{2:X},{3})...",func.Method.Name,baton.ToInt32(),data.ToInt32(),len));
+	        	int slen = unchecked((int)len);
+        		err = func(baton, data, ref slen);
+	        	len = unchecked((uint)slen);
+           		Debug.WriteLine(String.Format("Done({0})",len));
+        	}
+        	catch( SvnException e ) {
+        		err = SvnError.Create(e.AprErr, SvnError.NoError, e.Message);
+        	}
+        	catch( Exception e ) {
+        		err = SvnError.Create(215000, SvnError.NoError, e.Message);
+        	}
+        	return(err);
+ 		}         								       
     	    	    	    	
+    	    	    	    	    	    	    	    	    	    	    	    	
+		// svn_close_fn_t Wrapper   	
+    	public SvnDelegate(SvnStream.CloseFunc func)
+    	{
+    		mFunc = func;
+    		mWrapperFunc = new Svn.svn_close_fn_t(SvnStreamCloseWrapper);
+    	}
+    	
+ 		private IntPtr SvnStreamCloseWrapper(IntPtr baton)
+ 		{
+       		SvnError err = SvnError.NoError;
+        	SvnStream.CloseFunc func = mFunc as SvnStream.CloseFunc;
+        	try {
+            	Debug.Write(String.Format("[Callback:{0}]SvnStreamCloseFunc({1:X})...",func.Method.Name,baton.ToInt32()));
+        		err = func(baton);
+           		Debug.WriteLine((err.IsNoError) ? "Return(NoError)" : String.Format("Return({0})",err.Message));
+        	}
+        	catch( SvnException e ) {
+        		err = SvnError.Create(e.AprErr, SvnError.NoError, e.Message);
+        	}
+        	catch( Exception e ) {
+        		err = SvnError.Create(215000, SvnError.NoError, e.Message);
+        	}
+        	return(err);
+ 		}         								       
+    	    	    	    	
+    	    	    	    	    	    	    	    	    	    	    	    	
        	// svn_auth_simple_prompt_func_t Wrapper
     	public SvnDelegate(SvnAuthProviderObject.SimplePrompt func)
     	{

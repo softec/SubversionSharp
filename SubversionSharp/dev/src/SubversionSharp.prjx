@@ -19,6 +19,11 @@
     <File name="./SvnClientCommitItem.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnWcStatus.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnWcEntry.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnString.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnStream.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnDirEnt.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnStringBuf.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnClientPropListItem.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="AprSharp" localcopy="True" />
