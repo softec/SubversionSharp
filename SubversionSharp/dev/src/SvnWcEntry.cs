@@ -43,7 +43,11 @@ namespace Softec.SubversionSharp
 
         private svn_wc_entry_t *mEntry;
 
-        [StructLayout( LayoutKind.Sequential, Pack=4 )]
+#if WIN32
+		[StructLayout( LayoutKind.Sequential, Pack=8 )]
+#else
+		[StructLayout( LayoutKind.Sequential, Pack=4 )]
+#endif
 		private struct svn_wc_entry_t
 		{
 			public IntPtr name;

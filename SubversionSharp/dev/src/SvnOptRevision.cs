@@ -169,8 +169,13 @@ namespace Softec.SubversionSharp
 		private struct svn_opt_revision_t
 		{
   			[FieldOffset(0)]public int kind;
-     		[FieldOffset(4)]public int number;
+#if WIN32
+			[FieldOffset(8)]public int number;
+			[FieldOffset(8)]public long date;
+#else
+			[FieldOffset(4)]public int number;
      		[FieldOffset(4)]public long date;
+#endif
    		} 
 
         #region Generic embedding functions of an IntPtr
