@@ -27,6 +27,7 @@
 //
 using System;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 
 /*
@@ -91,18 +92,73 @@ namespace Softec.Applications
 		[STAThread]
 		static void Main(string[] args)
 		{
-			Regex FindCallConvAttribute = new Regex(@"\.custom instance void \[CallConvAttribute\]Softec.CallConv(.*?)Attribute::\.ctor\(\) = \([^)]*\)", RegexOptions.Compiled);
+			byte[] BOM = { 0xEF, 0xBB, 0xBF };
+
+			Regex FindHelpArg = new Regex(@"^[/-](\?|[Hh]([Ee][Ll][Pp])?)$", RegexOptions.Compiled);
+			Regex FindTextArg = new Regex(@"^[/-][Tt][Ee][Xx][Tt]$", RegexOptions.Compiled);
+			Regex FindUTF8Arg = new Regex(@"^[/-][Uu][Tt][Ff]8$", RegexOptions.Compiled);
+			Regex FindCallConvAttribute = new Regex(@"\.cubenstom instance void \[CallConvAttribute\]Softec.CallConv(.*?)Attribute::\.ctor\(\) = \([^)]*\)", RegexOptions.Compiled);
 			Regex FindInvokeMethod = new Regex(@"([ ]*)Invoke\(.*", RegexOptions.Compiled);
 
-			string callingConvention = string.Empty;
-			bool newLine = false;
+			bool textMode = false;
+			Encoding encodingMode = Encoding.ASCII;
+			string infile = String.Empty;
+			string outfile = String.Empty;
+
+			foreach( string arg in args )
+			{
+				if( FindTextArg.Match(arg).Success )
+				{
+					textMode = true;
+					continue;
+				}	
+				if( FindUTF8Arg.Match(arg).Success )
+				{
+					encodingMode = Encoding.UTF8;
+					continue;
+				}
+				if( FindHelpArg.Match(arg).Success )
+				{
+					Console.WriteLine(
+@"CallConvHack 1.0 - Copyright 2004 SOFTEC sa. All rights reserved
+Licensed under LGPL
+
+Usage: CallConvHack [/TEXT [/UTF8] | infile] [outfile]
+/TEXT	permits using the /TEXT option of ildasm. It also transform
+		double line ending (\r\r\n) into single one
+/UTF8	consider input as UTF8. (Default is ASCII for Stdin)");
+					return;
+				}
+				if( infile == String.Empty && !textMode)
+					infile = arg;
+				else if( outfile == String.Empty )
+					outfile = arg;
+				else
+					Console.Error.WriteLine("Invalid argument {0} ignored",arg);
+			}
+
+			StreamReader input;
+			if( infile != String.Empty )
+				input = new StreamReader(infile);
+			else
+				input = new StreamReader(Console.OpenStandardInput(),encodingMode);
+
+			StreamWriter output;
+			if( outfile != String.Empty )
+				output = new StreamWriter(outfile,false,input.CurrentEncoding);
+			else
+				output = new StreamWriter(Console.OpenStandardOutput(),input.CurrentEncoding);
 
 			string line;
-			while ((line = Console.ReadLine()) != null)
+			bool newLine = false;
+			string callingConvention = string.Empty;
+
+			while ((line = input.ReadLine()) != null)
 			{
-				if (line == "" )
+				// Hack to fix a wrong line ending of 0x0D 0x0D 0x0A when using /TEXT
+				if ( line == "" )
 				{
-					if( !newLine )
+					if( textMode && !newLine )
 					{
 						newLine = true;
 						continue;
@@ -131,12 +187,12 @@ namespace Softec.Applications
 						m = FindInvokeMethod.Match(line);
 						if (m.Success)
 						{
-							Console.WriteLine("{0}modopt([mscorlib]System.Runtime.CompilerServices.CallConv{1})", m.Groups[1].Value, callingConvention);
+							output.WriteLine("{0}modopt([mscorlib]System.Runtime.CompilerServices.CallConv{1})", m.Groups[1].Value, callingConvention);
 							callingConvention = string.Empty;
 						}
 					}
 				}
-				Console.WriteLine(line);
+				output.WriteLine(line);
 			}
 		}
 	}
