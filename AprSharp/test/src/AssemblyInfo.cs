@@ -1,5 +1,15 @@
+//
+// Softec
+//
+// Contact: Support@softec.st
+//
+// Designed by Denis Gervalle and Olivier Desaive
+// Written by Denis Gervalle
+//
+// Copyright 2004 by SOFTEC. All rights reserved.
+//
+using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 // Information about this assembly is defined by the following
 // attributes.
@@ -7,14 +17,14 @@ using System.Runtime.CompilerServices;
 // change them to the information which is associated with the assembly
 // you compile.
 
-[assembly: AssemblyTitle("")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle("AprSharp NUnit tests")]
+[assembly: AssemblyDescription("NUnit tests of Wrapper classes for APR")]
+//[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("SOFTEC sa")]
+[assembly: AssemblyProduct("AprSharp.Test")]
+[assembly: AssemblyCopyright("Copyright 2004 by SOFTEC. All rights reserved.")]
+//[assembly: AssemblyTrademark("")]
+//[assembly: AssemblyCulture("")]
 
 // The assembly version has following format :
 //
