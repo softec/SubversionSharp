@@ -17,6 +17,8 @@
     <File name="./SvnOptRevision.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnClientCommitInfo.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
     <File name="./SvnClientCommitItem.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnWcStatus.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
+    <File name="./SvnWcEntry.cs" subtype="Code" buildaction="Compile" dependson="" data="" />
   </Contents>
   <References>
     <Reference type="Project" refto="AprSharp" localcopy="True" />

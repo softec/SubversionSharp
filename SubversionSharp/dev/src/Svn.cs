@@ -65,7 +65,9 @@ namespace Softec.SubversionSharp
                 
         public static AprPool PoolCreate(AprPool pool, AprAllocator allocator)
         {
-            return(AprPool.Create(pool, allocator));
+        	AprPool newpool = AprPool.Create(pool, allocator);
+        	allocator.Owner = pool;
+            return(newpool);
         }
         #endregion
         
@@ -178,23 +180,157 @@ namespace Softec.SubversionSharp
         													 IntPtr pool);
         													 
         [DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
-		internal IntPtr svn_client_checkout(out int result_rev, string URL, 
+		internal IntPtr svn_client_checkout(out uint result_rev, string URL, 
 											string path, IntPtr revision, int recurse, 
 											IntPtr ctx, IntPtr pool);
 											
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
-		internal IntPtr svn_client_update (out int result_rev, string path, 
+		internal IntPtr svn_client_update (out uint result_rev, string path, 
 										   IntPtr revision, int recurse,
 										   IntPtr ctx, IntPtr pool);
 		
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
-		internal IntPtr svn_client_switch(out int result_rev, string path, string url, 
+		internal IntPtr svn_client_switch(out uint result_rev, string path, string url, 
 										  IntPtr revision, int recurse, 
 										  IntPtr ctx, IntPtr pool);
 										  
 		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
 		internal IntPtr svn_client_add(string path, int recursive, 
 									   IntPtr ctx, IntPtr pool);
+		
+		[DllImport("svn_client-1")] static extern
+		internal IntPtr svn_client_mkdir(out IntPtr commit_info, IntPtr paths,
+						  	             IntPtr ctx, IntPtr pool);
+		
+		[DllImport("svn_client-1")] static extern
+		internal IntPtr svn_client_delete(out IntPtr commit_info, IntPtr paths, int force, 
+						  	              IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_import(out IntPtr commit_info, 
+										  string path, string url, int nonrecursive, 
+						  	              IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1")] static extern
+		internal IntPtr svn_client_commit(out IntPtr commit_info, 
+										  IntPtr targets, int nonrecursive,
+						  	              IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_status(out uint result_rev, 
+										  string path, IntPtr revision,
+										  IntPtr status_func, IntPtr status_baton, 
+										  int descend, int get_all, int update, int no_ignore, 
+						  	              IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1")] static extern
+		internal IntPtr svn_client_log(IntPtr targets, IntPtr start, IntPtr end,
+									   int discover_changed_paths, int strict_node_history, 
+									   IntPtr receiver, IntPtr receiver_baton, 
+									   IntPtr ctx, IntPtr pool);
+ 	
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_blame(string path_or_url, IntPtr start, IntPtr end, 
+										 IntPtr receiver, IntPtr receiver_baton, 
+										 IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_diff(IntPtr diff_options, 
+										string path1, IntPtr revision1, 
+										string path2, IntPtr revision2, 
+										int recurse, int ignore_ancestry, int no_diff_deleted, 
+										IntPtr outfile, IntPtr errfile, 
+										IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_merge(string source1, IntPtr revision1, 
+										 string source2, IntPtr revision2,
+										 string target_wcpath, 
+										 int recurse, int ignore_ancestry, int force, int dry_run, 
+										 IntPtr ctx, IntPtr pool);
+		
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_cleanup(string dir, IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_relocate(string dir, 
+											string from, string to, int recurse, 
+											IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1")] static extern
+		internal IntPtr svn_client_revert(IntPtr paths, int recursive, IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_resolved(string path, int recursive, IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_copy(out IntPtr commit_info, 
+										string src_path, IntPtr src_revision, 
+										string dst_path, 
+										IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_move(out IntPtr commit_info, 
+										string src_path, IntPtr src_revision, 
+										string dst_path, int force, 
+										IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_propset(string propname, IntPtr propval, string target, 
+										   int recurse,
+										   IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_revprop_set(string propname, IntPtr propval, 
+											   string Url, IntPtr revision, 
+											   out uint set_rev, int force, 
+											   IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_propget(out IntPtr props, string propname, string target, 
+										   IntPtr revision, int recurse, 
+										   IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_revprop_get(string propname, out IntPtr propval, 
+											   string URL, IntPtr revision, out uint set_rev, 
+											   IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_proplist(out IntPtr props, 
+											string target, IntPtr revision, int recurse, 
+											IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_revprop_list(out IntPtr props,
+												string URL, IntPtr revision, out uint set_rev, 
+												IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_export(out uint result_rev, 
+										  string from, string to, IntPtr revision, int force, 
+										  IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_ls(out IntPtr dirents, 
+									  string path_or_url, IntPtr revision, int recurse, 
+									  IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_cat(IntPtr output, 
+									   string path_or_url, IntPtr revision,
+									   IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_url_from_path(string url, string path_or_url, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_uuid_from_url(string uuid, string url, IntPtr ctx, IntPtr pool);
+
+		[DllImport("svn_client-1", CharSet=CharSet.Ansi)] static extern
+		internal IntPtr svn_client_uuid_from_path (string uuid, string path, 
+												   IntPtr adm_access,
+												   IntPtr ctx, IntPtr pool);
         #endregion                
     }
 }   

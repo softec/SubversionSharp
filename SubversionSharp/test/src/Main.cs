@@ -70,14 +70,12 @@ class MainClass
 	{
 		if (!commitItems.IsNull)
 		{
-			foreach (SvnClientCommitItem item in gclea.CommitItems)
+			foreach (SvnClientCommitItem item in commitItems)
 			{
-				Console.WriteLine("C{0}: {1} ({2}) r{3}",
-					++mCommitCounter,
+				Console.WriteLine("C1: {1} ({2}) r{3}",
 					item.Path, item.Kind, item.Revision);
-				Console.WriteLine("C{0}: {1} -> {2}",
-					mCommitCounter,
-					item.URL,
+				Console.WriteLine("C2: {1} -> {2}",
+					item.Url,
 					item.CopyFromUrl);
 			}
 			Console.WriteLine();

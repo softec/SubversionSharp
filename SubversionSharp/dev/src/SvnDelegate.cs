@@ -106,7 +106,7 @@ namespace Softec.SubversionSharp
 	        	AprString tmpFile;
             	Debug.Write(String.Format("[Callback:{0}]SvnClientGetCommitLog({1},{2:X},{3})...",func.Method.Name,new AprArray(commit_items),baton,new AprPool(pool)));
         		err = func(out logMessage, out tmpFile,
-         				   new AprArray(commit_items), baton,
+         				   new AprArray(commit_items,typeof(SvnClientCommitItem)), baton,
          				   new AprPool(pool));
             	Debug.WriteLine(String.Format("Done({0},{1})",logMessage,tmpFile));
         		log_message = logMessage;
